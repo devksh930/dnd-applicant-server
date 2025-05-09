@@ -1,7 +1,6 @@
 package ac.dnd.server.admission.domain;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
@@ -19,18 +18,19 @@ public class ViewablePeriod {
 		final LocalDateTime startDate,
 		final LocalDateTime endDate
 	) {
-		this.startDate = Objects.requireNonNull(
-			startDate,
-			"시작일은 null일 수 없습니다."
-		);
-		this.endDate = Objects.requireNonNull(
-			endDate,
-			"종료일은 null일 수 없습니다."
-		);
+		if (startDate == null) {
+			throw new IllegalArgumentException("시작일은 null일 수 없습니다.");
+		}
+		if (endDate == null) {
+			throw new IllegalArgumentException("종료일은 null일 수 없습니다.");
+		}
 
 		if (!startDate.isBefore(endDate)) {
 			throw new IllegalArgumentException("시작일(startDate)은 종료일(endDate)보다 이전이어야 합니다.");
 		}
+
+		this.startDate = startDate;
+		this.endDate = endDate;
 	}
 
 	public static ViewablePeriod of(
