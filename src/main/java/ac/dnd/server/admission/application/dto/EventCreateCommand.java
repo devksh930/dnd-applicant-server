@@ -1,4 +1,4 @@
-package ac.dnd.server.admission.application;
+package ac.dnd.server.admission.application.dto;
 
 import java.time.LocalDateTime;
 

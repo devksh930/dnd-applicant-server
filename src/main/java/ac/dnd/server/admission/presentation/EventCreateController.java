@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import ac.dnd.server.admission.application.EventCreateCommand;
+import ac.dnd.server.admission.application.dto.EventCreateCommand;
 import ac.dnd.server.admission.application.service.EventCreateService;
 import ac.dnd.server.admission.presentation.dto.request.EventCreateRequest;
 import jakarta.validation.Valid;
