@@ -2,7 +2,7 @@ package ac.dnd.server.admission.application.service;
 
 import org.springframework.stereotype.Service;
 
-import ac.dnd.server.admission.application.EventCreateCommand;
+import ac.dnd.server.admission.application.dto.EventCreateCommand;
 import ac.dnd.server.admission.domain.AdmissionRepository;
 import ac.dnd.server.admission.domain.Event;
 import ac.dnd.server.admission.domain.ViewablePeriod;
