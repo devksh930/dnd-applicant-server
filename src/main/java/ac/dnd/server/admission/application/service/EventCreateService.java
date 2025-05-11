@@ -17,7 +17,8 @@ public class EventCreateService {
 	public Long createEvent(
 		final EventCreateCommand command
 	) {
-		return admissionRepository.saveEvent(new Event(command.name(),
+		return admissionRepository.saveEvent(new Event(
+			command.name(),
 			ViewablePeriod.of(
 				command.startDateTime(),
 				command.endDateTime()

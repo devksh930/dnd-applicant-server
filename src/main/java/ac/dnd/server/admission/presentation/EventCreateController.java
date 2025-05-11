@@ -1,4 +1,4 @@
-package ac.dnd.server.admission.ui;
+package ac.dnd.server.admission.presentation;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,6 +9,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import ac.dnd.server.admission.application.EventCreateCommand;
 import ac.dnd.server.admission.application.service.EventCreateService;
+import ac.dnd.server.admission.presentation.dto.request.EventCreateRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -19,13 +21,15 @@ public class EventCreateController {
 
 	@PostMapping
 	public ResponseEntity<Void> createEvent(
-		@RequestBody final EventCreateRequest request
+		@Valid @RequestBody final EventCreateRequest request
 	) {
-		final Long createEvent = eventCreateService.createEvent(new EventCreateCommand(
+		final EventCreateCommand command = new EventCreateCommand(
 			request.name(),
 			request.startDateTime(),
 			request.endDateTime()
-		));
+		);
+
+		final Long createEvent = eventCreateService.createEvent(command);
 
 		return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentRequestUri()
 			.path("/{id}")
