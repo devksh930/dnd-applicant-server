@@ -1,5 +1,7 @@
 package ac.dnd.server.admission.infrastructure;
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
 import ac.dnd.server.admission.domain.AdmissionRepository;
@@ -17,5 +19,10 @@ public class AdmissionRepositoryAdapter implements AdmissionRepository {
 	public Long saveEvent(final Event event) {
 		return eventJpaRepository.save(event)
 			.getId();
+	}
+
+	@Override
+	public List<Event> getEvents() {
+		return eventJpaRepository.findAll();
 	}
 }
