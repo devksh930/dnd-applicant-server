@@ -9,7 +9,7 @@ public enum ApplicantStatus {
 	FAILED("불합격"),
 	WAITLISTED("예비 후보자");
 
-	private final String description;
+	private String description;
 
 	ApplicantStatus(String description) {
 		this.description = description;
