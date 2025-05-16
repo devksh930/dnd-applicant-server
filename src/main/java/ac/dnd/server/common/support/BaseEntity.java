@@ -1,4 +1,4 @@
-package ac.dnd.server.common;
+package ac.dnd.server.common.support;
 
 import java.time.LocalDateTime;
 

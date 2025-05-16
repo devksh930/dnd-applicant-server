@@ -2,6 +2,8 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.4.5'
     id 'io.spring.dependency-management' version '1.1.7'
+    id 'org.asciidoctor.jvm.convert' version '4.0.4'
+    id "com.epages.restdocs-api-spec" version "0.19.4"
 }
 
 group = 'ac.dnd'
@@ -17,29 +19,81 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
+    asciidoctorExt
 }
 
 repositories {
     mavenCentral()
 }
+ext {
+    snippetsDir = file("build/generated-snippets")
+}
 
 dependencies {
+    // Spring Boot Starters
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-configuration-processor'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
-    testImplementation 'org.testcontainers:mysql'
+    implementation 'org.springframework.boot:spring-boot-configuration-processor'
+
+    // Lombok
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+
+    // Database
+    runtimeOnly 'com.mysql:mysql-connector-j'
+
+    // Test Dependencies
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.boot:spring-boot-testcontainers'
     testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation 'org.testcontainers:mysql'
     testImplementation 'org.testcontainers:junit-jupiter'
-    runtimeOnly 'com.mysql:mysql-connector-j'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // Documentation - Springdoc OpenAPI (Swagger UI)
+    implementation("org.springdoc:springdoc-openapi-ui:1.8.0")
+    implementation("org.springdoc:springdoc-openapi-webmvc-core:1.8.0")
+
+    // Documentation - Spring REST Docs & OpenAPI Spec
+    testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
+    testImplementation("com.epages:restdocs-api-spec-mockmvc:${dependencyManagement.importedProperties['restdocs-api-spec.version'] ?: '0.19.4'}")
+    // 버전 관리 활용
+
+    asciidoctorExt("org.springframework.restdocs:spring-restdocs-asciidoctor")
+
+}
+tasks.named('test') {
+    outputs.dir snippetsDir
+    useJUnitPlatform()
 }
 
-tasks.named('test') {
-    useJUnitPlatform()
+tasks.register("restDocsTest", Test) {
+    outputs.dir snippetsDir
+    useJUnitPlatform {
+        includeTags("restDocs")
+    }
+    finalizedBy "asciidoctor"
+    finalizedBy "openapi3"
+}
+
+tasks.named('asciidoctor') {
+    dependsOn tasks.named("restDocsTest")
+    inputs.dir snippetsDir
+    configurations "asciidoctorExt"
+    baseDirFollowsSourceDir()
+}
+
+bootJar {
+    from("swagger-ui") {
+        into "BOOT-INF/classes/static/swagger"
+    }
+    from("${asciidoctor.outputDir}") {
+        into "BOOT-INF/classes/static/docs"
+    }
+    from("build/api-spec") {
+        into "BOOT-INF/classes/static/swagger"
+    }
+    archiveFileName.set("application.jar")
 }

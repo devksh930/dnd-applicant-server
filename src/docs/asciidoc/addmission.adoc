@@ -1,0 +1,16 @@
+== 참가(Admission)
+참가자의 상태를 를 조회, CRUD 처리
+
+=== 참가자 상태 조회
+
+[discrete]
+==== 요청
+include::{snippets}/get-applicant-status/curl-request.adoc[]
+include::{snippets}/get-applicant-status/http-request.adoc[]
+include::{snippets}/get-applicant-status/path-parameters.adoc[]
+include::{snippets}/get-applicant-status/request-fields.adoc[]
+
+[discrete]
+==== 응답
+include::{snippets}/get-applicant-status/http-response.adoc[]
+include::{snippets}/get-applicant-status/response-fields.adoc[]

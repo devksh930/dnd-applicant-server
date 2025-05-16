@@ -1,0 +1,13 @@
+= Spring REST Docs 가이드
+:doctype: book
+:icons: font
+:source-highlighter: coderay
+:toc: left
+:toc-title: 목차
+:toclevels: 3
+:sectlinks:
+:sectnums:
+
+== API
+//참가자
+include::addmission.adoc[]
