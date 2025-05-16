@@ -18,11 +18,9 @@ public class SecurityConfig {
 	private static final List<String> ALLOW_ORIGIN_PATTERN = List.of(
 		"http://localhost:*");
 
-
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.csrf(AbstractHttpConfigurer::disable)
-			.formLogin(AbstractHttpConfigurer::disable)
 			.cors(s -> s.configurationSource(corsConfigurationSource()))
 			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 			.formLogin(AbstractHttpConfigurer::disable)

@@ -26,9 +26,9 @@ class ApplicantQueryServiceTest {
 	@Mock
 	AdmissionRepository admissionRepository;
 	@Mock
-	ApplicantValidator applicantValidator = new ApplicantValidator();
+	ApplicantValidator applicantValidator;
 	@Mock
-	ApplicantMapper applicantMapper = new ApplicantMapper();
+	ApplicantMapper applicantMapper;
 
 	@InjectMocks
 	ApplicantQueryService applicantQueryService;
