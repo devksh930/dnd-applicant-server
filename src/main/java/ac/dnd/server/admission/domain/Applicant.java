@@ -1,6 +1,8 @@
 package ac.dnd.server.admission.domain;
 
-import ac.dnd.server.common.BaseEntity;
+import java.time.LocalDateTime;
+
+import ac.dnd.server.common.support.BaseEntity;
 import ac.dnd.server.enums.ApplicantStatus;
 import ac.dnd.server.enums.ApplicantType;
 import jakarta.persistence.Entity;
@@ -51,6 +53,12 @@ public class Applicant extends BaseEntity {
 		final Event event
 	) {
 		this.event = event;
+	}
+
+	public boolean isAdmissionResultViewable(
+		final LocalDateTime now
+	) {
+		return event.isViewable(now);
 	}
 
 }

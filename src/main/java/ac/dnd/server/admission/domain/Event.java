@@ -1,6 +1,8 @@
 package ac.dnd.server.admission.domain;
 
-import ac.dnd.server.common.BaseEntity;
+import java.time.LocalDateTime;
+
+import ac.dnd.server.common.support.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
@@ -21,5 +23,11 @@ public class Event extends BaseEntity {
 	) {
 		this.name = name;
 		this.period = period;
+	}
+
+	public boolean isViewable(
+		final LocalDateTime now
+	) {
+		return period.contains(now);
 	}
 }

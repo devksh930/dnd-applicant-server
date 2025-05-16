@@ -1,1 +1,14 @@
-spring.application.name=dnd-server
+spring:
+  datasource:
+    url: ${db.url}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${db.user}
+    password: ${db.password}
+  jpa:
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true

@@ -1,10 +1,12 @@
 package ac.dnd.server.admission.infrastructure;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
 import ac.dnd.server.admission.domain.AdmissionRepository;
+import ac.dnd.server.admission.domain.Applicant;
 import ac.dnd.server.admission.domain.Event;
 import lombok.RequiredArgsConstructor;
 
@@ -25,4 +27,18 @@ public class AdmissionRepositoryAdapter implements AdmissionRepository {
 	public List<Event> getEvents() {
 		return eventJpaRepository.findAll();
 	}
+
+	@Override
+	public Optional<Applicant> findAdmissionByEventIdAndNameAndEmail(
+		final Long eventId,
+		final String name,
+		final String email
+	) {
+		return applicantJpaRepository.findByEventIdAndNameAndEmail(
+			eventId,
+			name,
+			email
+		);
+	}
+
 }
