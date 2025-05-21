@@ -1,4 +1,4 @@
-package ac.dnd.server.admission.infrastructure;
+package ac.dnd.server.admission.infrastructure.db;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
