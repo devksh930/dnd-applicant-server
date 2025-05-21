@@ -1,4 +1,4 @@
-package ac.dnd.server.admission.infrastructure;
+package ac.dnd.server.admission.infrastructure.db;
 
 import java.util.Optional;
 
