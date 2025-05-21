@@ -56,7 +56,7 @@ class ApplicantQueryServiceTest {
 		));
 
 		ApplicantData result = applicantQueryService.getApplicantStatusCheck(new ApplicantStatusCheckCommand(
-			Long.valueOf(1),
+			1L,
 			"name",
 			"email"
 		));
