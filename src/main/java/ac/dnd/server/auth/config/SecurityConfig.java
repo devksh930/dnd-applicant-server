@@ -7,14 +7,22 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.encrypt.Encryptors;
+import org.springframework.security.crypto.encrypt.TextEncryptor;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.header.writers.XXssProtectionHeaderWriter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import ac.dnd.server.common.propeties.EncryptionTextProperties;
+import lombok.RequiredArgsConstructor;
+
 @Configuration
+@RequiredArgsConstructor
 public class SecurityConfig {
+
+	private final EncryptionTextProperties encryptionTextProperties;
 	private static final List<String> ALLOW_ORIGIN_PATTERN = List.of(
 		"http://localhost:*");
 
@@ -60,5 +68,13 @@ public class SecurityConfig {
 			corsConfiguration
 		); // 모든 경로에 대해 적용
 		return source;
+	}
+
+	@Bean
+	public TextEncryptor textEncryptor() {
+		return Encryptors.delux(
+			encryptionTextProperties.password(),
+			encryptionTextProperties.salt()
+		);
 	}
 }
