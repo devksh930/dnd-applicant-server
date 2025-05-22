@@ -1,4 +1,4 @@
-package ac.dnd.server.admission.infrastructure;
+package ac.dnd.server.admission.infrastructure.db;
 
 import java.util.Optional;
 
@@ -10,11 +10,11 @@ import ac.dnd.server.admission.domain.Applicant;
 public interface ApplicantJpaRepository extends JpaRepository<Applicant, Long> {
 
 	@Query("""
-		SELECT a 
-		FROM Applicant a 
+		SELECT a
+		FROM Applicant a
 		JOIN FETCH a.event e
-		WHERE e.id = :eventId 
-				AND a.name = :name 
+		WHERE e.id = :eventId
+				AND a.name = :name
 			    AND a.email = :email
 		""")
 	Optional<Applicant> findByEventIdAndNameAndEmail(
