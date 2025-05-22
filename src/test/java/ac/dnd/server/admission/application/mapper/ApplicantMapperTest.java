@@ -1,5 +1,6 @@
 package ac.dnd.server.admission.application.mapper;
 
+import static ac.dnd.server.fixture.TextEncryptorFixture.*;
 import static org.assertj.core.api.AssertionsForClassTypes.*;
 
 import org.junit.Test;
@@ -14,7 +15,7 @@ import ac.dnd.server.fixture.EventFixture;
 
 @UnitTest
 public class ApplicantMapperTest {
-	private ApplicantMapper applicantMapper = new ApplicantMapper();
+	private ApplicantMapper applicantMapper = new ApplicantMapper(createNoOpTextEncryptor());
 
 	@Test
 	void 모든_필드가_채워진_엔티티를_정상적으로_매핑한다() {
