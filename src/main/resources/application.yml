@@ -27,3 +27,5 @@ encryption:
   text:
     password: ${ENCRYPTION_TEXT_PASSWORD}
     salt: ${ENCRYPTION_TEXT_SALT}
+server:
+  port: ${SERVER_PORT}
