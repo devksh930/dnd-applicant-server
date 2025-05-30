@@ -10,7 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ApplicantEventListener {
 
-	@EventListener(classes = ApplicantEventListener.class)
+	@EventListener(classes = ApplicantQueryEvent.class)
 	public void handleApplicantEvent(
 		final ApplicantQueryEvent event
 	) {

@@ -24,7 +24,10 @@ public class SecurityConfig {
 
 	private final EncryptionTextProperties encryptionTextProperties;
 	private static final List<String> ALLOW_ORIGIN_PATTERN = List.of(
-		"http://localhost:*");
+		"http://localhost:*",
+		"https://localhost:*",
+		"https://dnd.ac.kr"
+	);
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -72,7 +75,8 @@ public class SecurityConfig {
 
 	@Bean
 	public TextEncryptor textEncryptor() {
-		return Encryptors.delux(
+
+		return Encryptors.text(
 			encryptionTextProperties.password(),
 			encryptionTextProperties.salt()
 		);

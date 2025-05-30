@@ -1,6 +1,6 @@
 package ac.dnd.server.fixture;
 
-import ac.dnd.server.admission.domain.Applicant;
+import ac.dnd.server.admission.infrastructure.persistence.entity.Applicant;
 import ac.dnd.server.enums.ApplicantStatus;
 import ac.dnd.server.enums.ApplicantType;
 

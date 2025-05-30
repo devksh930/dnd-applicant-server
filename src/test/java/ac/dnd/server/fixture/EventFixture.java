@@ -2,8 +2,8 @@ package ac.dnd.server.fixture;
 
 import java.time.LocalDateTime;
 
-import ac.dnd.server.admission.domain.Event;
-import ac.dnd.server.admission.domain.ViewablePeriod;
+import ac.dnd.server.admission.infrastructure.persistence.entity.Event;
+import ac.dnd.server.admission.domain.model.ViewablePeriod;
 
 public class EventFixture {
 
