@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.Test;
 
+import ac.dnd.server.admission.domain.model.ViewablePeriod;
 import ac.dnd.server.annotation.UnitTest;
 
 @UnitTest
