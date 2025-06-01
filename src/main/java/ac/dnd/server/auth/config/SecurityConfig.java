@@ -26,7 +26,10 @@ public class SecurityConfig {
 	private static final List<String> ALLOW_ORIGIN_PATTERN = List.of(
 		"http://localhost:*",
 		"https://localhost:*",
-		"https://dnd.ac.kr"
+		"https://dnd.ac.kr",
+		"https://*.vercel.app",
+		"http://*.vercel.app",
+		"https://*.ngrok-*.app"
 	);
 
 	@Bean
@@ -76,9 +79,10 @@ public class SecurityConfig {
 	@Bean
 	public TextEncryptor textEncryptor() {
 
-		return Encryptors.text(
-			encryptionTextProperties.password(),
-			encryptionTextProperties.salt()
-		);
+		// return Encryptors.text(
+		// 	encryptionTextProperties.password(),
+		// 	encryptionTextProperties.salt()
+		// );
+		return Encryptors.noOpText();
 	}
 }

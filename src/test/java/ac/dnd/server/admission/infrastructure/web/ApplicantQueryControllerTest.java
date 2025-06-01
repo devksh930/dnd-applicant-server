@@ -24,7 +24,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import ac.dnd.server.admission.application.service.ApplicantQueryService;
 import ac.dnd.server.admission.domain.model.ApplicantData;
-import ac.dnd.server.admission.infrastructure.web.dto.request.ApplicatStatusCheckRequest;
+import ac.dnd.server.admission.infrastructure.web.dto.request.ApplicantStatusCheckRequest;
 import ac.dnd.server.admission.infrastructure.web.mapper.ApplicantWebMapper;
 import ac.dnd.server.annotation.UnitTest;
 import ac.dnd.server.auth.config.SecurityConfig;
@@ -53,7 +53,7 @@ class ApplicantQueryControllerTest {
 	@Test
 	void 지원_상태조회_성공() throws Exception {
 		// Given
-		final ApplicatStatusCheckRequest request = new ApplicatStatusCheckRequest(
+		final ApplicantStatusCheckRequest request = new ApplicantStatusCheckRequest(
 			"홍길동",
 			"test@test.com"
 		);
@@ -88,7 +88,7 @@ class ApplicantQueryControllerTest {
 		final String email
 	) throws Exception {
 		// Given
-		final ApplicatStatusCheckRequest request = new ApplicatStatusCheckRequest(
+		final ApplicantStatusCheckRequest request = new ApplicantStatusCheckRequest(
 			name,
 			email
 		);
