@@ -1,8 +1,12 @@
 package ac.dnd.server.admission.infrastructure.persistence.entity;
 
+import ac.dnd.server.admission.domain.model.ApplicantNameEmailBlindIndex;
 import ac.dnd.server.common.support.BaseEntity;
 import ac.dnd.server.enums.ApplicantStatus;
 import ac.dnd.server.enums.ApplicantType;
+import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -24,6 +28,11 @@ public class Applicant extends BaseEntity {
 
 	private String email;
 
+	@Embedded
+	@AttributeOverride(name = "name", column = @Column(name = "name_blind_index"))
+	@AttributeOverride(name = "email", column = @Column(name = "email_blind_index"))
+	private ApplicantNameEmailBlindIndex applicantNameEmailBlindIndex;
+
 	@Enumerated(EnumType.STRING)
 	private ApplicantType type;
 
@@ -38,11 +47,13 @@ public class Applicant extends BaseEntity {
 	public Applicant(
 		final String name,
 		final String email,
+		final ApplicantNameEmailBlindIndex applicantNameEmailBlindIndex,
 		final ApplicantType type,
 		final ApplicantStatus status
 	) {
 		this.name = name;
 		this.email = email;
+		this.applicantNameEmailBlindIndex = applicantNameEmailBlindIndex;
 		this.type = type;
 		this.status = status;
 	}
