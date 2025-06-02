@@ -21,7 +21,7 @@ import ac.dnd.server.fixture.EventFixture;
 
 @UnitTest
 public class ApplicantPersistenceMapperTest {
-	private ApplicantPersistenceMapper applicantPersistenceMapper = new ApplicantPersistenceMapper(createNoOpTextEncryptor());
+	private ApplicantPersistenceMapper applicantPersistenceMapper = new ApplicantPersistenceMapper();
 
 	@Test
 	void 모든_필드가_채워진_엔티티를_정상적으로_매핑한다() {

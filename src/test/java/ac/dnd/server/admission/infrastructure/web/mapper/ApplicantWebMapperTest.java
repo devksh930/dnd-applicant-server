@@ -11,7 +11,7 @@ import ac.dnd.server.fixture.TextEncryptorFixture;
 @UnitTest
 class ApplicantWebMapperTest {
 
-	private ApplicantWebMapper applicantWebMapper = new ApplicantWebMapper(TextEncryptorFixture.createNoOpTextEncryptor());
+	private ApplicantWebMapper applicantWebMapper = new ApplicantWebMapper();
 
 	@Test
 	void testStatusCheckRequestToCommand() {

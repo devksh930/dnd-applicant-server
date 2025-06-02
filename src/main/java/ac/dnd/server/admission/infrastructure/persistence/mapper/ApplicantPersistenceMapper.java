@@ -1,6 +1,5 @@
 package ac.dnd.server.admission.infrastructure.persistence.mapper;
 
-import org.springframework.security.crypto.encrypt.TextEncryptor;
 import org.springframework.stereotype.Component;
 
 import ac.dnd.server.admission.domain.model.ApplicantData;
@@ -12,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 @Component
 @RequiredArgsConstructor
 public class ApplicantPersistenceMapper {
-	private final TextEncryptor encryptor;
 
 	public Event eventDataToEntity(
 		final EventData domain
@@ -37,8 +35,8 @@ public class ApplicantPersistenceMapper {
 		return new ApplicantData(
 			entity.getId(),
 			entity.getEvent().getName(),
-			encryptor.decrypt(entity.getName()),
-			encryptor.decrypt(entity.getEmail()),
+			entity.getName(),
+			entity.getEmail(),
 			entity.getType(),
 			entity.getStatus(),
 			entity.getEvent().getPeriod()
