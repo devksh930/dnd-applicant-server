@@ -14,8 +14,8 @@ public interface ApplicantJpaRepository extends JpaRepository<Applicant, Long> {
 		FROM Applicant a
 		JOIN FETCH a.event e
 		WHERE e.id = :eventId
-				AND a.name = :name
-			    AND a.email = :email
+				AND a.nameBlindIndex = :name
+			    AND a.emailBlindIndex = :email
 		""")
 	Optional<Applicant> findByEventIdAndNameAndEmail(
 		final Long eventId,

@@ -1,6 +1,5 @@
 package ac.dnd.server.admission.infrastructure.persistence.mapper;
 
-import static ac.dnd.server.fixture.TextEncryptorFixture.*;
 import static org.assertj.core.api.AssertionsForClassTypes.*;
 
 import java.time.LocalDateTime;
@@ -9,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import ac.dnd.server.admission.domain.model.ApplicantData;
-import ac.dnd.server.admission.domain.model.ApplicantNameEmailBlindIndex;
 import ac.dnd.server.admission.domain.model.EventData;
 import ac.dnd.server.admission.domain.model.ViewablePeriod;
 import ac.dnd.server.admission.infrastructure.persistence.entity.Applicant;
@@ -35,10 +33,8 @@ public class ApplicantPersistenceMapperTest {
 		Applicant entity = new Applicant(
 			name,
 			email,
-			ApplicantNameEmailBlindIndex.of(
-				name,
-				email
-			),
+			name,
+			email,
 			type,
 			status
 		);

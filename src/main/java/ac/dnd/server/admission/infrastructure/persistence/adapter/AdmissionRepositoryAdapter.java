@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import ac.dnd.server.admission.domain.AdmissionRepository;
 import ac.dnd.server.admission.domain.model.ApplicantData;
 import ac.dnd.server.admission.domain.model.EventData;
+import ac.dnd.server.admission.infrastructure.persistence.crypto.HmacBlindIndexCreator;
 import ac.dnd.server.admission.infrastructure.persistence.entity.Event;
 import ac.dnd.server.admission.infrastructure.persistence.mapper.ApplicantPersistenceMapper;
 import ac.dnd.server.admission.infrastructure.persistence.repository.ApplicantJpaRepository;
@@ -23,6 +24,7 @@ public class AdmissionRepositoryAdapter implements AdmissionRepository {
 	private final EventJpaRepository eventJpaRepository;
 	private final ApplicantJpaRepository applicantJpaRepository;
 	private final ApplicantPersistenceMapper applicantPersistenceMapper;
+	private final HmacBlindIndexCreator blindIndexCreator;
 
 	@Override
 	public Long saveEvent(final EventData domain) {
@@ -44,11 +46,15 @@ public class AdmissionRepositoryAdapter implements AdmissionRepository {
 		final String name,
 		final String email
 	) {
-		log.info("name: {}, email: {}", name, email);
-		return applicantJpaRepository.findByEventIdAndNameAndEmail(
-			eventId,
+		log.info(
+			"name: {}, email: {}",
 			name,
 			email
+		);
+		return applicantJpaRepository.findByEventIdAndNameAndEmail(
+			eventId,
+			blindIndexCreator.create(name),
+			blindIndexCreator.create(email)
 		).map(applicantPersistenceMapper::applicantEntityToDomain);
 
 	}

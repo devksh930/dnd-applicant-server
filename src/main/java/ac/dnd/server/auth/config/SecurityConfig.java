@@ -15,6 +15,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import ac.dnd.server.admission.infrastructure.persistence.crypto.HmacBlindIndexCreator;
 import ac.dnd.server.common.propeties.EncryptionProperties;
 import lombok.RequiredArgsConstructor;
 
@@ -22,7 +23,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-	private final EncryptionProperties encryptionProperties;
 	private static final List<String> ALLOW_ORIGIN_PATTERN = List.of(
 		"http://localhost:*",
 		"https://localhost:*",
@@ -31,6 +31,7 @@ public class SecurityConfig {
 		"http://*.vercel.app",
 		"https://*.ngrok-*.app"
 	);
+	private final EncryptionProperties encryptionProperties;
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -79,10 +80,14 @@ public class SecurityConfig {
 	@Bean
 	public TextEncryptor textEncryptor() {
 
-		// return Encryptors.text(
-		// 	encryptionTextProperties.password(),
-		// 	encryptionTextProperties.salt()
-		// );
-		return Encryptors.noOpText();
+		return Encryptors.text(
+			encryptionProperties.getAes().getPassword(),
+			encryptionProperties.getAes().getSalt()
+		);
+	}
+
+	@Bean
+	public HmacBlindIndexCreator hmacBlindIndexCreator() {
+		return new HmacBlindIndexCreator(encryptionProperties);
 	}
 }

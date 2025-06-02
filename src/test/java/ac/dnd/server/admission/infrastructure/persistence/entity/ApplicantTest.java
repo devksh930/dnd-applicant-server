@@ -5,7 +5,6 @@ import static org.assertj.core.api.AssertionsForClassTypes.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import ac.dnd.server.admission.domain.model.ApplicantNameEmailBlindIndex;
 import ac.dnd.server.annotation.UnitTest;
 import ac.dnd.server.enums.ApplicantStatus;
 import ac.dnd.server.enums.ApplicantType;
@@ -25,10 +24,8 @@ class ApplicantTest {
 		final Applicant applicant = new Applicant(
 			name,
 			email,
-			ApplicantNameEmailBlindIndex.of(
-				name,
-				email
-			),
+			name,
+			email,
 			type,
 			status
 		);

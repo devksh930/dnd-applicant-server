@@ -1,6 +1,5 @@
 package ac.dnd.server.fixture;
 
-import ac.dnd.server.admission.domain.model.ApplicantNameEmailBlindIndex;
 import ac.dnd.server.admission.infrastructure.persistence.entity.Applicant;
 import ac.dnd.server.enums.ApplicantStatus;
 import ac.dnd.server.enums.ApplicantType;
@@ -16,10 +15,8 @@ public class ApplicantFixture {
 		return new Applicant(
 			name,
 			email,
-			ApplicantNameEmailBlindIndex.of(
-				name,
-				email
-			),
+			name,
+			email,
 			type,
 			status
 		);
@@ -32,10 +29,8 @@ public class ApplicantFixture {
 		final Applicant applicant = new Applicant(
 			name,
 			email,
-			ApplicantNameEmailBlindIndex.of(
-				name,
-				email
-			),
+			name,
+			email,
 			ApplicantType.BACKEND,
 			ApplicantStatus.PASSED
 		);
@@ -50,10 +45,8 @@ public class ApplicantFixture {
 		return new Applicant(
 			name,
 			email,
-			ApplicantNameEmailBlindIndex.of(
-				name,
-				email
-			),
+			name,
+			email,
 			ApplicantType.BACKEND,
 			status
 		);
