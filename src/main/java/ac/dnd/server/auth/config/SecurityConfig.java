@@ -15,14 +15,14 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import ac.dnd.server.common.propeties.EncryptionTextProperties;
+import ac.dnd.server.common.propeties.EncryptionProperties;
 import lombok.RequiredArgsConstructor;
 
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-	private final EncryptionTextProperties encryptionTextProperties;
+	private final EncryptionProperties encryptionProperties;
 	private static final List<String> ALLOW_ORIGIN_PATTERN = List.of(
 		"http://localhost:*",
 		"https://localhost:*",
