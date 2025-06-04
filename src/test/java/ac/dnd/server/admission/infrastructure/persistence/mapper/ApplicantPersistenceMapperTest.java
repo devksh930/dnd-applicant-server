@@ -18,7 +18,7 @@ import ac.dnd.server.enums.ApplicantType;
 import ac.dnd.server.fixture.EventFixture;
 
 @UnitTest
-public class ApplicantPersistenceMapperTest {
+class ApplicantPersistenceMapperTest {
 	private ApplicantPersistenceMapper applicantPersistenceMapper = new ApplicantPersistenceMapper();
 
 	@Test
@@ -61,7 +61,9 @@ public class ApplicantPersistenceMapperTest {
 		EventData domain = new EventData(
 			1L,
 			name,
-			period
+			period,
+			LocalDateTime.now(),
+			EventFixture.create().getStatus()
 		);
 
 		// when
@@ -83,7 +85,9 @@ public class ApplicantPersistenceMapperTest {
 		);
 		Event entity = new Event(
 			name,
-			period
+			period,
+			LocalDateTime.now(),
+			EventFixture.create().getStatus()
 		);
 		ReflectionTestUtils.setField(
 			entity,

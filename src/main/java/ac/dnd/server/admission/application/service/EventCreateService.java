@@ -14,6 +14,7 @@ public class EventCreateService {
 
 	private final AdmissionRepository admissionRepository;
 
+	//FIXME : resultDateTiem이랑 status 추가해야함
 	public Long createEvent(
 		final EventCreateCommand command
 	) {
@@ -23,7 +24,9 @@ public class EventCreateService {
 			ViewablePeriod.of(
 				command.startDateTime(),
 				command.endDateTime()
-			)
+			),
+			null,
+			null
 		));
 	}
 

@@ -2,8 +2,9 @@ package ac.dnd.server.fixture;
 
 import java.time.LocalDateTime;
 
-import ac.dnd.server.admission.infrastructure.persistence.entity.Event;
 import ac.dnd.server.admission.domain.model.ViewablePeriod;
+import ac.dnd.server.admission.infrastructure.persistence.entity.Event;
+import ac.dnd.server.common.support.EventStatus;
 
 public class EventFixture {
 
@@ -13,7 +14,9 @@ public class EventFixture {
 			ViewablePeriod.of(
 				LocalDateTime.now().minusHours(1),
 				LocalDateTime.now().plusHours(1)
-			)
+			),
+			LocalDateTime.now(),
+			EventStatus.COMPLETED
 		);
 	}
 
@@ -26,7 +29,9 @@ public class EventFixture {
 		);
 		return new Event(
 			"조회 가능 이벤트",
-			viewablePeriod
+			viewablePeriod,
+			LocalDateTime.now(),
+			EventStatus.COMPLETED
 		);
 	}
 
@@ -39,7 +44,9 @@ public class EventFixture {
 		);
 		return new Event(
 			"조회 불가능 이벤트 (시작 전)",
-			notViewablePeriodBefore
+			notViewablePeriodBefore,
+			LocalDateTime.MIN,
+			EventStatus.EXPIRED
 		);
 	}
 
@@ -52,7 +59,9 @@ public class EventFixture {
 		);
 		return new Event(
 			"조회 불가능 이벤트 (종료 후)",
-			notViewablePeriodAfter
+			notViewablePeriodAfter,
+			LocalDateTime.MIN,
+			EventStatus.EXPIRED
 		);
 	}
 

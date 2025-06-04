@@ -17,7 +17,9 @@ public class ApplicantPersistenceMapper {
 	) {
 		return new Event(
 			domain.name(),
-			domain.period()
+			domain.period(),
+			domain.resultAnnouncementDateTime(),
+			domain.status()
 		);
 	}
 
@@ -25,7 +27,9 @@ public class ApplicantPersistenceMapper {
 		return new EventData(
 			entity.getId(),
 			entity.getName(),
-			entity.getPeriod()
+			entity.getPeriod(),
+			entity.getResultAnnouncementDateTime(),
+			entity.getStatus()
 		);
 	}
 

@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import ac.dnd.server.admission.domain.model.ApplicantData;
 import ac.dnd.server.admission.domain.model.EventData;
+import ac.dnd.server.admission.domain.model.EventsData;
+import ac.dnd.server.common.support.EventStatus;
 
 public interface AdmissionRepository {
 	Long saveEvent(final EventData event);
@@ -16,4 +18,7 @@ public interface AdmissionRepository {
 		String name,
 		String email
 	);
+
+	EventsData findByStatusIn(List<EventStatus> statuses);
+
 }

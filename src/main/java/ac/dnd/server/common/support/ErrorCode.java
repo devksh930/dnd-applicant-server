@@ -38,6 +38,10 @@ public enum ErrorCode {
 		422,
 		"A002",
 		"합격자 조회 가능 기간이 지났습니다"
+	), EVENT_NOT_FOUND(
+		404,
+		"E001",
+		"이벤트를 찾을수 없습니다."
 	);
 
 	private final String code;
