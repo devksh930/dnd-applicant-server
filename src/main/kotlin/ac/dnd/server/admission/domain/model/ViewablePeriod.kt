@@ -1,8 +1,10 @@
 package ac.dnd.server.admission.domain.model
 
+import jakarta.persistence.Embeddable
 import java.time.LocalDateTime
 
-data class ViewablePeriod private constructor(
+@Embeddable
+data class ViewablePeriod (
     val startDate: LocalDateTime,
     val endDate: LocalDateTime
 ) {
