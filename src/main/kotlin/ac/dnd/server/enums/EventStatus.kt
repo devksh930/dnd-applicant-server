@@ -1,4 +1,4 @@
-package ac.dnd.server.common.support
+package ac.dnd.server.enums
 
 enum class EventStatus(val description: String) {
     PENDING("진행중"),

@@ -1,4 +1,4 @@
-package ac.dnd.server.common.support
+package ac.dnd.server.global.error
 
 import org.springframework.validation.BindingResult
 

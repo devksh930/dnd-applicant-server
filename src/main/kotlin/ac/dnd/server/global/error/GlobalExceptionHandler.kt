@@ -1,7 +1,8 @@
-package ac.dnd.server.common.error
+package ac.dnd.server.global.error
 
-import ac.dnd.server.common.support.ErrorCode
-import ac.dnd.server.common.support.ErrorResponse
+import ac.dnd.server.global.error.BusinessException
+import ac.dnd.server.global.support.ErrorCode
+import ac.dnd.server.global.error.ErrorResponse
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity

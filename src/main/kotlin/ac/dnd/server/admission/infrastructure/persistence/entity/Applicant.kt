@@ -2,7 +2,7 @@ package ac.dnd.server.admission.infrastructure.persistence.entity
 
 import ac.dnd.server.admission.infrastructure.persistence.converter.StringCryptoConverter
 import ac.dnd.server.admission.infrastructure.persistence.converter.StringHmacConverter
-import ac.dnd.server.common.support.BaseEntity
+import ac.dnd.server.global.base.BaseEntity
 import ac.dnd.server.enums.ApplicantStatus
 import ac.dnd.server.enums.ApplicantType
 import jakarta.persistence.*

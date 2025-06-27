@@ -1,5 +1,7 @@
-package ac.dnd.server.common.support
+package ac.dnd.server.global.error
 
+import ac.dnd.server.global.support.ErrorCode
+import ac.dnd.server.global.error.FieldError
 import org.springframework.validation.BindingResult
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException
 

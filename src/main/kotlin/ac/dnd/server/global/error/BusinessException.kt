@@ -1,6 +1,6 @@
-package ac.dnd.server.common.error
+package ac.dnd.server.global.error
 
-import ac.dnd.server.common.support.ErrorCode
+import ac.dnd.server.global.support.ErrorCode
 
 open class BusinessException : RuntimeException {
     val errorCode: ErrorCode

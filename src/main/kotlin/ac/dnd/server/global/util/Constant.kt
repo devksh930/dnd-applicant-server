@@ -1,4 +1,4 @@
-package ac.dnd.server.common.util
+package ac.dnd.server.global.util
 
 import java.time.ZoneId
 

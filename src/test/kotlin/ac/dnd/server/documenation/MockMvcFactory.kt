@@ -1,10 +1,10 @@
 package ac.dnd.server.documenation
 
-import ac.dnd.server.common.error.GlobalExceptionHandler
-import ac.dnd.server.common.util.JsonUtils
-import ac.dnd.server.common.util.LocalDateTimeUtils
-import ac.dnd.server.common.util.LocalDateUtils
-import ac.dnd.server.common.util.LocalTimeUtils
+import ac.dnd.server.global.error.GlobalExceptionHandler
+import ac.dnd.server.global.util.JsonUtils
+import ac.dnd.server.global.util.LocalDateTimeUtils
+import ac.dnd.server.global.util.LocalDateUtils
+import ac.dnd.server.global.util.LocalTimeUtils
 import org.springframework.core.convert.converter.Converter
 import org.springframework.format.support.DefaultFormattingConversionService
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter

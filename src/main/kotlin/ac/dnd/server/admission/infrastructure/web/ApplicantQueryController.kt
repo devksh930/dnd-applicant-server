@@ -19,7 +19,7 @@ class ApplicantQueryController(
         @Valid @RequestBody request: ApplicantStatusCheckRequest,
         @PathVariable eventId: Long
     ): ResponseEntity<ApplicantCheckQueryResponse> {
-        val applicant = applicantQueryService.getApplicantStatusCheck(
+        val applicantStatus = applicantQueryService.getApplicantStatusCheck(
             applicantWebMapper.statusCheckRequestToCommand(
                 request,
                 eventId
@@ -28,9 +28,9 @@ class ApplicantQueryController(
 
         return ResponseEntity.ok(
             ApplicantCheckQueryResponse(
-                applicant.eventName,
-                applicant.name,
-                applicant.status
+                applicantStatus.eventName,
+                applicantStatus.name,
+                applicantStatus.status
             )
         )
     }

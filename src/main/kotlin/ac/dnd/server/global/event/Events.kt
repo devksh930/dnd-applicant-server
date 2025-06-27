@@ -1,4 +1,4 @@
-package ac.dnd.server.common.event
+package ac.dnd.server.global.event
 
 import org.springframework.context.ApplicationEventPublisher
 

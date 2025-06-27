@@ -4,10 +4,11 @@ import ac.dnd.server.admission.domain.AdmissionRepository
 import ac.dnd.server.admission.domain.model.ApplicantData
 import ac.dnd.server.admission.domain.model.EventData
 import ac.dnd.server.admission.domain.model.EventsData
+import ac.dnd.server.admission.infrastructure.persistence.dto.ApplicantStatusDto
 import ac.dnd.server.admission.infrastructure.persistence.mapper.ApplicantPersistenceMapper
 import ac.dnd.server.admission.infrastructure.persistence.repository.ApplicantJpaRepository
 import ac.dnd.server.admission.infrastructure.persistence.repository.EventJpaRepository
-import ac.dnd.server.common.support.EventStatus
+import ac.dnd.server.enums.EventStatus
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Repository
 import java.util.*
@@ -41,6 +42,18 @@ class AdmissionRepositoryAdapter(
             name,
             email
         ).map { applicantPersistenceMapper.applicantEntityToDomain(it) }
+    }
+
+    override fun findApplicantStatusByEventIdAndNameAndEmail(
+        eventId: Long,
+        nameBlindIndex: String,
+        emailBlindIndex: String
+    ): Optional<ApplicantStatusDto> {
+        return applicantJpaRepository.findApplicantStatusByEventIdAndNameAndEmail(
+            eventId,
+            nameBlindIndex,
+            emailBlindIndex
+        )
     }
 
     override fun findByStatusIn(statuses: List<EventStatus>): EventsData {

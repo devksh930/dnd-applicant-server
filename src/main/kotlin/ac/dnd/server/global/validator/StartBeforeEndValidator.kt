@@ -1,6 +1,6 @@
-package ac.dnd.server.common.validator
+package ac.dnd.server.global.validator
 
-import ac.dnd.server.common.annotation.StartBeforeEnd
+import ac.dnd.server.global.annotation.StartBeforeEnd
 import jakarta.validation.ConstraintValidator
 import jakarta.validation.ConstraintValidatorContext
 import org.springframework.beans.BeanWrapperImpl

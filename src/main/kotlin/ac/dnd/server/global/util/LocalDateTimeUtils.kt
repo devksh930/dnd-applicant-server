@@ -1,7 +1,7 @@
-package ac.dnd.server.common.util
+package ac.dnd.server.global.util
 
-import ac.dnd.server.common.util.Constant.DEFAULT_ZONE_ID
-import ac.dnd.server.common.util.Constant.FORMAT_LOCAL_DATE_TIME
+import ac.dnd.server.global.util.Constant.DEFAULT_ZONE_ID
+import ac.dnd.server.global.util.Constant.FORMAT_LOCAL_DATE_TIME
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime

@@ -1,6 +1,6 @@
 package ac.dnd.server.admission.infrastructure.web.dto.request
 
-import ac.dnd.server.common.annotation.StartBeforeEnd
+import ac.dnd.server.global.annotation.StartBeforeEnd
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 import java.time.LocalDateTime

@@ -1,6 +1,6 @@
-package ac.dnd.server.common.annotation
+package ac.dnd.server.global.annotation
 
-import ac.dnd.server.common.validator.StartBeforeEndValidator
+import ac.dnd.server.global.validator.StartBeforeEndValidator
 import jakarta.validation.Constraint
 import jakarta.validation.Payload
 import kotlin.reflect.KClass

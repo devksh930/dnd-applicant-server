@@ -1,6 +1,6 @@
-package ac.dnd.server.common.util
+package ac.dnd.server.global.util
 
-import ac.dnd.server.common.util.Constant.FORMAT_LOCAL_TIME
+import ac.dnd.server.global.util.Constant.FORMAT_LOCAL_TIME
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 

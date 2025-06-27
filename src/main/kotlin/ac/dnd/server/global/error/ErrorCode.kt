@@ -1,4 +1,4 @@
-package ac.dnd.server.common.support
+package ac.dnd.server.global.support
 
 enum class ErrorCode(
     val status: Int,

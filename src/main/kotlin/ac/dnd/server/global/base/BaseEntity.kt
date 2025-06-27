@@ -1,4 +1,4 @@
-package ac.dnd.server.common.support
+package ac.dnd.server.global.base
 
 import jakarta.persistence.*
 import org.hibernate.annotations.CreationTimestamp

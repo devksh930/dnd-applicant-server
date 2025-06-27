@@ -2,7 +2,7 @@ package ac.dnd.server.admission.domain.model
 
 import ac.dnd.server.admission.exception.EventNotFoundException
 import ac.dnd.server.annotation.UnitTest
-import ac.dnd.server.common.support.EventStatus
+import ac.dnd.server.enums.EventStatus
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe

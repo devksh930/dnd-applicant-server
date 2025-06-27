@@ -6,8 +6,9 @@ import ac.dnd.server.admission.domain.ApplicantValidator
 import ac.dnd.server.admission.domain.event.ApplicantQueryEvent
 import ac.dnd.server.admission.domain.model.ApplicantData
 import ac.dnd.server.admission.exception.ApplicantNotFoundException
-import ac.dnd.server.common.event.Events
+import ac.dnd.server.global.event.Events
 import org.slf4j.LoggerFactory
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 
@@ -18,6 +19,7 @@ class ApplicantQueryService(
 ) {
     private val log = LoggerFactory.getLogger(ApplicantQueryService::class.java)
 
+    @Cacheable(value = ["applicantStatus"], key = "#command.eventId + ':' + #command.name + ':' + #command.email")
     fun getApplicantStatusCheck(command: ApplicantStatusCheckCommand): ApplicantData {
         val applicant = admissionRepository.findAdmissionByEventIdAndNameAndEmail(
             command.eventId,
