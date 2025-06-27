@@ -1,6 +1,6 @@
 package ac.dnd.server.account.domain
 
-import ac.dnd.server.common.support.BaseEntity
+import ac.dnd.server.global.base.BaseEntity
 import ac.dnd.server.enums.Role
 import jakarta.persistence.Entity
 import jakarta.persistence.Table

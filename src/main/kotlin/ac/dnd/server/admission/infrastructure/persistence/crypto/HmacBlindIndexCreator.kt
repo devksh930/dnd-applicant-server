@@ -1,6 +1,6 @@
 package ac.dnd.server.admission.infrastructure.persistence.crypto
 
-import ac.dnd.server.common.propeties.EncryptionProperties
+import ac.dnd.server.config.properties.EncryptionProperties
 import java.nio.charset.StandardCharsets
 import java.security.InvalidKeyException
 import java.security.NoSuchAlgorithmException

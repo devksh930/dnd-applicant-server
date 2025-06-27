@@ -1,9 +1,9 @@
 spring:
   datasource:
-    url: ${SPRING_DATASOURCE_URL}
+    url: jdbc:mysql://localhost:3306/testdb?rewriteBatchedStatements=true&useServerPrepStmts=true
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: ${SPRING_DATASOURCE_USERNAME}
-    password: ${SPRING_DATASOURCE_PASSWORD}
+    username: test
+    password: test
     hikari:
       pool-name: MyHikariPool-t4g-micro
       maximum-pool-size: 4
@@ -19,13 +19,45 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
+      jdbc.batch_size: 1000
+      order_inserts: true
     properties:
       hibernate:
         format_sql: true
 
 encryption:
-  text:
-    password: 1234
-    salt: 1234
+  aes:
+    password: ${ENCRYPTION_TEXT_PASSWORD}
+    salt: ${ENCRYPTION_TEXT_SALT}
+  hmac:
+    key: ${HMAC_KEY}
+
 server:
-  port: 8080
+  port: 8088
+
+cors:
+  allowedOriginsPatterns:
+    - "http://localhost:3000"
+    - "https://*.dnd.ac"
+  allowed-methods:
+    - HEAD
+    - OPTIONS
+    - GET
+    - POST
+    - PATCH
+    - PUT
+    - DELETE
+  allowed-headers:
+    - "*"
+  allow-credentials: true
+  max-age: 3600
+
+logging:
+  level:
+    # Hibernate가 실행하는 SQL 쿼리를 DEBUG 레벨로 로깅합니다.
+    org.hibernate.SQL: debug
+    # SQL 쿼리에 바인딩되는 파라미터 값을 TRACE 레벨로 로깅합니다. (가장 중요)
+    # Hibernate 5.x 버전
+    # org.hibernate.type.descriptor.sql: trace
+    # Hibernate 6.x 버전 이상
+    org.hibernate.orm.jdbc.bind: trace

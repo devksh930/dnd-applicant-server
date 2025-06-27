@@ -2,7 +2,7 @@ package ac.dnd.server.fixture
 
 import ac.dnd.server.admission.domain.model.ViewablePeriod
 import ac.dnd.server.admission.infrastructure.persistence.entity.Event
-import ac.dnd.server.common.support.EventStatus
+import ac.dnd.server.enums.EventStatus
 import java.time.LocalDateTime
 
 object EventFixture {
