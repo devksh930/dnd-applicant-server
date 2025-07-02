@@ -1,8 +1,8 @@
 package ac.dnd.server.admission.auth.config
 
 import ac.dnd.server.admission.infrastructure.persistence.crypto.HmacBlindIndexCreator
-import ac.dnd.server.config.properties.CorsProperties
-import ac.dnd.server.config.properties.EncryptionProperties
+import ac.dnd.server.global.config.properties.CorsProperties
+import ac.dnd.server.global.config.properties.EncryptionProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity

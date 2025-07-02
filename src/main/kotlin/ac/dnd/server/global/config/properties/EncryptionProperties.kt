@@ -1,4 +1,4 @@
-package ac.dnd.server.config.properties
+package ac.dnd.server.global.config.properties
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 

@@ -1,4 +1,4 @@
-package ac.dnd.server.config
+package ac.dnd.server.global.config.cache
 
 import com.github.benmanes.caffeine.cache.Caffeine
 import org.springframework.cache.CacheManager
