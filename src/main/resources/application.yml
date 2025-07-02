@@ -27,7 +27,7 @@ encryption:
     password: ${ENCRYPTION_TEXT_PASSWORD}
     salt: ${ENCRYPTION_TEXT_SALT}
   hmac:
-    key: ${HMAC_KEY}
+    key: ${HMAC_TEXT}
 
 server:
   port: ${SERVER_PORT}
@@ -36,7 +36,7 @@ cors:
   allowedOriginsPatterns:
     - "http://localhost:3000"
     - "https://*.dnd.ac"
-  allowed-methods:
+  allowedMethods:
     - HEAD
     - OPTIONS
     - GET
@@ -44,10 +44,11 @@ cors:
     - PATCH
     - PUT
     - DELETE
-  allowed-headers:
+  allowedHeaders:
     - "*"
-  allow-credentials: true
-  max-age: 3600
+  exposedHeaders: []
+  allowCredentials: true
+  maxAge: 3600
 
 logging:
   level:

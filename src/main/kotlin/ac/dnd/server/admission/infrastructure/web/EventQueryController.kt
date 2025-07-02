@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import java.time.LocalDateTime
 
 @RestController
 @RequestMapping("/events")
@@ -22,7 +21,7 @@ class EventQueryController(
                 currentEvent.id,
                 currentEvent.name,
                 currentEvent.resultAnnouncementDateTime,
-                currentEvent.isAnnounceable(LocalDateTime.now())
+                currentEvent.isCompleted()
             )
         )
     }
