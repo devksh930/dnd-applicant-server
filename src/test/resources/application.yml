@@ -19,8 +19,6 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
-      jdbc.batch_size: 1000
-      order_inserts: true
     properties:
       hibernate:
         format_sql: true
@@ -33,26 +31,4 @@ encryption:
     key: ${HMAC_KEY}
 
 server:
-  port: 8088
-
-cors:
-  allowedOriginsPatterns:
-    - "http://localhost:3000"
-    - "https://*.dnd.ac"
-  allowed-methods:
-    - HEAD
-    - OPTIONS
-    - GET
-    - POST
-    - PATCH
-    - PUT
-    - DELETE
-  allowed-headers:
-    - "*"
-  allow-credentials: true
-  max-age: 3600
-
-logging:
-  level:
-    org.hibernate.SQL: debug
-    org.hibernate.orm.jdbc.bind: trace
+  port: 8080
