@@ -54,10 +54,5 @@ cors:
 
 logging:
   level:
-    # Hibernate가 실행하는 SQL 쿼리를 DEBUG 레벨로 로깅합니다.
     org.hibernate.SQL: debug
-    # SQL 쿼리에 바인딩되는 파라미터 값을 TRACE 레벨로 로깅합니다. (가장 중요)
-    # Hibernate 5.x 버전
-    # org.hibernate.type.descriptor.sql: trace
-    # Hibernate 6.x 버전 이상
     org.hibernate.orm.jdbc.bind: trace
