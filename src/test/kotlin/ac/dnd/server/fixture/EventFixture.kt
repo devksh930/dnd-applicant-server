@@ -2,7 +2,7 @@ package ac.dnd.server.fixture
 
 import ac.dnd.server.admission.domain.model.ViewablePeriod
 import ac.dnd.server.admission.infrastructure.persistence.entity.Event
-import ac.dnd.server.enums.EventStatus
+import ac.dnd.server.admission.domain.enums.EventStatus
 import java.time.LocalDateTime
 
 object EventFixture {
@@ -55,6 +55,20 @@ object EventFixture {
             notViewablePeriodAfter,
             LocalDateTime.MIN,
             EventStatus.EXPIRED
+        )
+    }
+
+    fun createForMapperTest(
+        name: String = "테스트 이벤트",
+        period: ViewablePeriod = ViewablePeriod.of(LocalDateTime.now(), LocalDateTime.now().plusDays(1)),
+        resultAnnouncementDateTime: LocalDateTime = LocalDateTime.now(),
+        status: EventStatus = EventStatus.COMPLETED
+    ): Event {
+        return Event(
+            name,
+            period,
+            resultAnnouncementDateTime,
+            status
         )
     }
 }

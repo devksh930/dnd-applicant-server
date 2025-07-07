@@ -1,7 +1,7 @@
 package ac.dnd.server.admission.domain.event
 
-import ac.dnd.server.enums.ApplicantStatus
-import ac.dnd.server.enums.ApplicantType
+import ac.dnd.server.admission.domain.enums.ApplicantStatus
+import ac.dnd.server.admission.domain.enums.ApplicantType
 
 data class ApplicantQueryEvent(
     val applicantId: Long,

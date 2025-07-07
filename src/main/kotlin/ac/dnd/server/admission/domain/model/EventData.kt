@@ -1,6 +1,6 @@
 package ac.dnd.server.admission.domain.model
 
-import ac.dnd.server.enums.EventStatus
+import ac.dnd.server.admission.domain.enums.EventStatus
 import java.time.LocalDateTime
 
 data class EventData(

@@ -2,6 +2,7 @@ package ac.dnd.server.admission.domain
 
 import ac.dnd.server.admission.domain.model.ViewablePeriod
 import ac.dnd.server.annotation.UnitTest
+import ac.dnd.server.fixture.ViewablePeriodFixture
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
@@ -18,7 +19,7 @@ class ViewablePeriodTest : DescribeSpec({
             val endDate = LocalDateTime.of(2024, 1, 31, 23, 59)
 
             // when
-            val period = ViewablePeriod.of(startDate, endDate)
+            val period = ViewablePeriodFixture.createWithDates(startDate, endDate)
 
             // then
             period.startDate shouldBe startDate
@@ -38,23 +39,18 @@ class ViewablePeriodTest : DescribeSpec({
         }
 
         it("startDate가 endDate와 같으면 정상적으로 생성된다") {
-            // given
-            val startDate = LocalDateTime.of(2024, 1, 1, 0, 0)
-            val endDate = LocalDateTime.of(2024, 1, 1, 0, 0)
-
-            // when
-            val period = ViewablePeriod.of(startDate, endDate)
+            // given & when
+            val period = ViewablePeriodFixture.createSameDateTime()
 
             // then
-            period.startDate shouldBe startDate
-            period.endDate shouldBe endDate
+            val expectedDateTime = LocalDateTime.of(2024, 1, 1, 0, 0)
+            period.startDate shouldBe expectedDateTime
+            period.endDate shouldBe expectedDateTime
         }
 
         it("주어진 시각이 기간에 포함되면 true를 반환한다") {
             // given
-            val startDate = LocalDateTime.of(2024, 1, 1, 0, 0)
-            val endDate = LocalDateTime.of(2024, 1, 31, 23, 59)
-            val period = ViewablePeriod.of(startDate, endDate)
+            val period = ViewablePeriodFixture.createStandard()
             val now = LocalDateTime.of(2024, 1, 15, 12, 0)
 
             // when
@@ -66,9 +62,7 @@ class ViewablePeriodTest : DescribeSpec({
 
         it("주어진 시각이 startDate보다 이전이면 false를 반환한다") {
             // given
-            val startDate = LocalDateTime.of(2024, 1, 1, 0, 0)
-            val endDate = LocalDateTime.of(2024, 1, 31, 23, 59)
-            val period = ViewablePeriod.of(startDate, endDate)
+            val period = ViewablePeriodFixture.createStandard()
             val now = LocalDateTime.of(2023, 12, 31, 23, 59)
 
             // when
@@ -80,9 +74,7 @@ class ViewablePeriodTest : DescribeSpec({
 
         it("주어진 시각이 endDate보다 이후이면 false를 반환한다") {
             // given
-            val startDate = LocalDateTime.of(2024, 1, 1, 0, 0)
-            val endDate = LocalDateTime.of(2024, 1, 31, 23, 59)
-            val period = ViewablePeriod.of(startDate, endDate)
+            val period = ViewablePeriodFixture.createStandard()
             val now = LocalDateTime.of(2024, 2, 1, 0, 0)
 
             // when
@@ -94,9 +86,7 @@ class ViewablePeriodTest : DescribeSpec({
 
         it("주어진 시각이 startDate와 같으면 false를 반환한다") {
             // given
-            val startDate = LocalDateTime.of(2024, 1, 1, 0, 0)
-            val endDate = LocalDateTime.of(2024, 1, 31, 23, 59)
-            val period = ViewablePeriod.of(startDate, endDate)
+            val period = ViewablePeriodFixture.createStandard()
             val now = LocalDateTime.of(2024, 1, 1, 0, 0)
 
             // when
@@ -108,9 +98,7 @@ class ViewablePeriodTest : DescribeSpec({
 
         it("주어진 시각이 endDate와 같으면 false를 반환한다") {
             // given
-            val startDate = LocalDateTime.of(2024, 1, 1, 0, 0)
-            val endDate = LocalDateTime.of(2024, 1, 31, 23, 59)
-            val period = ViewablePeriod.of(startDate, endDate)
+            val period = ViewablePeriodFixture.createStandard()
             val now = LocalDateTime.of(2024, 1, 31, 23, 59)
 
             // when

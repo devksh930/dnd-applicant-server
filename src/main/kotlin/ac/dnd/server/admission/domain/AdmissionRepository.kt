@@ -4,7 +4,7 @@ import ac.dnd.server.admission.domain.model.ApplicantData
 import ac.dnd.server.admission.domain.model.EventData
 import ac.dnd.server.admission.domain.model.EventsData
 import ac.dnd.server.admission.infrastructure.persistence.dto.ApplicantStatusDto
-import ac.dnd.server.enums.EventStatus
+import ac.dnd.server.admission.domain.enums.EventStatus
 import java.util.*
 
 interface AdmissionRepository {
