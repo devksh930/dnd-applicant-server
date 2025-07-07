@@ -1,6 +1,6 @@
 package ac.dnd.server.documenation
 
-import ac.dnd.server.enums.ApplicantStatus
+import ac.dnd.server.admission.domain.enums.ApplicantStatus
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
 

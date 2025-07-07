@@ -9,7 +9,7 @@ import ac.dnd.server.documenation.DocumentFormatGenerator.generatedEnums
 import ac.dnd.server.documenation.DocumentUtils.getDocumentRequest
 import ac.dnd.server.documenation.DocumentUtils.getDocumentResponse
 import ac.dnd.server.documenation.MockMvcFactory
-import ac.dnd.server.enums.ApplicantStatus
+import ac.dnd.server.admission.domain.enums.ApplicantStatus
 import ac.dnd.server.fixture.ApplicantDataFixture
 import org.junit.jupiter.api.Test
 import org.mockito.InjectMocks

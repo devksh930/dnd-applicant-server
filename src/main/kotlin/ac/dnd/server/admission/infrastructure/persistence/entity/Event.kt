@@ -1,8 +1,8 @@
 package ac.dnd.server.admission.infrastructure.persistence.entity
 
 import ac.dnd.server.admission.domain.model.ViewablePeriod
-import ac.dnd.server.global.base.BaseEntity
-import ac.dnd.server.enums.EventStatus
+import ac.dnd.server.shared.persistence.BaseEntity
+import ac.dnd.server.admission.domain.enums.EventStatus
 import jakarta.persistence.*
 import java.time.LocalDateTime
 

@@ -1,8 +1,8 @@
 package ac.dnd.server.admission.infrastructure.persistence.entity
 
 import ac.dnd.server.annotation.UnitTest
-import ac.dnd.server.enums.ApplicantStatus
-import ac.dnd.server.enums.ApplicantType
+import ac.dnd.server.admission.domain.enums.ApplicantStatus
+import ac.dnd.server.admission.domain.enums.ApplicantType
 import ac.dnd.server.fixture.ApplicantFixture
 import ac.dnd.server.fixture.EventFixture
 import io.kotest.core.spec.style.DescribeSpec
@@ -22,14 +22,7 @@ class ApplicantTest : DescribeSpec({
             val status = ApplicantStatus.PASSED
 
             // when
-            val applicant = Applicant(
-                name,
-                email,
-                name,
-                email,
-                type,
-                status
-            )
+            val applicant = ApplicantFixture.create(name, email, type, status)
 
             // then
             applicant.name shouldBe name

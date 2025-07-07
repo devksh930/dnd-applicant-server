@@ -8,7 +8,7 @@ import ac.dnd.server.admission.infrastructure.persistence.dto.ApplicantStatusDto
 import ac.dnd.server.admission.infrastructure.persistence.mapper.ApplicantPersistenceMapper
 import ac.dnd.server.admission.infrastructure.persistence.repository.ApplicantJpaRepository
 import ac.dnd.server.admission.infrastructure.persistence.repository.EventJpaRepository
-import ac.dnd.server.enums.EventStatus
+import ac.dnd.server.admission.domain.enums.EventStatus
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Repository
 import java.util.*
