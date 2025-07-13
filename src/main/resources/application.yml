@@ -1,0 +1,55 @@
+spring:
+  datasource:
+    url: ${SPRING_DATASOURCE_URL}?rewriteBatchedStatements=true&useServerPrepStmts=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+    hikari:
+      pool-name: DND-HikariPool-t4g-small
+      maximum-pool-size: 3
+      minimum-idle: 1
+      idle-timeout: 300000
+      max-lifetime: 1800000
+      connection-timeout: 30000
+      validation-timeout: 5000
+      auto-commit: true
+      leak-detection-threshold: 60000
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+      jdbc.batch_size: 1000
+      order_inserts: true
+
+encryption:
+  aes:
+    password: ${ENCRYPTION_TEXT_PASSWORD}
+    salt: ${ENCRYPTION_TEXT_SALT}
+  hmac:
+    key: ${HMAC_TEXT}
+
+server:
+  port: ${SERVER_PORT}
+
+cors:
+  allowedOriginsPatterns:
+    - "http://localhost:3000"
+    - "https://*.dnd.ac"
+  allowedMethods:
+    - HEAD
+    - OPTIONS
+    - GET
+    - POST
+    - PATCH
+    - PUT
+    - DELETE
+  allowedHeaders:
+    - "*"
+  exposedHeaders: []
+  allowCredentials: true
+  maxAge: 3600
+
+logging:
+  level:
+    root: INFO

@@ -1,9 +1,9 @@
 spring:
   datasource:
-    url: ${SPRING_DATASOURCE_URL}
+    url: jdbc:mysql://localhost:3306/testdb?rewriteBatchedStatements=true&useServerPrepStmts=true
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: ${SPRING_DATASOURCE_USERNAME}
-    password: ${SPRING_DATASOURCE_PASSWORD}
+    username: test
+    password: test
     hikari:
       pool-name: MyHikariPool-t4g-micro
       maximum-pool-size: 4
@@ -24,8 +24,11 @@ spring:
         format_sql: true
 
 encryption:
-  text:
-    password: 1234
-    salt: 1234
+  aes:
+    password: ${ENCRYPTION_TEXT_PASSWORD}
+    salt: ${ENCRYPTION_TEXT_SALT}
+  hmac:
+    key: ${HMAC_KEY}
+
 server:
   port: 8080
