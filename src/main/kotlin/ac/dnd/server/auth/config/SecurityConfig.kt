@@ -43,6 +43,7 @@ class SecurityConfig(
                 "/event/{eventId}/applicant/status/check",
                 "/events/current",
                 "/health",
+                "/google/form"
             ).permitAll()
                 .anyRequest().authenticated()
         }
