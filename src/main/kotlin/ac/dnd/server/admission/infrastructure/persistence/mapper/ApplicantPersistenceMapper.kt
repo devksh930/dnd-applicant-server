@@ -1,6 +1,8 @@
 package ac.dnd.server.admission.infrastructure.persistence.mapper
 
 import ac.dnd.server.admission.domain.model.ApplicantData
+import ac.dnd.server.admission.domain.model.ApplicantStatusData
+import ac.dnd.server.admission.infrastructure.persistence.dto.ApplicantStatusDto
 import ac.dnd.server.admission.domain.model.EventData
 import ac.dnd.server.admission.infrastructure.persistence.entity.Applicant
 import ac.dnd.server.admission.infrastructure.persistence.entity.Event
@@ -37,6 +39,14 @@ class ApplicantPersistenceMapper {
             entity.type,
             entity.status,
             entity.event!!.period
+        )
+    }
+
+    fun applicantStatusDtoToDomain(dto: ApplicantStatusDto): ApplicantStatusData {
+        return ApplicantStatusData(
+            eventName = dto.eventName,
+            name = dto.name,
+            status = dto.status
         )
     }
 }

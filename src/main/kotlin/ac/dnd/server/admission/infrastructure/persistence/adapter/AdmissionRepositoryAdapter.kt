@@ -2,9 +2,9 @@ package ac.dnd.server.admission.infrastructure.persistence.adapter
 
 import ac.dnd.server.admission.domain.AdmissionRepository
 import ac.dnd.server.admission.domain.model.ApplicantData
+import ac.dnd.server.admission.domain.model.ApplicantStatusData
 import ac.dnd.server.admission.domain.model.EventData
 import ac.dnd.server.admission.domain.model.EventsData
-import ac.dnd.server.admission.infrastructure.persistence.dto.ApplicantStatusDto
 import ac.dnd.server.admission.infrastructure.persistence.mapper.ApplicantPersistenceMapper
 import ac.dnd.server.admission.infrastructure.persistence.repository.ApplicantJpaRepository
 import ac.dnd.server.admission.infrastructure.persistence.repository.EventJpaRepository
@@ -32,15 +32,15 @@ class AdmissionRepositoryAdapter(
             .map { applicantPersistenceMapper.eventEntityToDomain(it) }
     }
 
-    override fun findAdmissionByEventIdAndNameAndEmail(
+    override fun findAdmissionByEventIdAndBlindIndexes(
         eventId: Long,
-        name: String,
-        email: String
+        nameBlindIndex: String,
+        emailBlindIndex: String
     ): Optional<ApplicantData> {
-        return applicantJpaRepository.findByEventIdAndNameAndEmail(
+        return applicantJpaRepository.findByEventIdAndBlindIndexes(
             eventId,
-            name,
-            email
+            nameBlindIndex,
+            emailBlindIndex
         ).map { applicantPersistenceMapper.applicantEntityToDomain(it) }
     }
 
@@ -48,12 +48,12 @@ class AdmissionRepositoryAdapter(
         eventId: Long,
         nameBlindIndex: String,
         emailBlindIndex: String
-    ): Optional<ApplicantStatusDto> {
+    ): Optional<ApplicantStatusData> {
         return applicantJpaRepository.findApplicantStatusByEventIdAndNameAndEmail(
             eventId,
             nameBlindIndex,
             emailBlindIndex
-        )
+        ).map { applicantPersistenceMapper.applicantStatusDtoToDomain(it) }
     }
 
     override fun findByStatusIn(statuses: List<EventStatus>): EventsData {

@@ -6,6 +6,7 @@ import ac.dnd.server.admission.domain.ApplicantValidator
 import ac.dnd.server.admission.domain.event.ApplicantQueryEvent
 import ac.dnd.server.admission.domain.model.ApplicantData
 import ac.dnd.server.admission.exception.ApplicantNotFoundException
+import ac.dnd.server.admission.infrastructure.persistence.crypto.HmacBlindIndexCreator
 import ac.dnd.server.shared.event.Events
 import org.slf4j.LoggerFactory
 import org.springframework.cache.annotation.Cacheable
@@ -15,16 +16,17 @@ import java.time.LocalDateTime
 @Service
 class ApplicantQueryService(
     private val admissionRepository: AdmissionRepository,
-    private val applicantValidator: ApplicantValidator
+    private val applicantValidator: ApplicantValidator,
+    private val hmacBlindIndexCreator: HmacBlindIndexCreator
 ) {
     private val log = LoggerFactory.getLogger(ApplicantQueryService::class.java)
 
     @Cacheable(value = ["applicantStatus"], key = "#command.eventId + ':' + #command.name + ':' + #command.email")
     fun getApplicantStatusCheck(command: ApplicantStatusCheckCommand): ApplicantData {
-        val applicant = admissionRepository.findAdmissionByEventIdAndNameAndEmail(
+        val applicant = admissionRepository.findAdmissionByEventIdAndBlindIndexes(
             command.eventId,
-            command.name,
-            command.email
+            hmacBlindIndexCreator.create(command.name),
+            hmacBlindIndexCreator.create(command.email)
         ).orElseThrow { ApplicantNotFoundException() }
 
         applicantValidator.viewableValidator(

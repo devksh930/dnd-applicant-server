@@ -13,13 +13,13 @@ interface ApplicantJpaRepository : JpaRepository<Applicant, Long> {
         FROM Applicant a
         JOIN FETCH a.event e
         WHERE e.id = :eventId
-                AND a.nameBlindIndex = :name
-                AND a.emailBlindIndex = :email
+                AND a.nameBlindIndex = :nameBlindIndex
+                AND a.emailBlindIndex = :emailBlindIndex
         """)
-    fun findByEventIdAndNameAndEmail(
+    fun findByEventIdAndBlindIndexes(
         eventId: Long,
-        name: String,
-        email: String
+        nameBlindIndex: String,
+        emailBlindIndex: String
     ): Optional<Applicant>
 
     @Query("""
