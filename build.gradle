@@ -97,6 +97,7 @@ tasks.register("restDocsTest", Test) {
 
 tasks.named('asciidoctor') {
     dependsOn tasks.named("restDocsTest")
+    mustRunAfter(tasks.named("test"))
     inputs.dir snippetsDir
     configurations "asciidoctorExt"
     baseDirFollowsSourceDir()
