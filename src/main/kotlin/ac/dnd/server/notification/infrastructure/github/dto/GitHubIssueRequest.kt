@@ -1,4 +1,4 @@
-package ac.dnd.server.notification.github.dto
+package ac.dnd.server.notification.infrastructure.github.dto
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
