@@ -9,6 +9,7 @@ import ac.dnd.server.admission.infrastructure.persistence.mapper.ApplicantPersis
 import ac.dnd.server.admission.infrastructure.persistence.repository.ApplicantJpaRepository
 import ac.dnd.server.admission.infrastructure.persistence.repository.EventJpaRepository
 import ac.dnd.server.admission.domain.enums.EventStatus
+import ac.dnd.server.admission.domain.model.ApplicantStatusData
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Repository
 import java.util.*
@@ -36,19 +37,19 @@ class AdmissionRepositoryAdapter(
         eventId: Long,
         name: String,
         email: String
-    ): Optional<ApplicantData> {
+    ): ApplicantData? {
         return applicantJpaRepository.findByEventIdAndNameAndEmail(
             eventId,
             name,
             email
-        ).map { applicantPersistenceMapper.applicantEntityToDomain(it) }
+        )?.let { applicantPersistenceMapper.applicantEntityToDomain(it) }
     }
 
     override fun findApplicantStatusByEventIdAndNameAndEmail(
         eventId: Long,
         nameBlindIndex: String,
         emailBlindIndex: String
-    ): Optional<ApplicantStatusDto> {
+    ): ApplicantStatusData? {
         return applicantJpaRepository.findApplicantStatusByEventIdAndNameAndEmail(
             eventId,
             nameBlindIndex,

@@ -1,11 +1,10 @@
 package ac.dnd.server.admission.domain
 
+import ac.dnd.server.admission.domain.enums.EventStatus
 import ac.dnd.server.admission.domain.model.ApplicantData
+import ac.dnd.server.admission.domain.model.ApplicantStatusData
 import ac.dnd.server.admission.domain.model.EventData
 import ac.dnd.server.admission.domain.model.EventsData
-import ac.dnd.server.admission.infrastructure.persistence.dto.ApplicantStatusDto
-import ac.dnd.server.admission.domain.enums.EventStatus
-import java.util.*
 
 interface AdmissionRepository {
     fun saveEvent(event: EventData): Long
@@ -16,13 +15,13 @@ interface AdmissionRepository {
         eventId: Long,
         name: String,
         email: String
-    ): Optional<ApplicantData>
+    ): ApplicantData?
 
     fun findApplicantStatusByEventIdAndNameAndEmail(
         eventId: Long,
         nameBlindIndex: String,
         emailBlindIndex: String
-    ): Optional<ApplicantStatusDto>
+    ): ApplicantStatusData?
 
     fun findByStatusIn(statuses: List<EventStatus>): EventsData
 }
