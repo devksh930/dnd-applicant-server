@@ -1,6 +1,8 @@
 package ac.dnd.server.account.infrastructure.security.jwt
 
-import ac.dnd.server.account.infrastructure.security.authentication.userdetails.AccountDetails
+import ac.dnd.server.account.infrastructure.persistence.repository.AccountJpaRepository
+import ac.dnd.server.account.infrastructure.persistence.repository.RefreshTokenRepository
+import ac.dnd.server.shared.dto.LoginInfo
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -11,7 +13,9 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.web.filter.OncePerRequestFilter
 
 class JwtAuthenticationFilter(
-    private val jwtTokenProvider: JwtTokenProvider
+    private val jwtTokenProvider: JwtTokenProvider,
+    private val refreshTokenRepository: RefreshTokenRepository,
+    private val accountJpaRepository: AccountJpaRepository
 ) : OncePerRequestFilter() {
 
     override fun doFilterInternal(
@@ -20,12 +24,17 @@ class JwtAuthenticationFilter(
         filterChain: FilterChain
     ) {
         try {
-            extractBearerToken(request)
-                ?.takeIf { jwtTokenProvider.validateToken(it) }
-                ?.let { token ->
-                    val loginUserInfo = createLoginUserInfo(token)
-                    setAuthentication(request, loginUserInfo)
+            val accessToken = extractBearerToken(request)
+
+            if (accessToken != null && jwtTokenProvider.validateToken(accessToken)) {
+                val loginInfo = createLoginInfo(accessToken)
+                setAuthentication(request, loginInfo, accessToken)
+            } else if (accessToken != null) {
+                val refreshToken = extractRefreshTokenFromCookie(request)
+                if (refreshToken != null) {
+                    tryRefreshAccessToken(request, response, refreshToken)
                 }
+            }
         } catch (e: Exception) {
             logger.error("Could not set user authentication in security context", e)
         }
@@ -39,22 +48,58 @@ class JwtAuthenticationFilter(
             ?.substring(BEARER_PREFIX.length)
     }
 
-    private fun createLoginUserInfo(token: String): AccountDetails {
-        return AccountDetails(
-            userKey = jwtTokenProvider.extractUserKey(token),
-            email = jwtTokenProvider.extractEmail(token),
-            password = "",
-            authorities = listOf(
-                SimpleGrantedAuthority("ROLE_${jwtTokenProvider.extractRole(token)}")
-            )
+    private fun createLoginInfo(token: String): LoginInfo {
+        return LoginInfo(
+            userId = jwtTokenProvider.extractUserKey(token)
         )
     }
 
-    private fun setAuthentication(request: HttpServletRequest, accountDetails: AccountDetails) {
+    private fun extractRefreshTokenFromCookie(request: HttpServletRequest): String? {
+        return request.cookies
+            ?.firstOrNull { it.name == REFRESH_TOKEN_COOKIE_NAME }
+            ?.value
+    }
+
+    private fun tryRefreshAccessToken(
+        request: HttpServletRequest,
+        response: HttpServletResponse,
+        refreshToken: String
+    ) {
+        try {
+            if (!jwtTokenProvider.validateToken(refreshToken)) {
+                return
+            }
+            val storedToken = refreshTokenRepository.findByToken(refreshToken) ?: return
+            if (storedToken.isExpired()) {
+                return
+            }
+
+            val account = accountJpaRepository.findByUserKey(storedToken.userKey) ?: return
+            val newAccessToken = jwtTokenProvider.generateAccessToken(
+                userKey = account.userKey.value,
+                email = account.email,
+                role = account.role.name
+            )
+
+            response.setHeader(AUTHORIZATION_HEADER, "$BEARER_PREFIX$newAccessToken")
+
+            val loginInfo = LoginInfo(userId = account.userKey.value)
+            setAuthentication(request, loginInfo, newAccessToken)
+
+        } catch (e: Exception) {
+            logger.error("Failed to refresh access token", e)
+        }
+    }
+
+    private fun setAuthentication(request: HttpServletRequest, loginInfo: LoginInfo, token: String) {
+        val authorities = listOf(
+            SimpleGrantedAuthority("ROLE_${jwtTokenProvider.extractRole(token)}")
+        )
+
         val authentication = UsernamePasswordAuthenticationToken(
-            accountDetails,
+            loginInfo,
             null,
-            accountDetails.authorities
+            authorities
         ).apply {
             details = WebAuthenticationDetailsSource().buildDetails(request)
         }
@@ -65,5 +110,6 @@ class JwtAuthenticationFilter(
     companion object {
         private const val AUTHORIZATION_HEADER = "Authorization"
         private const val BEARER_PREFIX = "Bearer "
+        private const val REFRESH_TOKEN_COOKIE_NAME = "refreshToken"
     }
 }
