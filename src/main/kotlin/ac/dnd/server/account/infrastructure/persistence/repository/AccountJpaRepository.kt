@@ -8,11 +8,11 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 import org.springframework.stereotype.Repository
 import java.time.LocalDateTime
-import java.util.UUID
 
 @Repository
 interface AccountJpaRepository : JpaRepository<Account, Long> {
     fun findByEmail(email: String): Account?
+    fun findByUserKey(userKey: UserKey): Account?
 
     @Query(
         """
@@ -21,7 +21,10 @@ interface AccountJpaRepository : JpaRepository<Account, Long> {
         WHERE a.userKey = :userKey
         """
     )
-    @Modifying(clearAutomatically = true)
+    @Modifying(
+        clearAutomatically = true,
+        flushAutomatically = true
+    )
     fun updateLastLoginDateByUserKey(
         @Param("userKey") userKey: UserKey,
         @Param("lastLoginAt") lastLoginAt: LocalDateTime = LocalDateTime.now()
