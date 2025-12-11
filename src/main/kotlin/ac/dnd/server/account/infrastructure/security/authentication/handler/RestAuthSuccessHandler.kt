@@ -59,9 +59,10 @@ class RestAuthSuccessHandler(
     private fun createRefreshTokenCookie(refreshToken: String): Cookie {
         return Cookie("refreshToken", refreshToken).apply {
             isHttpOnly = true
-            secure = false
+            secure = jwtProperties.cookie.secure
             path = "/"
-            maxAge = REFRESH_TOKEN_MAX_AGE
+            maxAge = jwtProperties.getRefreshTokenMaxAgeSeconds()
+            setAttribute("SameSite", jwtProperties.cookie.sameSite)
         }
     }
 
@@ -84,8 +85,4 @@ class RestAuthSuccessHandler(
         val accessToken: String,
         val refreshToken: String
     )
-
-    companion object {
-        private const val REFRESH_TOKEN_MAX_AGE = 30 * 24 * 60 * 60
-    }
 }
