@@ -62,3 +62,6 @@ logging:
     root: INFO
 jwt:
   secret: ${JWT_SECRET}
+  cookie:
+    secure: ${JWT_COOKIE_SECURE:true}
+    same-site: ${JWT_COOKIE_SAME_SITE:Lax}
