@@ -1,5 +1,6 @@
-package ac.dnd.server.common.exception
+package ac.dnd.server.shared.exception
 
+import ac.dnd.server.common.exception.ErrorCode
 import org.springframework.validation.BindingResult
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException
 

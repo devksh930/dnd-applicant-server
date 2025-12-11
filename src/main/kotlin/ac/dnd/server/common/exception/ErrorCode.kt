@@ -5,65 +5,70 @@ enum class ErrorCode(
     val code: String,
     val message: String
 ) {
-    // Common
+    // Common (C)
     INVALID_INPUT_VALUE(
         422,
         "C001",
-        "Invalid Input Value"
+        "잘못된 입력값입니다"
     ),
     METHOD_NOT_ALLOWED(
         405,
         "C002",
-        "Method Not Allowed"
+        "허용되지 않은 메서드입니다"
     ),
     ENTITY_NOT_FOUND(
         404,
         "C003",
-        " Entity Not Found"
+        "리소스를 찾을 수 없습니다"
     ),
     INTERNAL_SERVER_ERROR(
         500,
         "C004",
-        "Server Error"
+        "서버 오류가 발생했습니다"
     ),
     INVALID_TYPE_VALUE(
         400,
         "C005",
-        " Invalid Type Value"
+        "잘못된 타입입니다"
     ),
     HANDLE_ACCESS_DENIED(
         403,
         "C006",
-        "Access is Denied"
+        "접근이 거부되었습니다"
     ),
+    // Applicant (AP)
     APPLICANT_NOT_FOUND(
         404,
-        "A001",
+        "AP001",
         "이름과 이메일을 다시 확인해주세요."
     ),
     APPLICANT_VIEWABLE_PERIOD_END(
         422,
-        "A002",
+        "AP002",
         "합격자 조회 가능 기간이 지났습니다"
     ),
+
+    // Event (EV)
     EVENT_NOT_FOUND(
         404,
-        "E001",
-        "이벤트를 찾을수 없습니다."
+        "EV001",
+        "이벤트를 찾을 수 없습니다."
     ),
+
+    // Auth (AU)
     USER_NOT_FOUND(
         401,
-        "A001",
+        "AU001",
         "존재하지 않는 계정입니다"
     ),
     UNAUTHENTICATED(
         403,
-        "A002",
+        "AU002",
         "인증되지 않은 사용자입니다"
     ),
     INVALID_AUTH_INFO(
         401,
-        "A003",
+        "AU003",
         "올바르지 않은 인증 정보입니다"
     ),
 
