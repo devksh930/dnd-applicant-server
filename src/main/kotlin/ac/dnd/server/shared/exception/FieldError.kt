@@ -1,4 +1,4 @@
-package ac.dnd.server.common.exception
+package ac.dnd.server.shared.exception
 
 import org.springframework.validation.BindingResult
 
