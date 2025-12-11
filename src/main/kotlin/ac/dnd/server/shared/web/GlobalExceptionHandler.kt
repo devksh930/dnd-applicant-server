@@ -1,8 +1,9 @@
 package ac.dnd.server.shared.web
 
+import ac.dnd.server.common.exception.AuthenticationException
 import ac.dnd.server.common.exception.BusinessException
 import ac.dnd.server.common.exception.ErrorCode
-import ac.dnd.server.common.exception.ErrorResponse
+import ac.dnd.server.shared.exception.ErrorResponse
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -52,4 +53,10 @@ class GlobalExceptionHandler {
         return ResponseEntity.status(response.status).body(response)
     }
 
+    @ExceptionHandler(AuthenticationException::class)
+    protected fun handleAuthenticationException(e: AuthenticationException): ResponseEntity<ErrorResponse> {
+        log.error("handleAuthenticationException", e)
+        val response = ErrorResponse.of(e.errorCode)
+        return ResponseEntity.status(response.status).body(response)
+    }
 }

@@ -18,7 +18,7 @@ class CacheConfig {
         cacheManager.setCaffeine(
             Caffeine.newBuilder()
                 .maximumSize(1000) // 최대 1000개 엔트리
-                .expireAfterWrite(Duration.ofMinutes(1)) // 10분 후 만료
+                .expireAfterWrite(Duration.ofMinutes(1)) // 1분 후 만료
                 .recordStats() // 캐시 통계 기록
         )
         return cacheManager
