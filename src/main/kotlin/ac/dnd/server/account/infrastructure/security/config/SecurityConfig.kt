@@ -7,6 +7,7 @@ import ac.dnd.server.account.infrastructure.security.authentication.handler.Rest
 import ac.dnd.server.account.infrastructure.security.authentication.handler.RestAuthSuccessHandler
 import ac.dnd.server.account.infrastructure.security.jwt.JwtAuthenticationFilter
 import ac.dnd.server.account.infrastructure.security.jwt.JwtTokenProvider
+import ac.dnd.server.shared.config.properties.JwtProperties
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -79,9 +80,10 @@ class SecurityConfig(
     fun jwtAuthenticationFilter(
         jwtTokenProvider: JwtTokenProvider,
         refreshTokenRepository: RefreshTokenRepository,
-        accountJpaRepository: AccountJpaRepository
+        accountJpaRepository: AccountJpaRepository,
+        jwtProperties: JwtProperties
     ): JwtAuthenticationFilter {
-        return JwtAuthenticationFilter(jwtTokenProvider, refreshTokenRepository, accountJpaRepository)
+        return JwtAuthenticationFilter(jwtTokenProvider, refreshTokenRepository, accountJpaRepository, jwtProperties)
     }
 
     @Bean
