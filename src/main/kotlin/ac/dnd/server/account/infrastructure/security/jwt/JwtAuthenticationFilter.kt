@@ -2,10 +2,13 @@ package ac.dnd.server.account.infrastructure.security.jwt
 
 import ac.dnd.server.account.infrastructure.persistence.repository.AccountJpaRepository
 import ac.dnd.server.account.infrastructure.persistence.repository.RefreshTokenRepository
+import ac.dnd.server.shared.config.properties.JwtProperties
 import ac.dnd.server.shared.dto.LoginInfo
 import jakarta.servlet.FilterChain
+import jakarta.servlet.http.Cookie
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
+import java.time.LocalDateTime
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
@@ -15,7 +18,8 @@ import org.springframework.web.filter.OncePerRequestFilter
 class JwtAuthenticationFilter(
     private val jwtTokenProvider: JwtTokenProvider,
     private val refreshTokenRepository: RefreshTokenRepository,
-    private val accountJpaRepository: AccountJpaRepository
+    private val accountJpaRepository: AccountJpaRepository,
+    private val jwtProperties: JwtProperties
 ) : OncePerRequestFilter() {
 
     override fun doFilterInternal(
@@ -81,13 +85,28 @@ class JwtAuthenticationFilter(
                 role = account.role.name
             )
 
+            // Refresh Token Rotation: 새로운 Refresh Token 발급
+            val newRefreshToken = jwtTokenProvider.generateRefreshToken(account.userKey.value)
+            val expiresAt = LocalDateTime.now().plusDays(jwtProperties.refreshTokenExpirationDays)
+            storedToken.updateToken(newRefreshToken, expiresAt)
+
             response.setHeader(AUTHORIZATION_HEADER, "$BEARER_PREFIX$newAccessToken")
+            response.addCookie(createRefreshTokenCookie(newRefreshToken))
 
             val loginInfo = LoginInfo(userId = account.userKey.value)
             setAuthentication(request, loginInfo, newAccessToken)
 
         } catch (e: Exception) {
             logger.error("Failed to refresh access token", e)
+        }
+    }
+
+    private fun createRefreshTokenCookie(refreshToken: String): Cookie {
+        return Cookie(REFRESH_TOKEN_COOKIE_NAME, refreshToken).apply {
+            isHttpOnly = true
+            secure = false
+            path = "/"
+            maxAge = (jwtProperties.refreshTokenExpirationDays * 24 * 60 * 60).toInt()
         }
     }
 
