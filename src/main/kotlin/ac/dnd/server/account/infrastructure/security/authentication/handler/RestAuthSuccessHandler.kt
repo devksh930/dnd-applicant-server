@@ -4,6 +4,7 @@ import ac.dnd.server.account.infrastructure.persistence.entity.RefreshToken
 import ac.dnd.server.account.infrastructure.persistence.entity.UserKey
 import ac.dnd.server.account.infrastructure.persistence.repository.RefreshTokenRepository
 import ac.dnd.server.account.infrastructure.security.authentication.userdetails.AccountDetails
+import ac.dnd.server.account.infrastructure.security.dto.LoginResponse
 import ac.dnd.server.account.infrastructure.security.jwt.JwtTokenProvider
 import ac.dnd.server.shared.config.properties.JwtProperties
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -35,7 +36,7 @@ class RestAuthSuccessHandler(
         saveRefreshToken(loginUserInfo.userKey, tokens.refreshToken)
 
         setAuthenticationResponse(response, tokens)
-        writeSuccessResponse(response)
+        writeSuccessResponse(response, tokens.accessToken)
     }
 
     private fun extractLoginUserInfo(authentication: Authentication): AccountDetails {
@@ -52,7 +53,6 @@ class RestAuthSuccessHandler(
     }
 
     private fun setAuthenticationResponse(response: HttpServletResponse, tokens: TokenPair) {
-        response.setHeader("Authorization", "Bearer ${tokens.accessToken}")
         response.addCookie(createRefreshTokenCookie(tokens.refreshToken))
     }
 
@@ -72,12 +72,16 @@ class RestAuthSuccessHandler(
             ?: refreshTokenRepository.save(RefreshToken(UserKey(userKey), refreshToken, expiresAt))
     }
 
-    private fun writeSuccessResponse(response: HttpServletResponse) {
+    private fun writeSuccessResponse(response: HttpServletResponse, accessToken: String) {
         response.status = HttpStatus.OK.value()
         response.contentType = MediaType.APPLICATION_JSON_VALUE
         response.characterEncoding = "UTF-8"
 
-        objectMapper.writeValue(response.writer, mapOf("message" to "Login successful"))
+        val loginResponse = LoginResponse(
+            accessToken = accessToken,
+            expiresIn = jwtProperties.accessTokenExpirationHours * 3600
+        )
+        objectMapper.writeValue(response.writer, loginResponse)
     }
 
     private data class TokenPair(
