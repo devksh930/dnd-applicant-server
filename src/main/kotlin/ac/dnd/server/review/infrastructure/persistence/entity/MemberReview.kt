@@ -18,3 +18,5 @@ class MemberReview(
     val status: SubmissionStatus = SubmissionStatus.NONE
 ) : BaseEntity() {
 }
+
+
