@@ -20,9 +20,9 @@ class JsonUsernamePasswordAuthenticationFilter(
             throw AuthenticationServiceException("Authentication content-type not supported: ${request.contentType}")
         }
 
-        val request = objectMapper.readValue(request.inputStream, UserLoginRequest::class.java)
-        val username = request.email
-        val password = request.password
+        val userRequest = objectMapper.readValue(request.inputStream, UserLoginRequest::class.java)
+        val username = userRequest.email
+        val password = userRequest.password
 
         if (username.isNullOrBlank() || password.isNullOrBlank()) {
             throw AuthenticationServiceException("Username or Password not provided")
