@@ -31,3 +31,7 @@ github:
 
 server:
   port: 8080
+
+cloud:
+  aws:
+    enabled: false
