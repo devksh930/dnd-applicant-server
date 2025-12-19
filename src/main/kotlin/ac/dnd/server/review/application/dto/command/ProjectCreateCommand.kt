@@ -6,8 +6,7 @@ data class ProjectCreateCommand(
     val linkKey: String,
     val name: String,
     val description: String,
-    val techStack: List<String>?,
+    val techStacks: List<String>?,
+    val fileId: Long?,
     val urlLinks: List<UrlLinks>?
-) {
-
-}
+)

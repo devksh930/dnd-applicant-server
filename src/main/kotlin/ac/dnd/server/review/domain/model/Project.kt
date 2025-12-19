@@ -7,10 +7,9 @@ import jakarta.persistence.Enumerated
 
 data class Project(
     val generationInfo: GenerationInfo,
+    val name: String,
     val description: String,
-    val techStack: String,
-    @Enumerated(EnumType.STRING)
+    val techStacks: List<String> = emptyList(),
+    val fileId: Long? = null,
     val status: SubmissionStatus = SubmissionStatus.NONE
-
-) {
-}
+)
