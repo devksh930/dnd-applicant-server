@@ -9,5 +9,11 @@
 :sectnums:
 
 == API
-//참가자
-include::addmission.adoc[]
+
+아래 문서는 이제 각각 별도의 페이지로 제공됩니다. 각 페이지에는 Spring REST Docs로 생성된 스니펫(`{snippets}`)이 포함되어 실제 요청/응답 예시를 확인할 수 있습니다.
+
+- link:addmission.html[참가(Admission)] — 참가자 상태 조회 및 CRUD
+- link:review.html[프로젝트(Review)] — 프로젝트 제출/재제출/만료
+- link:link.html[링크(Link)] — 링크 타입/만료 조회
+- link:file.html[파일 업로드] — 단일/다중 파일 업로드
+- link:error.html[전역 예외 처리(Global Exception)] — 공통 에러 및 사례
