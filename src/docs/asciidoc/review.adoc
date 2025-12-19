@@ -1,0 +1,73 @@
+= 프로젝트(Review)
+
+:icons: font
+:source-highlighter: coderay
+:toc: left
+:toclevels: 3
+:sectlinks:
+:sectnums:
+
+link:index.html[← 목록으로]
+
+프로젝트 제출 및 초기화에 대한 API 문서입니다. 아래는 링크 키를 이용한 최초 제출, 재제출, 만료 케이스별 요청/응답 예시를 제공합니다.
+
+=== 프로젝트 제출(최초 제출 201)
+
+[discrete]
+==== 요청
+include::{snippets}/put-project-first/curl-request.adoc[]
+include::{snippets}/put-project-first/http-request.adoc[]
+include::{snippets}/put-project-first/path-parameters.adoc[]
+include::{snippets}/put-project-first/request-fields.adoc[]
+
+[NOTE]
+====
+요청 본문 중 `urlLinks[].type` 필드는 Enum(`UrlType`)입니다. Spring REST Docs 표에서는 JSON 타입 기준으로 `STRING`으로 표시되지만, 실제로는 아래 Enum 값만 허용됩니다.
+
+- `LINKEDIN`(링크드인)
+- `GITHUB`(깃허브)
+- `EMAIL`(이메일)
+- `TISTORY`(티스토리)
+- `VELOG`(벨로그)
+- `MEDIUM`(미디엄)
+- `BEHANCE`(비헨스)
+- `INSTAGRAM`(인스타그램)
+- `YOUTUBE`(유튜브)
+====
+
+[discrete]
+==== 응답
+include::{snippets}/put-project-first/http-response.adoc[]
+include::{snippets}/put-project-first/response-headers.adoc[]
+
+[TIP]
+====
+최초 제출의 경우 201 Created와 함께 `Location` 헤더가 반환됩니다. 동일 링크로 재제출하면 204 No Content가 반환됩니다.
+====
+
+=== 프로젝트 제출(재제출 204)
+
+[discrete]
+==== 요청
+include::{snippets}/put-project-resubmission/curl-request.adoc[]
+include::{snippets}/put-project-resubmission/http-request.adoc[]
+include::{snippets}/put-project-resubmission/path-parameters.adoc[]
+include::{snippets}/put-project-resubmission/request-fields.adoc[]
+
+[discrete]
+==== 응답
+include::{snippets}/put-project-resubmission/http-response.adoc[]
+
+=== 프로젝트 제출(만료 링크 422)
+
+[discrete]
+==== 요청
+include::{snippets}/put-project-expired/curl-request.adoc[]
+include::{snippets}/put-project-expired/http-request.adoc[]
+include::{snippets}/put-project-expired/path-parameters.adoc[]
+include::{snippets}/put-project-expired/request-fields.adoc[]
+
+[discrete]
+==== 응답
+include::{snippets}/put-project-expired/http-response.adoc[]
+include::{snippets}/put-project-expired/response-fields.adoc[]
