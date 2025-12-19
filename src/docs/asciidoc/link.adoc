@@ -1,0 +1,51 @@
+== 링크(Link)
+
+::icons: font
+::source-highlighter: coderay
+::toc: left
+::toclevels: 3
+::sectlinks:
+::sectnums:
+
+link:index.html[← 목록으로]
+
+링크 조회 API 문서입니다. 링크 키(UUID)를 이용해 링크의 타입과 만료 시각을 확인할 수 있습니다.
+
+=== 링크 조회 - 성공(200)
+
+[discrete]
+==== 요청
+include::{snippets}/get-link-success/curl-request.adoc[]
+include::{snippets}/get-link-success/http-request.adoc[]
+include::{snippets}/get-link-success/path-parameters.adoc[]
+
+[discrete]
+==== 응답
+include::{snippets}/get-link-success/http-response.adoc[]
+include::{snippets}/get-link-success/response-fields.adoc[]
+
+=== 링크 조회 - 만료(422)
+
+[discrete]
+==== 요청
+include::{snippets}/get-link-expired/curl-request.adoc[]
+include::{snippets}/get-link-expired/http-request.adoc[]
+include::{snippets}/get-link-expired/path-parameters.adoc[]
+
+[discrete]
+==== 응답
+include::{snippets}/get-link-expired/http-response.adoc[]
+include::{snippets}/get-link-expired/response-fields.adoc[]
+
+=== 링크 조회 - 미존재(404)
+
+[discrete]
+==== 요청
+include::{snippets}/get-link-not-found/curl-request.adoc[]
+include::{snippets}/get-link-not-found/http-request.adoc[]
+include::{snippets}/get-link-not-found/path-parameters.adoc[]
+
+[discrete]
+==== 응답
+include::{snippets}/get-link-not-found/http-response.adoc[]
+include::{snippets}/get-link-not-found/response-fields.adoc[]
