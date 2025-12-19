@@ -72,4 +72,32 @@ enum class ErrorCode(
         "올바르지 않은 인증 정보입니다"
     ),
 
+    // Project (PJ)
+    PROJECT_NOT_FOUND(
+        404,
+        "PJ001",
+        "프로젝트를 찾을 수 없습니다"
+    ),
+    FORM_LINK_EXPIRED(
+        422,
+        "PJ002",
+        "링크가 만료되었습니다"
+    ),
+    FORM_LINK_NOT_FOUND(
+        404,
+        "PJ003",
+        "링크를 찾을 수 없습니다"
+    ),
+
+    // File (FL)
+    FILE_NOT_FOUND(
+        404,
+        "FL001",
+        "파일을 찾을 수 없습니다"
+    ),
+    FILE_UPLOAD_FAILED(
+        500,
+        "FL002",
+        "파일 업로드에 실패했습니다"
+    ),
 }
