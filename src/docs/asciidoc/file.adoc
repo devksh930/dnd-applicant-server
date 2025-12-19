@@ -1,0 +1,48 @@
+= 파일 업로드
+
+:icons: font
+:source-highlighter: coderay
+:toc: left
+:toclevels: 3
+:sectlinks:
+:sectnums:
+
+link:index.html[← 목록으로]
+
+프로젝트 내 파일 업로드 API 문서입니다. 멀티파트 업로드 시 `multipart/form-data`를 사용합니다.
+
+=== 단일 파일 업로드
+
+[discrete]
+==== 요청
+include::{snippets}/post-file-upload/curl-request.adoc[]
+include::{snippets}/post-file-upload/http-request.adoc[]
+include::{snippets}/post-file-upload/request-parts.adoc[]
+
+[discrete]
+==== 응답
+include::{snippets}/post-file-upload/http-response.adoc[]
+include::{snippets}/post-file-upload/response-fields.adoc[]
+
+[TIP]
+====
+단일 업로드의 `file` 파트에 업로드할 파일을 담아 전송합니다. 서버는 응답으로 파일의 메타데이터(식별자, 원본 파일명, URL, 크기, Content-Type)를 반환합니다.
+====
+
+=== 다중 파일 업로드
+
+[discrete]
+==== 요청
+include::{snippets}/post-file-upload-multiple/curl-request.adoc[]
+include::{snippets}/post-file-upload-multiple/http-request.adoc[]
+include::{snippets}/post-file-upload-multiple/request-parts.adoc[]
+
+[discrete]
+==== 응답
+include::{snippets}/post-file-upload-multiple/http-response.adoc[]
+include::{snippets}/post-file-upload-multiple/response-fields.adoc[]
+
+[TIP]
+====
+다중 업로드 시 `files` 파트를 배열 형태로 전송합니다. 응답은 업로드된 파일 메타데이터의 배열입니다.
+====

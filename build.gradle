@@ -1,7 +1,7 @@
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version '1.9.25'
-    id 'org.jetbrains.kotlin.plugin.spring' version '1.9.25'
-    id 'org.jetbrains.kotlin.plugin.jpa' version '1.9.25'
+    id 'org.jetbrains.kotlin.jvm' version '2.0.21'
+    id 'org.jetbrains.kotlin.plugin.spring' version '2.0.21'
+    id 'org.jetbrains.kotlin.plugin.jpa' version '2.0.21'
     id 'org.springframework.boot' version '3.4.5'
     id 'io.spring.dependency-management' version '1.1.7'
     id 'org.asciidoctor.jvm.convert' version '4.0.4'
@@ -14,6 +14,12 @@ version = '0.0.1-SNAPSHOT'
 
 kotlin {
     jvmToolchain(21)
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
 }
 
 configurations {
@@ -48,6 +54,10 @@ dependencies {
 
     // Cache
     implementation 'com.github.ben-manes.caffeine:caffeine'
+
+    // AWS S3
+    implementation platform('software.amazon.awssdk:bom:2.25.16')
+    implementation 'software.amazon.awssdk:s3'
 
     // JWT
     implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
@@ -109,6 +119,7 @@ tasks.named('asciidoctor') {
     inputs.dir snippetsDir
     configurations "asciidoctorExt"
     baseDirFollowsSourceDir()
+    attributes 'snippets': snippetsDir
 }
 
 bootJar {
