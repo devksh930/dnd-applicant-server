@@ -9,11 +9,13 @@ import ac.dnd.server.documenation.MockMvcFactory
 import ac.dnd.server.review.application.dto.command.ProjectCreateCommand
 import ac.dnd.server.review.application.service.ProjectCreateService
 import ac.dnd.server.review.domain.enums.UrlType
+import ac.dnd.server.review.exception.FormLinkExpiredException
 import org.junit.jupiter.api.Test
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.kotlin.any
 import org.mockito.kotlin.given
+import org.mockito.kotlin.willThrow
 import org.springframework.http.MediaType
 import org.springframework.restdocs.RestDocumentationContextProvider
 import org.springframework.restdocs.headers.HeaderDocumentation.headerWithName
@@ -23,6 +25,7 @@ import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders
 import org.springframework.restdocs.payload.JsonFieldType
 import org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
 import org.springframework.restdocs.payload.PayloadDocumentation.requestFields
+import org.springframework.restdocs.payload.PayloadDocumentation.responseFields
 import org.springframework.restdocs.request.RequestDocumentation.parameterWithName
 import org.springframework.restdocs.request.RequestDocumentation.pathParameters
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
@@ -141,6 +144,45 @@ class ProjectCreateControllerDocsTest {
                         parameterWithName("linkKey").description("프로젝트 링크 키(UUID)")
                     ),
                     requestFields(*requestFieldDescription)
+                )
+            )
+    }
+
+    @Test
+    fun `프로젝트 제출 - 만료 링크 422 문서화`(
+        contextProvider: RestDocumentationContextProvider
+    ) {
+        // given
+        given(projectCreateService.createProject(any<ProjectCreateCommand>()))
+            .willThrow(FormLinkExpiredException())
+
+        // when & then
+        MockMvcFactory.getRestDocsMockMvc(
+            contextProvider,
+            HOST_API,
+            controller
+        ).perform(
+            RestDocumentationRequestBuilders.put("/project/{linkKey}", LINK_KEY)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestJson())
+        )
+            .andDo(print())
+            .andExpect(status().isUnprocessableEntity)
+            .andDo(
+                document(
+                    "put-project-expired",
+                    getDocumentRequest(),
+                    getDocumentResponse(),
+                    pathParameters(
+                        parameterWithName("linkKey").description("프로젝트 링크 키(UUID)")
+                    ),
+                    requestFields(*requestFieldDescription),
+                    responseFields(
+                        fieldWithPath("message").type(JsonFieldType.STRING).description("에러 메시지"),
+                        fieldWithPath("status").type(JsonFieldType.NUMBER).description("HTTP 상태 코드"),
+                        fieldWithPath("code").type(JsonFieldType.STRING).description("에러 코드"),
+                        fieldWithPath("errors").type(JsonFieldType.ARRAY).description("에러 상세 목록")
+                    )
                 )
             )
     }

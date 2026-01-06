@@ -16,5 +16,6 @@ class TestcontainersConfiguration {
             .withDatabaseName("testdb")
             .withUsername("test")
             .withPassword("test")
+            .withReuse(true)
     }
 }

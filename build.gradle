@@ -99,7 +99,10 @@ dependencies {
 tasks.named('test') {
     outputs.dir snippetsDir
     useJUnitPlatform()
-    jvmArgs("-XX:+EnableDynamicAgentLoading")
+    jvmArgs("-XX:+EnableDynamicAgentLoading", "-Xshare:off", "-XX:+TieredCompilation", "-XX:TieredStopAtLevel=1")
+    minHeapSize = "512m"
+    maxHeapSize = "2g"
+    maxParallelForks = (Runtime.runtime.availableProcessors() / 2) ?: 1
     environment 'DOCKER_API_VERSION', '1.44'
 }
 
@@ -108,7 +111,10 @@ tasks.register("restDocsTest", Test) {
     useJUnitPlatform {
         includeTags("restDocs")
     }
-    jvmArgs("-XX:+EnableDynamicAgentLoading")
+    jvmArgs("-XX:+EnableDynamicAgentLoading", "-Xshare:off", "-XX:+TieredCompilation", "-XX:TieredStopAtLevel=1")
+    minHeapSize = "512m"
+    maxHeapSize = "2g"
+    maxParallelForks = (Runtime.runtime.availableProcessors() / 2) ?: 1
     finalizedBy "asciidoctor"
     finalizedBy "openapi3"
 }

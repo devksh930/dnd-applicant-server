@@ -45,7 +45,7 @@ enum class ErrorCode(
     APPLICANT_VIEWABLE_PERIOD_END(
         422,
         "AP002",
-        "합격자 조회 가능 기간이 지났습니다"
+        "합격자 조회 가능 기간이 아닙니다"
     ),
 
     // Event (EV)

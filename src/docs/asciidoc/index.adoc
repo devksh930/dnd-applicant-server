@@ -1,19 +1,31 @@
-= Spring REST Docs 가이드
+= DND Applicant Server API 가이드
 :doctype: book
 :icons: font
-:source-highlighter: coderay
+:source-highlighter: highlightjs
 :toc: left
 :toc-title: 목차
 :toclevels: 3
 :sectlinks:
 :sectnums:
 
-== API
+== 소개
 
-아래 문서는 이제 각각 별도의 페이지로 제공됩니다. 각 페이지에는 Spring REST Docs로 생성된 스니펫(`{snippets}`)이 포함되어 실제 요청/응답 예시를 확인할 수 있습니다.
+DND Applicant Server API 문서입니다. +
+각 도메인별 상세 API 명세는 아래 링크를 통해 확인할 수 있습니다.
 
-- link:addmission.html[참가(Admission)] — 참가자 상태 조회 및 CRUD
-- link:review.html[프로젝트(Review)] — 프로젝트 제출/재제출/만료
-- link:link.html[링크(Link)] — 링크 타입/만료 조회
-- link:file.html[파일 업로드] — 단일/다중 파일 업로드
-- link:error.html[전역 예외 처리(Global Exception)] — 공통 에러 및 사례
+== API 목록
+
+각 항목을 클릭하면 상세 문서로 이동합니다.
+
+* link:addmission.html[**참가(Admission)**]
+** 참가자 상태 조회 및 관리
+* link:auth.html[**인증(Auth)**]
+** 로그인 및 토큰 발급
+* link:review.html[**프로젝트(Review)**]
+** 프로젝트 제출, 재제출, 링크 검증
+* link:link.html[**링크(Link)**]
+** 링크 유효성 및 타입 조회
+* link:file.html[**파일(File)**]
+** 단일 및 다중 파일 업로드
+* link:error.html[**에러(Error)**]
+** 전역 에러 코드 및 예외 처리 응답 구조

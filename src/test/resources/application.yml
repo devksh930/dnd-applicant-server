@@ -35,3 +35,8 @@ server:
 cloud:
   aws:
     enabled: false
+
+#logging:
+#  level:
+#    root: INFO
+#    org.hibernate.SQL: DEBUG

@@ -1,51 +1,75 @@
-== 링크(Link)
+= 링크(Link)
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 3
+:sectlinks:
+:sectnums:
 
-::icons: font
-::source-highlighter: coderay
-::toc: left
-::toclevels: 3
-::sectlinks:
-::sectnums:
+link:index.html[← 목록으로 돌아가기]
 
-link:index.html[← 목록으로]
+== 개요
 
-링크 조회 API 문서입니다. 링크 키(UUID)를 이용해 링크의 타입과 만료 시각을 확인할 수 있습니다.
+발급된 링크의 유효성을 검증하고 타입(프로젝트 제출용 등)을 확인하는 API입니다. +
+링크 키(UUID)를 통해 해당 링크가 유효한지, 만료되지는 않았는지 미리 확인할 수 있습니다.
 
-=== 링크 조회 - 성공(200)
+---
+
+== 링크 조회
+
+링크 키를 이용하여 링크 정보를 조회합니다.
+
+=== 1. 조회 성공 (200 OK)
+
+유효한 링크 키로 조회했을 때, 링크의 타입과 만료 여부 정보를 반환합니다.
 
 [discrete]
-==== 요청
-include::{snippets}/get-link-success/curl-request.adoc[]
+==== 요청 예시
+
 include::{snippets}/get-link-success/http-request.adoc[]
+
+[discrete]
+==== 요청 파라미터
+
 include::{snippets}/get-link-success/path-parameters.adoc[]
 
 [discrete]
-==== 응답
+==== 응답 예시
+
 include::{snippets}/get-link-success/http-response.adoc[]
 include::{snippets}/get-link-success/response-fields.adoc[]
 
-=== 링크 조회 - 만료(422)
+---
+
+=== 2. 예외: 링크 만료 (422 Unprocessable Entity)
+
+조회하려는 링크가 유효 기간이 지난 경우 발생합니다.
 
 [discrete]
-==== 요청
-include::{snippets}/get-link-expired/curl-request.adoc[]
+==== 요청 예시
+
 include::{snippets}/get-link-expired/http-request.adoc[]
-include::{snippets}/get-link-expired/path-parameters.adoc[]
 
 [discrete]
-==== 응답
+==== 응답 예시
+
 include::{snippets}/get-link-expired/http-response.adoc[]
 include::{snippets}/get-link-expired/response-fields.adoc[]
 
-=== 링크 조회 - 미존재(404)
+---
+
+=== 3. 예외: 링크 없음 (404 Not Found)
+
+존재하지 않는 링크 키로 조회를 시도했을 때 발생합니다.
 
 [discrete]
-==== 요청
-include::{snippets}/get-link-not-found/curl-request.adoc[]
+==== 요청 예시
+
 include::{snippets}/get-link-not-found/http-request.adoc[]
-include::{snippets}/get-link-not-found/path-parameters.adoc[]
 
 [discrete]
-==== 응답
+==== 응답 예시
+
 include::{snippets}/get-link-not-found/http-response.adoc[]
 include::{snippets}/get-link-not-found/response-fields.adoc[]
