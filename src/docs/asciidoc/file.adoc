@@ -1,48 +1,74 @@
-= 파일 업로드
-
+= 파일 업로드(File)
+:doctype: book
 :icons: font
-:source-highlighter: coderay
+:source-highlighter: highlightjs
 :toc: left
 :toclevels: 3
 :sectlinks:
 :sectnums:
 
-link:index.html[← 목록으로]
+link:index.html[← 목록으로 돌아가기]
 
-프로젝트 내 파일 업로드 API 문서입니다. 멀티파트 업로드 시 `multipart/form-data`를 사용합니다.
+== 개요
 
-=== 단일 파일 업로드
+프로젝트 진행 중 필요한 파일을 서버에 업로드하는 API입니다. +
+단일 파일 업로드와 다중 파일 업로드를 지원하며, `multipart/form-data` 형식을 사용합니다.
+
+[NOTE]
+.Content-Type
+====
+파일 업로드 요청 시 `Content-Type`은 반드시 `multipart/form-data`여야 합니다.
+====
+
+---
+
+== 파일 업로드
+
+=== 1. 단일 파일 업로드
+
+하나의 파일을 업로드할 때 사용합니다. +
+응답으로 업로드된 파일의 식별자(ID), 원본 이름, 접근 URL 등을 반환합니다.
 
 [discrete]
-==== 요청
-include::{snippets}/post-file-upload/curl-request.adoc[]
+==== 요청 예시
+
 include::{snippets}/post-file-upload/http-request.adoc[]
+
+[discrete]
+==== 요청 파트 (Parts)
+
 include::{snippets}/post-file-upload/request-parts.adoc[]
 
+[TIP]
+====
+`file` 파트에 바이너리 데이터를 담아 전송합니다.
+====
+
 [discrete]
-==== 응답
+==== 응답 예시
+
 include::{snippets}/post-file-upload/http-response.adoc[]
 include::{snippets}/post-file-upload/response-fields.adoc[]
 
-[TIP]
-====
-단일 업로드의 `file` 파트에 업로드할 파일을 담아 전송합니다. 서버는 응답으로 파일의 메타데이터(식별자, 원본 파일명, URL, 크기, Content-Type)를 반환합니다.
-====
+---
 
-=== 다중 파일 업로드
+=== 2. 다중 파일 업로드
+
+여러 개의 파일을 한 번에 업로드할 때 사용합니다. +
+`files`라는 이름의 파트로 여러 파일을 전송하면, 업로드된 파일 정보들이 배열로 반환됩니다.
 
 [discrete]
-==== 요청
-include::{snippets}/post-file-upload-multiple/curl-request.adoc[]
+==== 요청 예시
+
 include::{snippets}/post-file-upload-multiple/http-request.adoc[]
+
+[discrete]
+==== 요청 파트 (Parts)
+
 include::{snippets}/post-file-upload-multiple/request-parts.adoc[]
 
 [discrete]
-==== 응답
+==== 응답 예시
+
 include::{snippets}/post-file-upload-multiple/http-response.adoc[]
 include::{snippets}/post-file-upload-multiple/response-fields.adoc[]
-
-[TIP]
-====
-다중 업로드 시 `files` 파트를 배열 형태로 전송합니다. 응답은 업로드된 파일 메타데이터의 배열입니다.
-====

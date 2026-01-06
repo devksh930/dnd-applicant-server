@@ -2,6 +2,7 @@ package ac.dnd.server.review.infrastructure.persistence.entity
 
 import ac.dnd.server.review.domain.enums.FormLinkType
 import ac.dnd.server.shared.persistence.BaseEntity
+import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
@@ -12,6 +13,7 @@ import java.util.*
 class FormLink(
     @Enumerated(EnumType.STRING)
     val linkType: FormLinkType,
+    @Column(name = "link_key")
     val key: UUID,
     val targetId: Long,
     val expired: Boolean = false,
