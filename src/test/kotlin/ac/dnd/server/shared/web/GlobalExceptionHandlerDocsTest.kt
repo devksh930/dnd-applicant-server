@@ -2,8 +2,7 @@ package ac.dnd.server.shared.web
 
 import ac.dnd.server.annotation.RestDocsTest
 import ac.dnd.server.common.exception.UnauthenticatedException
-import ac.dnd.server.documenation.DocumentUtils.getDocumentRequest
-import ac.dnd.server.documenation.DocumentUtils.getDocumentResponse
+import ac.dnd.server.documenation.DocumentUtils
 import ac.dnd.server.documenation.MockMvcFactory
 import ac.dnd.server.review.exception.ProjectNotFoundException
 import ac.dnd.server.review.exception.FormLinkExpiredException
@@ -13,7 +12,6 @@ import jakarta.validation.constraints.NotBlank
 import org.junit.jupiter.api.Test
 import org.springframework.http.MediaType
 import org.springframework.restdocs.RestDocumentationContextProvider
-import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders
 import org.springframework.restdocs.payload.JsonFieldType
 import org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
@@ -53,10 +51,11 @@ class GlobalExceptionHandlerDocsTest {
             .andDo(print())
             .andExpect(status().isUnprocessableEntity)
             .andDo(
-                document(
+                DocumentUtils.document(
                     "error-validation",
-                    getDocumentRequest(),
-                    getDocumentResponse(),
+                    "에러",
+                    "유효성 검증 실패",
+                    "요청 데이터의 유효성 검증에 실패했을 때 반환되는 오류입니다.",
                     responseFields(*errorResponseFields)
                 )
             )
@@ -71,10 +70,11 @@ class GlobalExceptionHandlerDocsTest {
             .andDo(print())
             .andExpect(status().isMethodNotAllowed)
             .andDo(
-                document(
+                DocumentUtils.document(
                     "error-method-not-allowed",
-                    getDocumentRequest(),
-                    getDocumentResponse(),
+                    "에러",
+                    "메서드 미지원",
+                    "지원하지 않는 HTTP 메서드로 요청했을 때 반환되는 오류입니다.",
                     responseFields(*errorResponseFields)
                 )
             )
@@ -89,10 +89,11 @@ class GlobalExceptionHandlerDocsTest {
             .andDo(print())
             .andExpect(status().isBadRequest)
             .andDo(
-                document(
+                DocumentUtils.document(
                     "error-type-mismatch",
-                    getDocumentRequest(),
-                    getDocumentResponse(),
+                    "에러",
+                    "타입 불일치",
+                    "요청 파라미터의 타입이 일치하지 않을 때 반환되는 오류입니다.",
                     responseFields(*errorResponseFields)
                 )
             )
@@ -105,10 +106,11 @@ class GlobalExceptionHandlerDocsTest {
             .andDo(print())
             .andExpect(status().isNotFound)
             .andDo(
-                document(
+                DocumentUtils.document(
                     "error-business-not-found",
-                    getDocumentRequest(),
-                    getDocumentResponse(),
+                    "에러",
+                    "프로젝트 조회 실패",
+                    "존재하지 않는 프로젝트를 조회할 때 반환되는 오류입니다.",
                     responseFields(*errorResponseFields)
                 )
             )
@@ -121,10 +123,11 @@ class GlobalExceptionHandlerDocsTest {
             .andDo(print())
             .andExpect(status().isNotFound)
             .andDo(
-                document(
+                DocumentUtils.document(
                     "error-business-link-not-found",
-                    getDocumentRequest(),
-                    getDocumentResponse(),
+                    "에러",
+                    "링크 조회 실패",
+                    "존재하지 않는 링크를 조회할 때 반환되는 오류입니다.",
                     responseFields(*errorResponseFields)
                 )
             )
@@ -137,10 +140,11 @@ class GlobalExceptionHandlerDocsTest {
             .andDo(print())
             .andExpect(status().isUnprocessableEntity)
             .andDo(
-                document(
+                DocumentUtils.document(
                     "error-business-expired",
-                    getDocumentRequest(),
-                    getDocumentResponse(),
+                    "에러",
+                    "링크 만료",
+                    "만료된 링크를 사용하려 할 때 반환되는 오류입니다.",
                     responseFields(*errorResponseFields)
                 )
             )
@@ -153,10 +157,11 @@ class GlobalExceptionHandlerDocsTest {
             .andDo(print())
             .andExpect(status().isForbidden)
             .andDo(
-                document(
+                DocumentUtils.document(
                     "error-auth-unauthenticated",
-                    getDocumentRequest(),
-                    getDocumentResponse(),
+                    "에러",
+                    "인증 실패",
+                    "인증되지 않은 사용자가 접근할 때 반환되는 오류입니다.",
                     responseFields(*errorResponseFields)
                 )
             )
@@ -169,10 +174,11 @@ class GlobalExceptionHandlerDocsTest {
             .andDo(print())
             .andExpect(status().isInternalServerError)
             .andDo(
-                document(
+                DocumentUtils.document(
                     "error-internal",
-                    getDocumentRequest(),
-                    getDocumentResponse(),
+                    "에러",
+                    "서버 내부 오류",
+                    "서버에서 예기치 않은 오류가 발생했을 때 반환되는 오류입니다.",
                     responseFields(*errorResponseFields)
                 )
             )

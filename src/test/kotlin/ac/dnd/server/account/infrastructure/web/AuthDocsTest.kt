@@ -1,10 +1,8 @@
 package ac.dnd.server.account.infrastructure.web
 
-import ac.dnd.server.account.domain.enums.Role
 import ac.dnd.server.account.infrastructure.persistence.repository.RefreshTokenRepository
 import ac.dnd.server.account.infrastructure.security.resolver.LoginArgumentResolver
-import ac.dnd.server.documenation.DocumentUtils.getDocumentRequest
-import ac.dnd.server.documenation.DocumentUtils.getDocumentResponse
+import ac.dnd.server.documenation.DocumentUtils
 import ac.dnd.server.shared.dto.LoginInfo
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -13,16 +11,13 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.junit.jupiter.MockitoExtension
 import org.mockito.kotlin.any
-import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
-import org.springframework.core.MethodParameter
 import org.springframework.http.HttpHeaders
 import org.springframework.restdocs.RestDocumentationContextProvider
 import org.springframework.restdocs.RestDocumentationExtension
 import org.springframework.restdocs.cookies.CookieDocumentation.cookieWithName
 import org.springframework.restdocs.cookies.CookieDocumentation.responseCookies
-import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post
 import org.springframework.restdocs.payload.JsonFieldType
@@ -30,10 +25,7 @@ import org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
 import org.springframework.restdocs.payload.PayloadDocumentation.responseFields
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
-import org.springframework.web.bind.support.WebDataBinderFactory
-import org.springframework.web.context.request.NativeWebRequest
-import org.springframework.web.method.support.ModelAndViewContainer
-import java.util.UUID
+import java.util.*
 
 @ExtendWith(MockitoExtension::class, RestDocumentationExtension::class)
 class AuthDocsTest {
@@ -71,10 +63,11 @@ class AuthDocsTest {
                 .header(HttpHeaders.AUTHORIZATION, "Bearer access-token")
         )
             .andDo(
-                document(
+                DocumentUtils.document(
                     "post-auth-logout",
-                    getDocumentRequest(),
-                    getDocumentResponse(),
+                    "인증",
+                    "로그아웃",
+                    "사용자 로그아웃을 처리하고 리프레시 토큰을 만료시킵니다.",
                     responseFields(
                         fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메시지")
                     ),

@@ -1,8 +1,7 @@
 package ac.dnd.server.file.infrastructure.web
 
 import ac.dnd.server.annotation.RestDocsTest
-import ac.dnd.server.documenation.DocumentUtils.getDocumentRequest
-import ac.dnd.server.documenation.DocumentUtils.getDocumentResponse
+import ac.dnd.server.documenation.DocumentUtils
 import ac.dnd.server.documenation.MockMvcFactory
 import ac.dnd.server.file.application.service.FileUploadService
 import ac.dnd.server.file.infrastructure.persistence.entity.File
@@ -20,7 +19,6 @@ import org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
 import org.springframework.restdocs.payload.PayloadDocumentation.responseFields
 import org.springframework.restdocs.request.RequestDocumentation.partWithName
 import org.springframework.restdocs.request.RequestDocumentation.requestParts
-import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document
 import org.springframework.test.util.ReflectionTestUtils
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
@@ -72,10 +70,11 @@ class FileControllerDocsTest {
             .andExpect(status().isOk)
             .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
             .andDo(
-                document(
+                DocumentUtils.document(
                     "post-file-upload",
-                    getDocumentRequest(),
-                    getDocumentResponse(),
+                    "파일",
+                    "단일 파일 업로드",
+                    "단일 파일을 업로드하고 파일 정보를 반환합니다.",
                     requestParts(
                         partWithName("file").description("업로드할 파일")
                     ),
@@ -127,10 +126,11 @@ class FileControllerDocsTest {
             .andExpect(status().isOk)
             .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
             .andDo(
-                document(
+                DocumentUtils.document(
                     "post-file-upload-multiple",
-                    getDocumentRequest(),
-                    getDocumentResponse(),
+                    "파일",
+                    "다중 파일 업로드",
+                    "여러 파일을 한 번에 업로드하고 파일 정보 목록을 반환합니다.",
                     requestParts(
                         partWithName("files").description("업로드할 파일 목록")
                     ),
