@@ -3,8 +3,7 @@ package ac.dnd.server.review.infrastructure.web
 import ac.dnd.server.annotation.RestDocsTest
 import ac.dnd.server.documenation.DocumentFormatGenerator.generateEnumAttrs
 import ac.dnd.server.documenation.DocumentFormatGenerator.generatedEnums
-import ac.dnd.server.documenation.DocumentUtils.getDocumentRequest
-import ac.dnd.server.documenation.DocumentUtils.getDocumentResponse
+import ac.dnd.server.documenation.DocumentUtils
 import ac.dnd.server.documenation.MockMvcFactory
 import ac.dnd.server.review.application.service.LinkQueryService
 import ac.dnd.server.review.domain.enums.FormLinkType
@@ -18,7 +17,6 @@ import org.mockito.kotlin.any
 import org.mockito.kotlin.given
 import org.springframework.http.MediaType
 import org.springframework.restdocs.RestDocumentationContextProvider
-import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders
 import org.springframework.restdocs.payload.JsonFieldType
 import org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
@@ -86,10 +84,11 @@ class LinkQueryControllerDocsTest {
             .andDo(print())
             .andExpect(status().isOk)
             .andDo(
-                document(
+                DocumentUtils.document(
                     "get-link-success",
-                    getDocumentRequest(),
-                    getDocumentResponse(),
+                    "링크",
+                    "링크 정보 조회",
+                    "링크 키로 프로젝트 링크 정보를 조회합니다.",
                     pathParameters(
                         parameterWithName("linkKey").description("프로젝트 링크 키(UUID)")
                     ),
@@ -114,10 +113,11 @@ class LinkQueryControllerDocsTest {
             .andDo(print())
             .andExpect(status().isUnprocessableEntity)
             .andDo(
-                document(
+                DocumentUtils.document(
                     "get-link-expired",
-                    getDocumentRequest(),
-                    getDocumentResponse(),
+                    "링크",
+                    "링크 만료 오류",
+                    "만료된 링크를 조회할 때 반환되는 오류입니다.",
                     pathParameters(
                         parameterWithName("linkKey").description("프로젝트 링크 키(UUID)")
                     ),
@@ -142,10 +142,11 @@ class LinkQueryControllerDocsTest {
             .andDo(print())
             .andExpect(status().isNotFound)
             .andDo(
-                document(
+                DocumentUtils.document(
                     "get-link-not-found",
-                    getDocumentRequest(),
-                    getDocumentResponse(),
+                    "링크",
+                    "링크 조회 실패",
+                    "존재하지 않는 링크를 조회할 때 반환되는 오류입니다.",
                     pathParameters(
                         parameterWithName("linkKey").description("프로젝트 링크 키(UUID)")
                     ),

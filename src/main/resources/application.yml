@@ -96,3 +96,16 @@ cloud:
     credentials:
       access-key: ${AWS_ACCESS_KEY}
       secret-key: ${AWS_SECRET_KEY}
+
+  aws:
+    enabled: false
+
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    url: /swagger/openapi3.json
+    path: /swagger-ui.html
+
+#logging:
+#  level:

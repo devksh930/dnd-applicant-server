@@ -3,8 +3,7 @@ package ac.dnd.server.review.infrastructure.web
 import ac.dnd.server.annotation.RestDocsTest
 import ac.dnd.server.documenation.DocumentFormatGenerator.generateEnumAttrs
 import ac.dnd.server.documenation.DocumentFormatGenerator.generatedEnums
-import ac.dnd.server.documenation.DocumentUtils.getDocumentRequest
-import ac.dnd.server.documenation.DocumentUtils.getDocumentResponse
+import ac.dnd.server.documenation.DocumentUtils
 import ac.dnd.server.documenation.MockMvcFactory
 import ac.dnd.server.review.application.dto.command.ProjectCreateCommand
 import ac.dnd.server.review.application.service.ProjectCreateService
@@ -20,7 +19,6 @@ import org.springframework.http.MediaType
 import org.springframework.restdocs.RestDocumentationContextProvider
 import org.springframework.restdocs.headers.HeaderDocumentation.headerWithName
 import org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders
-import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders
 import org.springframework.restdocs.payload.JsonFieldType
 import org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
@@ -100,10 +98,11 @@ class ProjectCreateControllerDocsTest {
             .andExpect(status().isCreated)
             .andExpect(header().exists("Location"))
             .andDo(
-                document(
+                DocumentUtils.document(
                     "put-project-first",
-                    getDocumentRequest(),
-                    getDocumentResponse(),
+                    "프로젝트",
+                    "프로젝트 최초 제출",
+                    "프로젝트를 최초로 제출합니다. 리소스가 생성되어 201 응답을 반환합니다.",
                     pathParameters(
                         parameterWithName("linkKey").description("프로젝트 링크 키(UUID)")
                     ),
@@ -136,10 +135,11 @@ class ProjectCreateControllerDocsTest {
             .andDo(print())
             .andExpect(status().isNoContent)
             .andDo(
-                document(
+                DocumentUtils.document(
                     "put-project-resubmission",
-                    getDocumentRequest(),
-                    getDocumentResponse(),
+                    "프로젝트",
+                    "프로젝트 재제출",
+                    "기존 프로젝트를 수정하여 재제출합니다. 204 응답을 반환합니다.",
                     pathParameters(
                         parameterWithName("linkKey").description("프로젝트 링크 키(UUID)")
                     ),
@@ -169,10 +169,11 @@ class ProjectCreateControllerDocsTest {
             .andDo(print())
             .andExpect(status().isUnprocessableEntity)
             .andDo(
-                document(
+                DocumentUtils.document(
                     "put-project-expired",
-                    getDocumentRequest(),
-                    getDocumentResponse(),
+                    "프로젝트",
+                    "프로젝트 제출 실패 (링크 만료)",
+                    "만료된 링크로 프로젝트를 제출하려 할 때 반환되는 오류입니다.",
                     pathParameters(
                         parameterWithName("linkKey").description("프로젝트 링크 키(UUID)")
                     ),

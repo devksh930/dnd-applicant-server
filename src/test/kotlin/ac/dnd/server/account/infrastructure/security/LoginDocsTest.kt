@@ -3,8 +3,7 @@ package ac.dnd.server.account.infrastructure.security
 import ac.dnd.server.account.infrastructure.security.authentication.filter.JsonUsernamePasswordAuthenticationFilter
 import ac.dnd.server.account.infrastructure.security.dto.UserLoginRequest
 import ac.dnd.server.common.util.JsonUtils
-import ac.dnd.server.documenation.DocumentUtils.getDocumentRequest
-import ac.dnd.server.documenation.DocumentUtils.getDocumentResponse
+import ac.dnd.server.documenation.DocumentUtils
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -15,7 +14,6 @@ import org.mockito.kotlin.given
 import org.springframework.http.MediaType
 import org.springframework.restdocs.RestDocumentationContextProvider
 import org.springframework.restdocs.RestDocumentationExtension
-import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post
 import org.springframework.restdocs.payload.JsonFieldType
@@ -82,10 +80,11 @@ class LoginDocsTest {
         )
             .andExpect(status().isOk)
             .andDo(
-                document(
+                DocumentUtils.document(
                     "post-auth-login",
-                    getDocumentRequest(),
-                    getDocumentResponse(),
+                    "인증",
+                    "로그인",
+                    "이메일과 비밀번호로 로그인하여 액세스 토큰을 발급받습니다.",
                     requestFields(
                         fieldWithPath("email").type(JsonFieldType.STRING).description("사용자 이메일"),
                         fieldWithPath("password").type(JsonFieldType.STRING).description("비밀번호")
