@@ -3,6 +3,7 @@ package ac.dnd.server.review.application.service
 import ac.dnd.server.review.domain.repository.ProjectRepository
 import ac.dnd.server.review.domain.enums.FormLinkType
 import ac.dnd.server.review.domain.value.GenerationInfo
+import ac.dnd.server.review.exception.InvalidTeamCountException
 import ac.dnd.server.review.infrastructure.persistence.entity.FormLink
 import ac.dnd.server.review.infrastructure.persistence.entity.Project
 import org.springframework.stereotype.Service
@@ -15,7 +16,7 @@ class ProjectInitService(
 ) {
     @Transactional
     fun initProjects(generation: String, teamCount: Int): List<Pair<String, String>> {
-        require(teamCount > 0) { "teamCount must be greater than 0" }
+        if (teamCount <= 0) throw InvalidTeamCountException()
 
         val results = mutableListOf<Pair<String, String>>()
 

@@ -88,6 +88,11 @@ enum class ErrorCode(
         "PJ003",
         "링크를 찾을 수 없습니다"
     ),
+    INVALID_TEAM_COUNT(
+        400,
+        "PJ004",
+        "팀 수는 1 이상이어야 합니다"
+    ),
 
     // File (FL)
     FILE_NOT_FOUND(
