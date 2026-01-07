@@ -1,0 +1,64 @@
+= 인증(Auth)
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 3
+:sectlinks:
+:sectnums:
+
+link:index.html[← 목록으로 돌아가기]
+
+== 개요
+
+사용자 인증 및 권한 관리를 위한 API입니다. +
+로그인/로그아웃을 통해 세션과 토큰(JWT)을 관리합니다.
+
+---
+
+== 로그인
+
+=== 1. 로그인 성공 (200 OK)
+
+이메일과 비밀번호를 사용하여 로그인을 시도합니다. +
+성공 시 `Authorization` 헤더와 응답 본문에 액세스 토큰이 포함됩니다.
+
+[discrete]
+==== 요청 예시
+
+include::{snippets}/post-auth-login/http-request.adoc[]
+
+[discrete]
+==== 요청 필드
+
+include::{snippets}/post-auth-login/request-fields.adoc[]
+
+[discrete]
+==== 응답 예시
+
+include::{snippets}/post-auth-login/http-response.adoc[]
+include::{snippets}/post-auth-login/response-fields.adoc[]
+
+[TIP]
+====
+로그인 성공 시 `refreshToken`은 보안을 위해 `HttpOnly` 쿠키로 설정되어 반환됩니다.
+====
+
+---
+
+== 로그아웃
+
+=== 1. 로그아웃 성공 (200 OK)
+
+발급받은 리프레시 토큰을 서버에서 제거하고, 클라이언트 쿠키를 만료시킵니다.
+
+[discrete]
+==== 요청 예시
+
+include::{snippets}/post-auth-logout/http-request.adoc[]
+
+[discrete]
+==== 응답 예시
+
+include::{snippets}/post-auth-logout/http-response.adoc[]
+include::{snippets}/post-auth-logout/response-fields.adoc[]
