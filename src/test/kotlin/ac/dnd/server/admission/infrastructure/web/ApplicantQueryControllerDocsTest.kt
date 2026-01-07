@@ -6,8 +6,7 @@ import ac.dnd.server.admission.infrastructure.web.mapper.ApplicantWebMapper
 import ac.dnd.server.annotation.RestDocsTest
 import ac.dnd.server.documenation.DocumentFormatGenerator.generateEnumAttrs
 import ac.dnd.server.documenation.DocumentFormatGenerator.generatedEnums
-import ac.dnd.server.documenation.DocumentUtils.getDocumentRequest
-import ac.dnd.server.documenation.DocumentUtils.getDocumentResponse
+import ac.dnd.server.documenation.DocumentUtils
 import ac.dnd.server.documenation.MockMvcFactory
 import ac.dnd.server.admission.domain.enums.ApplicantStatus
 import ac.dnd.server.fixture.ApplicantDataFixture
@@ -19,7 +18,6 @@ import org.mockito.kotlin.eq
 import org.mockito.kotlin.given
 import org.springframework.http.MediaType
 import org.springframework.restdocs.RestDocumentationContextProvider
-import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders
 import org.springframework.restdocs.payload.JsonFieldType
 import org.springframework.restdocs.payload.PayloadDocumentation.*
@@ -111,10 +109,11 @@ class ApplicantQueryControllerDocsTest {
             .andDo(MockMvcResultHandlers.print())
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andDo( // restDocs
-                MockMvcRestDocumentation.document(
+                DocumentUtils.document(
                     "get-applicant-status",
-                    getDocumentRequest(),
-                    getDocumentResponse(),
+                    "지원자",
+                    "지원자 상태 확인",
+                    "이름과 이메일로 지원자의 합격 여부를 확인합니다.",
                     pathParameters(
                         parameterWithName("eventId").description("이벤트 ID")
                     ),
