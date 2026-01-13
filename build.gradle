@@ -91,7 +91,20 @@ dependencies {
     testImplementation "org.mockito.kotlin:mockito-kotlin:${mockitoKotlinVersion}"
 }
 
+// =============================================================================
+// OpenAPI Spec Configuration
+// =============================================================================
+openapi3 {
+    setServer(openapiServer)
+    title = openapiTitle
+    description = openapiDescription
+    version = openapiVersion
+    format = "json"
 }
+
+// =============================================================================
+// Test Tasks
+// =============================================================================
 tasks.named('test') {
     outputs.dir snippetsDir
     useJUnitPlatform()
@@ -105,32 +118,60 @@ tasks.register("restDocsTest", Test) {
         includeTags("restDocs")
     }
     jvmArgs("-XX:+EnableDynamicAgentLoading")
-    finalizedBy "asciidoctor"
-    finalizedBy "openapi3"
+    finalizedBy 'asciidoctor', 'openapi3'
+}
+
+// =============================================================================
+// Documentation Tasks
+// =============================================================================
+tasks.register("copyOpenApiToStatic", Copy) {
+    description = "Copy openapi3.json to static resources for dev environment"
+    from("build/api-spec") {
+        include "openapi3.json"
+    }
+    into "src/main/resources/static/swagger"
+    mustRunAfter "openapi3"
+}
+
+tasks.register("copyRestDocsToStatic", Copy) {
+    description = "Copy REST Docs HTML to static resources for dev environment"
+    dependsOn "asciidoctor"
+    from("build/docs/asciidoc")
+    into "src/main/resources/static/docs"
+}
+
+afterEvaluate {
+    tasks.named("openapi3") {
+        finalizedBy "copyOpenApiToStatic"
+    }
+    tasks.named("asciidoctor") {
+        finalizedBy "copyRestDocsToStatic"
+    }
 }
 
 tasks.named('asciidoctor') {
-    dependsOn tasks.named("restDocsTest")
-    mustRunAfter(tasks.named("test"))
+    dependsOn 'restDocsTest'
+    mustRunAfter 'test'
     inputs.dir snippetsDir
-    configurations "asciidoctorExt"
+    configurations 'asciidoctorExt'
     baseDirFollowsSourceDir()
 }
 
+// =============================================================================
+// Build Tasks
+// =============================================================================
 bootJar {
-    dependsOn asciidoctor
-    from("swagger-ui") {
-        into "BOOT-INF/classes/static/swagger"
-    }
-    from("${asciidoctor.outputDir}") {
-        into "BOOT-INF/classes/static/docs"
-    }
-    from("build/api-spec") {
-        into "BOOT-INF/classes/static/swagger"
-    }
+    dependsOn 'copyOpenApiToStatic', 'copyRestDocsToStatic'
     archiveFileName.set("app.jar")
 }
 
+clean {
+    delete "src/main/resources/static/swagger"
+    delete "src/main/resources/static/docs"
+}
+
+// =============================================================================
+// Code Coverage
 kover {
     reports {
         filters {
