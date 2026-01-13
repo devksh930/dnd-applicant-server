@@ -26,7 +26,7 @@ class Applicant(
     val type: ApplicantType,
 
     @Enumerated(EnumType.STRING)
-    val status: ApplicantStatus
+    var status: ApplicantStatus
 ) : BaseEntity() {
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
@@ -38,5 +38,11 @@ class Applicant(
 
     fun withEvent(event: Event) {
         this.event = event
+    }
+
+    fun changeStatus(
+        status: ApplicantStatus
+    ) {
+        this.status = status
     }
 }

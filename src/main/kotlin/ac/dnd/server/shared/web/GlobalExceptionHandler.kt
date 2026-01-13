@@ -7,6 +7,7 @@ import ac.dnd.server.shared.exception.ErrorResponse
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException
 import org.springframework.web.HttpRequestMethodNotSupportedException
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
@@ -36,6 +37,15 @@ class GlobalExceptionHandler {
         log.error("handleHttpRequestMethodNotSupportedException", e)
         val response = ErrorResponse.of(ErrorCode.METHOD_NOT_ALLOWED)
         return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(response)
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException::class)
+    protected fun handleMethodArgumentTypeMismatchException(
+        e: MethodArgumentTypeMismatchException
+    ): ResponseEntity<ErrorResponse> {
+        log.error("handleMethodArgumentTypeMismatchException", e)
+        val response = ErrorResponse.of(e)
+        return ResponseEntity.status(response.status).body(response)
     }
 
     @ExceptionHandler(Exception::class)

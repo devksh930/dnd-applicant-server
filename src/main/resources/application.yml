@@ -16,11 +16,24 @@ spring:
       leak-detection-threshold: 60000
 
   jpa:
+    show-sql: true
     open-in-view: false
     hibernate:
       ddl-auto: ${JPA_DDL_AUTO:validate}
       jdbc.batch_size: 1000
       order_inserts: true
+    properties:
+      hibernate:
+        format_sql: true
+        highlight_sql: true
+        use_sql_comments: true
+        # 느린 쿼리만 로깅(밀리초). 필요 시 500~1000 사이로 조정 가능
+        session:
+          events:
+            log:
+              LOG_QUERIES_SLOWER_THAN_MS: 700
+  main:
+    banner-mode: off
 
   main:
     banner-mode: off
