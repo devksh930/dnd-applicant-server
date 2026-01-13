@@ -172,13 +172,17 @@ clean {
 
 // =============================================================================
 // Code Coverage
+// =============================================================================
 kover {
     reports {
         filters {
             excludes {
                 classes(
-                        "ac.dnd.server.DndServerApplication*",
-                        "*.config.*"
+                    "ac.dnd.server.DndServerApplication*",
+                    "*.config.*",
+                    "**.*Dto*",
+                    "**.*Request*",
+                    "**.*Response*"
                 )
             }
         }
