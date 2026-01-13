@@ -104,9 +104,11 @@ class JwtAuthenticationFilter(
     private fun createRefreshTokenCookie(refreshToken: String): Cookie {
         return Cookie(REFRESH_TOKEN_COOKIE_NAME, refreshToken).apply {
             isHttpOnly = true
-            secure = false
+            secure = jwtProperties.cookie.secure
             path = "/"
             maxAge = (jwtProperties.refreshTokenExpirationDays * 24 * 60 * 60).toInt()
+            setAttribute("SameSite", jwtProperties.cookie.sameSite)
+            jwtProperties.cookie.domain?.takeIf { it.isNotBlank() }?.let { domain = it }
         }
     }
 
