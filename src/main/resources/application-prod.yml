@@ -1,0 +1,32 @@
+# =============================================================================
+# Production Environment Configuration
+# =============================================================================
+
+jwt:
+  cookie:
+    secure: true
+    same-site: Lax
+    domain: .dnd.ac
+
+spring:
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: false
+        highlight_sql: false
+        use_sql_comments: false
+        session:
+          events:
+            log:
+              LOG_QUERIES_SLOWER_THAN_MS: 500
+
+logging:
+  level:
+    root: INFO
+    ac.dnd.server: INFO
+    org.hibernate.SQL: WARN
+    org.hibernate.orm.jdbc.bind: WARN
+    org.hibernate.SQL_SLOW: INFO
