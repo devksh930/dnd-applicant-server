@@ -64,6 +64,7 @@ class RestAuthSuccessHandler(
             path = "/"
             maxAge = jwtProperties.getRefreshTokenMaxAgeSeconds()
             setAttribute("SameSite", jwtProperties.cookie.sameSite)
+            jwtProperties.cookie.domain?.takeIf { it.isNotBlank() }?.let { domain = it }
         }
     }
 
