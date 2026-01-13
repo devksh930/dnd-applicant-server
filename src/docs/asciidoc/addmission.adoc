@@ -1,16 +1,42 @@
-== 참가(Admission)
-참가자의 상태를 를 조회, CRUD 처리
+= 참가(Admission)
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 3
+:sectlinks:
+:sectnums:
 
-=== 참가자 상태 조회
+link:index.html[← 목록으로 돌아가기]
+
+== 개요
+
+참가자들의 상태를 조회하고 관련 정보를 관리하는 API입니다. +
+참가자 정보를 조회하여 현재 상태(합격 여부, 등록 여부 등)를 확인할 수 있습니다.
+
+---
+
+== 참가자 상태 조회
+
+이름과 이메일을 통해 참가자의 합격 여부와 상태를 조회합니다.
+
+=== 상태 조회 (200 OK)
+
+참가자 조회가 성공했을 경우, 해당 참가자의 상태 정보를 반환합니다.
 
 [discrete]
-==== 요청
-include::{snippets}/get-applicant-status/curl-request.adoc[]
+==== 요청 예시
+
 include::{snippets}/get-applicant-status/http-request.adoc[]
+
+[discrete]
+==== 요청 파라미터 & 필드
+
 include::{snippets}/get-applicant-status/path-parameters.adoc[]
 include::{snippets}/get-applicant-status/request-fields.adoc[]
 
 [discrete]
-==== 응답
+==== 응답 예시
+
 include::{snippets}/get-applicant-status/http-response.adoc[]
 include::{snippets}/get-applicant-status/response-fields.adoc[]
