@@ -11,6 +11,7 @@ import ac.dnd.server.shared.config.properties.JwtProperties
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.core.env.Environment
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -28,6 +29,7 @@ class SecurityConfig(
     private val objectMapper: ObjectMapper,
     private val restAuthSuccessHandler: RestAuthSuccessHandler,
     private val restAuthFailureHandler: RestAuthFailureHandler,
+    private val environment: Environment,
 ) {
     companion object {
         private val PERMIT_ALL_URLS =
@@ -38,8 +40,21 @@ class SecurityConfig(
                 "/google/form",
                 "/auth"
             )
+
+        private val DEV_ONLY_URLS =
+            arrayOf(
+                "/swagger-ui.html",
+                "/swagger-ui/**",
+                "/swagger/**",
+                "/v3/api-docs/**",
+                "/webjars/**",
+                "/docs/**"
+            )
     }
 
+    private fun isDevProfile(): Boolean {
+        return environment.activeProfiles.contains("dev")
+    }
 
     @Bean
     fun securityFilterChain(
@@ -62,7 +77,10 @@ class SecurityConfig(
 
             .authorizeHttpRequests { auth ->
                 auth.requestMatchers(*PERMIT_ALL_URLS).permitAll()
-                    .anyRequest().authenticated()
+                if (isDevProfile()) {
+                    auth.requestMatchers(*DEV_ONLY_URLS).permitAll()
+                }
+                auth.anyRequest().authenticated()
             }
             .addFilterBefore(
                 jwtAuthenticationFilter,

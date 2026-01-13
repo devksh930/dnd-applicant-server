@@ -1,22 +1,32 @@
+# =============================================================================
+# Production Environment Configuration
+# =============================================================================
+
+jwt:
+  cookie:
+    secure: true
+    same-site: Lax
+    domain: .dnd.ac
+
 spring:
   jpa:
     show-sql: false
+    hibernate:
+      ddl-auto: validate
     properties:
       hibernate:
         format_sql: false
         highlight_sql: false
         use_sql_comments: false
-        # 느린 쿼리만 로깅(밀리초). 필요 시 500~1000 사이로 조정
         session:
           events:
             log:
-              LOG_QUERIES_SLOWER_THAN_MS: 700
+              LOG_QUERIES_SLOWER_THAN_MS: 500
 
 logging:
   level:
     root: INFO
-    # 일반 SQL/바인딩 로그는 비활성화
+    ac.dnd.server: INFO
     org.hibernate.SQL: WARN
     org.hibernate.orm.jdbc.bind: WARN
-    # Hibernate 느린 쿼리 전용 로거
     org.hibernate.SQL_SLOW: INFO

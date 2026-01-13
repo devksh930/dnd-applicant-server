@@ -50,3 +50,7 @@ out/
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+### Generated Documentation ###
+src/main/resources/static/swagger/
+src/main/resources/static/docs/

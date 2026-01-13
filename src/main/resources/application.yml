@@ -5,9 +5,9 @@ spring:
     username: ${SPRING_DATASOURCE_USERNAME}
     password: ${SPRING_DATASOURCE_PASSWORD}
     hikari:
-      pool-name: DND-HikariPool-t4g-small
-      maximum-pool-size: 3
-      minimum-idle: 1
+      pool-name: DND-HikariPool
+      maximum-pool-size: ${HIKARI_MAXIMUM_POOL_SIZE:3}
+      minimum-idle: ${HIKARI_MINIMUM_IDLE:1}
       idle-timeout: 300000
       max-lifetime: 1800000
       connection-timeout: 30000
@@ -19,7 +19,7 @@ spring:
     show-sql: true
     open-in-view: false
     hibernate:
-      ddl-auto: update
+      ddl-auto: ${JPA_DDL_AUTO:validate}
       jdbc.batch_size: 1000
       order_inserts: true
     properties:
@@ -35,6 +35,12 @@ spring:
   main:
     banner-mode: off
 
+  main:
+    banner-mode: off
+
+server:
+  port: ${SERVER_PORT:8080}
+
 encryption:
   aes:
     password: ${ENCRYPTION_TEXT_PASSWORD}
@@ -48,8 +54,6 @@ github:
     owner: ${GITHUB_REPOSITORY_OWNER}
     name: ${GITHUB_REPOSITORY_NAME}
 
-server:
-  port: 8080
 cors:
   allowedOriginsPatterns:
     - "https://*.google.com"
@@ -72,21 +76,15 @@ cors:
 
 logging:
   level:
-    root: INFO
-    # SQL 및 바인딩 파라미터 로깅
-    org.hibernate.SQL: DEBUG
-    org.hibernate.orm.jdbc.bind: TRACE
-    # Hibernate 느린 쿼리 전용 로거
-    org.hibernate.SQL_SLOW: INFO
-    # 애플리케이션 기본 로그 및 캐시 로그는 보이도록 설정
-    ac.dnd.server: INFO
-    org.springframework.cache: INFO
-    org.springframework.cache.interceptor: INFO
+    root: ${LOG_LEVEL_ROOT:INFO}
+    ac.dnd.server: ${LOG_LEVEL_APP:INFO}
+
 jwt:
   secret: ${JWT_SECRET}
   cookie:
     secure: ${JWT_COOKIE_SECURE:true}
     same-site: ${JWT_COOKIE_SAME_SITE:Lax}
+    domain: ${JWT_COOKIE_DOMAIN:}
 
 cloud:
   aws:
@@ -97,15 +95,10 @@ cloud:
       access-key: ${AWS_ACCESS_KEY}
       secret-key: ${AWS_SECRET_KEY}
 
-  aws:
-    enabled: false
-
 springdoc:
   api-docs:
     enabled: false
   swagger-ui:
+    enabled: false
     url: /swagger/openapi3.json
     path: /swagger-ui.html
-
-#logging:
-#  level:

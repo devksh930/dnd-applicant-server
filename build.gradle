@@ -1,21 +1,16 @@
 plugins {
-    // Kotlin & Spring Boot
-    id 'org.jetbrains.kotlin.jvm' version '2.1.0'
-    id 'org.jetbrains.kotlin.plugin.spring' version '2.1.0'
-    id 'org.jetbrains.kotlin.plugin.jpa' version '2.1.0'
-    id 'org.springframework.boot' version '3.4.5'
-    id 'io.spring.dependency-management' version '1.1.7'
-
-    // Documentation
-    id 'org.asciidoctor.jvm.convert' version '4.0.4'
-    id 'com.epages.restdocs-api-spec' version '0.19.4'
-
-    // Test Coverage
-    id 'org.jetbrains.kotlinx.kover' version '0.9.1'
+    id 'org.jetbrains.kotlin.jvm' version "${kotlinVersion}"
+    id 'org.jetbrains.kotlin.plugin.spring' version "${kotlinVersion}"
+    id 'org.jetbrains.kotlin.plugin.jpa' version "${kotlinVersion}"
+    id 'org.springframework.boot' version "${springBootVersion}"
+    id 'io.spring.dependency-management' version "${springDependencyManagementVersion}"
+    id 'org.asciidoctor.jvm.convert' version "${asciidoctorVersion}"
+    id 'com.epages.restdocs-api-spec' version "${restdocsApiSpecVersion}"
+    id 'org.jetbrains.kotlinx.kover' version "${koverVersion}"
 }
 
-group = 'ac.dnd'
-version = '0.0.1-SNAPSHOT'
+group = projectGroup
+version = projectVersion
 
 kotlin {
     jvmToolchain(21)
@@ -53,35 +48,40 @@ dependencies {
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
     implementation 'com.fasterxml.jackson.module:jackson-module-kotlin'
 
-    // --- Spring Boot Web & Core ---
+    // Spring Boot
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-configuration-processor'
-    
-    // --- Security & Auth ---
     implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-cache'
+
+    // Database
+    runtimeOnly 'com.mysql:mysql-connector-j'
+
+    // Cache
+    implementation 'com.github.ben-manes.caffeine:caffeine'
+
+    // JWT
     implementation "io.jsonwebtoken:jjwt-api:${jjwtVersion}"
     runtimeOnly "io.jsonwebtoken:jjwt-impl:${jjwtVersion}"
     runtimeOnly "io.jsonwebtoken:jjwt-jackson:${jjwtVersion}"
 
-    // --- Data & Persistence ---
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    runtimeOnly 'com.mysql:mysql-connector-j'
-
-    // --- Caching ---
-    implementation 'org.springframework.boot:spring-boot-starter-cache'
-    implementation 'com.github.ben-manes.caffeine:caffeine'
-
-    // --- AWS ---
-    implementation platform('software.amazon.awssdk:bom:2.25.16')
+    // AWS
+    implementation platform("software.amazon.awssdk:bom:${awsSdkVersion}")
     implementation 'software.amazon.awssdk:s3'
 
-    // --- Documentation (Swagger) ---
-    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdocVersion}")
+    // Documentation
+    implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdocVersion}"
+    asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+    testImplementation("com.epages:restdocs-api-spec-mockmvc:${restdocsApiSpecVersion}") {
+        exclude group: 'org.springframework.boot'
+    }
 
-    // --- Testing ---
+    // Testing
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
@@ -92,33 +92,30 @@ dependencies {
     testImplementation 'com.h2database:h2'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
-    // Testing - Kotest
+    // Kotest
     testImplementation "io.kotest:kotest-runner-junit5:${kotestVersion}"
     testImplementation "io.kotest:kotest-assertions-core:${kotestVersion}"
     testImplementation "io.kotest:kotest-property:${kotestVersion}"
-    testImplementation "io.kotest.extensions:kotest-extensions-spring:1.1.3"
+    testImplementation "io.kotest.extensions:kotest-extensions-spring:${kotestSpringVersion}"
 
-    // Testing - Mockito
+    // Mockito
     testImplementation "org.mockito.kotlin:mockito-kotlin:${mockitoKotlinVersion}"
-
-    // --- Documentation (REST Docs) ---
-    asciidoctorExt "org.springframework.restdocs:spring-restdocs-asciidoctor"
-    testImplementation "org.springframework.restdocs:spring-restdocs-mockmvc"
-    testImplementation("com.epages:restdocs-api-spec-mockmvc:${restdocsApiSpecVersion}") {
-        exclude group: 'org.springframework.boot'
-    }
 }
 
-// --- Tasks Configuration ---
-
+// =============================================================================
+// OpenAPI Spec Configuration
+// =============================================================================
 openapi3 {
-    setServer("https://api.dnd.ac")
-    title = "DND Applicant Server API"
-    description = "DND Applicant Server API Documentation"
-    version = "0.0.1"
+    setServer(openapiServer)
+    title = openapiTitle
+    description = openapiDescription
+    version = openapiVersion
     format = "json"
 }
 
+// =============================================================================
+// Test Tasks
+// =============================================================================
 tasks.named('test') {
     outputs.dir snippetsDir
     useJUnitPlatform()
@@ -131,38 +128,62 @@ tasks.register("restDocsTest", Test) {
         includeTags("restDocs")
     }
     jvmArgs("-XX:+EnableDynamicAgentLoading")
-    finalizedBy "asciidoctor"
-    finalizedBy "openapi3"
+    finalizedBy 'asciidoctor', 'openapi3'
+}
+
+// =============================================================================
+// Documentation Tasks
+// =============================================================================
+tasks.register("copyOpenApiToStatic", Copy) {
+    description = "Copy openapi3.json to static resources for dev environment"
+    from("build/api-spec") {
+        include "openapi3.json"
+    }
+    into "src/main/resources/static/swagger"
+    mustRunAfter "openapi3"
+}
+
+tasks.register("copyRestDocsToStatic", Copy) {
+    description = "Copy REST Docs HTML to static resources for dev environment"
+    dependsOn "asciidoctor"
+    from("build/docs/asciidoc")
+    into "src/main/resources/static/docs"
+}
+
+afterEvaluate {
+    tasks.named("openapi3") {
+        finalizedBy "copyOpenApiToStatic"
+    }
+    tasks.named("asciidoctor") {
+        finalizedBy "copyRestDocsToStatic"
+    }
 }
 
 tasks.named('asciidoctor') {
-    dependsOn tasks.named("restDocsTest")
-    dependsOn tasks.named("test")
-    mustRunAfter(tasks.named("test"))
+    dependsOn 'restDocsTest'
+    mustRunAfter 'test'
     inputs.dir snippetsDir
-    configurations "asciidoctorExt"
+    configurations 'asciidoctorExt'
     baseDirFollowsSourceDir()
     attributes 'snippets': snippetsDir
 }
 
+// =============================================================================
+// Build Tasks
+// =============================================================================
 bootJar {
-    dependsOn asciidoctor
+    dependsOn 'copyOpenApiToStatic', 'copyRestDocsToStatic'
     archiveFileName.set("app.jar")
-    
-    // Copy Swagger UI
-    from("swagger-ui") {
-        into "BOOT-INF/classes/static/swagger"
-    }
-    // Copy Generated REST Docs
-    from("${asciidoctor.outputDir}") {
-        into "BOOT-INF/classes/static/docs"
-    }
-    // Copy API Spec (OpenAPI)
-    from("build/api-spec") {
-        into "BOOT-INF/classes/static/swagger"
-    }
 }
 
+clean {
+    delete "src/main/resources/static/swagger"
+    delete "src/main/resources/static/docs"
+}
+
+// =============================================================================
+// Code Coverage
+// =============================================================================
 kover {
     reports {
         filters {

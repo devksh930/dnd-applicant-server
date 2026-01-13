@@ -11,7 +11,8 @@ data class JwtProperties(
 ) {
     data class CookieProperties(
         val secure: Boolean = true,
-        val sameSite: String = "Lax"
+        val sameSite: String = "Lax",
+        val domain: String? = null
     )
 
     fun getRefreshTokenMaxAgeSeconds(): Int {
