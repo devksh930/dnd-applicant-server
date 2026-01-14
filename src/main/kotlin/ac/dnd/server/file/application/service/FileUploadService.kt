@@ -18,7 +18,7 @@ class FileUploadService(
 
     @Transactional
     fun upload(file: MultipartFile): FileEntity {
-        val originalFileName = file.originalFilename ?: "unknown"
+        val originalFileName = file.originalFilename?.takeIf { it.isNotBlank() } ?: "unknown"
         val storedFileName = generateStoredFileName(originalFileName)
         val contentType = file.contentType ?: "application/octet-stream"
 
