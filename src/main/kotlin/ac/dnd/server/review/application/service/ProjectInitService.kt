@@ -4,8 +4,8 @@ import ac.dnd.server.review.domain.repository.ProjectRepository
 import ac.dnd.server.review.domain.enums.FormLinkType
 import ac.dnd.server.review.domain.value.GenerationInfo
 import ac.dnd.server.review.exception.InvalidTeamCountException
-import ac.dnd.server.review.infrastructure.persistence.entity.FormLink
-import ac.dnd.server.review.infrastructure.persistence.entity.Project
+import ac.dnd.server.review.infrastructure.persistence.entity.FormLinkEntity
+import ac.dnd.server.review.infrastructure.persistence.entity.ProjectEntity
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
@@ -22,7 +22,7 @@ class ProjectInitService(
 
         repeat(teamCount) { idx ->
             val teamName = "${idx + 1}조"
-            val project = Project(
+            val project = ProjectEntity(
                 generationInfo = GenerationInfo(generation = generation, teamName = teamName),
                 name = "$generation $teamName",
                 description = ""
@@ -30,7 +30,7 @@ class ProjectInitService(
             val saved = projectRepository.save(project)
 
             val key = UUID.randomUUID()
-            val formLink = FormLink(
+            val formLink = FormLinkEntity(
                 linkType = FormLinkType.PROJECT,
                 key = key,
                 targetId = saved.id!!

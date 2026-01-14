@@ -7,8 +7,8 @@ import ac.dnd.server.review.domain.repository.ProjectRepository
 import ac.dnd.server.review.domain.value.GenerationInfo
 import ac.dnd.server.review.domain.value.TechStacks
 import ac.dnd.server.review.exception.ProjectNotFoundException
-import ac.dnd.server.review.infrastructure.persistence.entity.Project
-import ac.dnd.server.review.infrastructure.persistence.entity.ProjectUrl
+import ac.dnd.server.review.infrastructure.persistence.entity.ProjectEntity
+import ac.dnd.server.review.infrastructure.persistence.entity.ProjectUrlEntity
 import ac.dnd.server.review.infrastructure.web.dto.request.UrlLinks
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
@@ -39,12 +39,12 @@ class ProjectCreateServiceTest : DescribeSpec({
             it("프로젝트를 업데이트하고 true를 반환한다") {
                 // given
                 val linkKey = "test-link-key"
-                val project = Project(
+                val project = ProjectEntity(
                     generationInfo = GenerationInfo("14기", "1조"),
                     name = "14기 1조",
                     description = ""
                 ).apply {
-                    val idField = Project::class.java.superclass.getDeclaredField("id")
+                    val idField = ProjectEntity::class.java.superclass.getDeclaredField("id")
                     idField.isAccessible = true
                     idField.set(this, 1L)
                 }
@@ -83,16 +83,16 @@ class ProjectCreateServiceTest : DescribeSpec({
             it("프로젝트를 업데이트하고 false를 반환한다") {
                 // given
                 val linkKey = "test-link-key"
-                val project = Project(
+                val project = ProjectEntity(
                     generationInfo = GenerationInfo("14기", "1조"),
                     name = "14기 1조",
                     description = "기존 설명"
                 ).apply {
-                    val idField = Project::class.java.superclass.getDeclaredField("id")
+                    val idField = ProjectEntity::class.java.superclass.getDeclaredField("id")
                     idField.isAccessible = true
                     idField.set(this, 1L)
                     // 이미 제출된 상태로 설정
-                    val submittedAtField = Project::class.java.getDeclaredField("submittedAt")
+                    val submittedAtField = ProjectEntity::class.java.getDeclaredField("submittedAt")
                     submittedAtField.isAccessible = true
                     submittedAtField.set(this, LocalDateTime.now().minusDays(1))
                 }
@@ -148,12 +148,12 @@ class ProjectCreateServiceTest : DescribeSpec({
             it("모든 URL을 저장한다") {
                 // given
                 val linkKey = "test-link-key"
-                val project = Project(
+                val project = ProjectEntity(
                     generationInfo = GenerationInfo("14기", "2조"),
                     name = "14기 2조",
                     description = ""
                 ).apply {
-                    val idField = Project::class.java.superclass.getDeclaredField("id")
+                    val idField = ProjectEntity::class.java.superclass.getDeclaredField("id")
                     idField.isAccessible = true
                     idField.set(this, 2L)
                 }
@@ -196,13 +196,13 @@ class ProjectCreateServiceTest : DescribeSpec({
             it("빈 TechStacks로 업데이트된다") {
                 // given
                 val linkKey = "test-link-key"
-                val project = Project(
+                val project = ProjectEntity(
                     generationInfo = GenerationInfo("14기", "3조"),
                     name = "14기 3조",
                     description = "",
                     techStacks = TechStacks.of(listOf("기존 스택"))
                 ).apply {
-                    val idField = Project::class.java.superclass.getDeclaredField("id")
+                    val idField = ProjectEntity::class.java.superclass.getDeclaredField("id")
                     idField.isAccessible = true
                     idField.set(this, 3L)
                 }

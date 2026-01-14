@@ -1,14 +1,14 @@
 package ac.dnd.server.review.domain.repository
 
-import ac.dnd.server.review.infrastructure.persistence.entity.Project
-import ac.dnd.server.review.infrastructure.persistence.entity.FormLink
-import ac.dnd.server.review.infrastructure.persistence.entity.ProjectUrl
+import ac.dnd.server.review.infrastructure.persistence.entity.ProjectEntity
+import ac.dnd.server.review.infrastructure.persistence.entity.FormLinkEntity
+import ac.dnd.server.review.infrastructure.persistence.entity.ProjectUrlEntity
 
 interface ProjectRepository {
-    fun save(project: Project): Project
+    fun save(project: ProjectEntity): ProjectEntity
     fun saveAllUrls(projectUrls: List<ProjectUrlEntity>): List<ProjectUrlEntity>
     fun deleteUrlsByProjectId(projectId: Long)
-    fun findProjectByLinkKey(linkKey: String): Project?
-    fun saveFormLink(formLink: FormLink): FormLink
-    fun findLinkByLinkKey(linkKey: String) :FormLink?
+    fun findProjectByLinkKey(linkKey: String): ProjectEntity?
+    fun saveFormLink(formLink: FormLinkEntity): FormLinkEntity
+    fun findLinkByLinkKey(linkKey: String) :FormLinkEntity?
 }

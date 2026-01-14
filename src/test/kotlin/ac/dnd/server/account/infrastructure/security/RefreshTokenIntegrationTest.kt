@@ -2,7 +2,7 @@ package ac.dnd.server.account.infrastructure.security
 
 import ac.dnd.server.annotation.IntegrationTest
 import ac.dnd.server.account.domain.enums.Role
-import ac.dnd.server.account.infrastructure.persistence.entity.Account
+import ac.dnd.server.account.infrastructure.persistence.entity.AccountEntity
 import ac.dnd.server.account.infrastructure.persistence.repository.AccountJpaRepository
 import ac.dnd.server.account.infrastructure.persistence.repository.RefreshTokenRepository
 import ac.dnd.server.account.infrastructure.security.dto.UserLoginRequest
@@ -52,7 +52,7 @@ class RefreshTokenIntegrationTest {
         refreshTokenRepository.deleteAll()
 
         val password = passwordEncoder.encode("password1234")
-        val account = Account(
+        val account = AccountEntity(
             name = "Test User",
             email = "test@example.com",
             password = password,

@@ -1,6 +1,6 @@
 package ac.dnd.server.fixture
 
-import ac.dnd.server.admission.infrastructure.persistence.entity.Applicant
+import ac.dnd.server.admission.infrastructure.persistence.entity.ApplicantEntity
 import ac.dnd.server.admission.domain.enums.ApplicantStatus
 import ac.dnd.server.admission.domain.enums.ApplicantType
 
@@ -11,8 +11,8 @@ object ApplicantFixture {
         email: String,
         type: ApplicantType,
         status: ApplicantStatus
-    ): Applicant {
-        return Applicant(
+    ): ApplicantEntity {
+        return ApplicantEntity(
             name,
             email,
             name,
@@ -22,11 +22,11 @@ object ApplicantFixture {
         )
     }
 
-    fun create(): Applicant {
+    fun create(): ApplicantEntity {
         val name = "홍길동"
         val email = "test@test.com"
 
-        val applicant = Applicant(
+        val applicant = ApplicantEntity(
             name,
             email,
             name,
@@ -39,10 +39,10 @@ object ApplicantFixture {
         return applicant
     }
 
-    fun createWithStatus(status: ApplicantStatus): Applicant {
+    fun createWithStatus(status: ApplicantStatus): ApplicantEntity {
         val name = "홍길동"
         val email = "test@test.com"
-        return Applicant(
+        return ApplicantEntity(
             name,
             email,
             name,
@@ -57,9 +57,9 @@ object ApplicantFixture {
         email: String = "test@test.com",
         type: ApplicantType = ApplicantType.BACKEND,
         status: ApplicantStatus = ApplicantStatus.PASSED,
-        event: ac.dnd.server.admission.infrastructure.persistence.entity.Event? = null
-    ): Applicant {
-        val applicant = Applicant(
+        event: ac.dnd.server.admission.infrastructure.persistence.entity.EventEntity? = null
+    ): ApplicantEntity {
+        val applicant = ApplicantEntity(
             name,
             email,
             name,

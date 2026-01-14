@@ -7,8 +7,8 @@ import ac.dnd.server.review.domain.enums.UrlType
 import ac.dnd.server.review.domain.value.GenerationInfo
 import ac.dnd.server.review.domain.value.TechStacks
 import ac.dnd.server.review.exception.ProjectNotFoundException
-import ac.dnd.server.review.infrastructure.persistence.entity.FormLink
-import ac.dnd.server.review.infrastructure.persistence.entity.Project
+import ac.dnd.server.review.infrastructure.persistence.entity.FormLinkEntity
+import ac.dnd.server.review.infrastructure.persistence.entity.ProjectEntity
 import ac.dnd.server.review.infrastructure.persistence.repository.FormLinkJpaRepository
 import ac.dnd.server.review.infrastructure.persistence.repository.ProjectJpaRepository
 import ac.dnd.server.review.infrastructure.persistence.repository.ProjectUrlJpaRepository
@@ -51,7 +51,7 @@ class ProjectCreateServiceIntegrationTest(
             it("프로젝트가 업데이트되고 true를 반환한다") {
                 // given
                 val project = projectJpaRepository.save(
-                    Project(
+                    ProjectEntity(
                         generationInfo = GenerationInfo("14기", "1조"),
                         name = "14기 1조",
                         description = ""
@@ -60,7 +60,7 @@ class ProjectCreateServiceIntegrationTest(
 
                 val linkKey = UUID.randomUUID()
                 formLinkJpaRepository.save(
-                    FormLink(
+                    FormLinkEntity(
                         linkType = FormLinkType.PROJECT,
                         key = linkKey,
                         targetId = project.id!!,
@@ -102,7 +102,7 @@ class ProjectCreateServiceIntegrationTest(
         context("프로젝트를 재제출하는 경우") {
             it("기존 URL이 삭제되고 새 URL이 저장되며 false를 반환한다") {
                 // given
-                val project = Project(
+                val project = ProjectEntity(
                     generationInfo = GenerationInfo("14기", "2조"),
                     name = "14기 2조",
                     description = "기존 설명"
@@ -118,7 +118,7 @@ class ProjectCreateServiceIntegrationTest(
 
                 val linkKey = UUID.randomUUID()
                 formLinkJpaRepository.save(
-                    FormLink(
+                    FormLinkEntity(
                         linkType = FormLinkType.PROJECT,
                         key = linkKey,
                         targetId = savedProject.id!!,
@@ -179,7 +179,7 @@ class ProjectCreateServiceIntegrationTest(
             it("URL 저장 없이 프로젝트만 업데이트된다") {
                 // given
                 val project = projectJpaRepository.save(
-                    Project(
+                    ProjectEntity(
                         generationInfo = GenerationInfo("14기", "3조"),
                         name = "14기 3조",
                         description = ""
@@ -188,7 +188,7 @@ class ProjectCreateServiceIntegrationTest(
 
                 val linkKey = UUID.randomUUID()
                 formLinkJpaRepository.save(
-                    FormLink(
+                    FormLinkEntity(
                         linkType = FormLinkType.PROJECT,
                         key = linkKey,
                         targetId = project.id!!,
@@ -222,7 +222,7 @@ class ProjectCreateServiceIntegrationTest(
             it("빈 TechStacks로 저장된다") {
                 // given
                 val project = projectJpaRepository.save(
-                    Project(
+                    ProjectEntity(
                         generationInfo = GenerationInfo("14기", "4조"),
                         name = "14기 4조",
                         description = "",
@@ -232,7 +232,7 @@ class ProjectCreateServiceIntegrationTest(
 
                 val linkKey = UUID.randomUUID()
                 formLinkJpaRepository.save(
-                    FormLink(
+                    FormLinkEntity(
                         linkType = FormLinkType.PROJECT,
                         key = linkKey,
                         targetId = project.id!!,

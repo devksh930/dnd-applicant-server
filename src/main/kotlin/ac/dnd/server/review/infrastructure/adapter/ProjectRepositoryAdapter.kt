@@ -1,8 +1,6 @@
 package ac.dnd.server.review.infrastructure.adapter
 
 import ac.dnd.server.review.domain.repository.ProjectRepository
-import ac.dnd.server.review.infrastructure.persistence.entity.FormLink
-import ac.dnd.server.review.infrastructure.persistence.entity.Project
 import ac.dnd.server.review.infrastructure.persistence.entity.FormLinkEntity
 import ac.dnd.server.review.infrastructure.persistence.entity.ProjectEntity
 import ac.dnd.server.review.infrastructure.persistence.entity.ProjectUrlEntity
@@ -20,7 +18,7 @@ class ProjectRepositoryAdapter(
     private val formLinkJpaRepository: FormLinkJpaRepository
 ) : ProjectRepository {
 
-    override fun save(project: Project): Project {
+    override fun save(project: ProjectEntity): ProjectEntity {
         return projectJpaRepository.save(project)
     }
 
@@ -35,7 +33,7 @@ class ProjectRepositoryAdapter(
         projectUrlJpaRepository.deleteByProjectId(projectId)
     }
 
-    override fun findProjectByLinkKey(linkKey: String): Project? {
+    override fun findProjectByLinkKey(linkKey: String): ProjectEntity? {
         val formLink = formLinkJpaRepository.findByKey(UUID.fromString(linkKey))
             ?: return null
 
@@ -46,11 +44,11 @@ class ProjectRepositoryAdapter(
         return projectJpaRepository.findById(formLink.targetId).orElse(null)
     }
 
-    override fun saveFormLink(formLink: FormLink): FormLink {
+    override fun saveFormLink(formLink: FormLinkEntity): FormLinkEntity {
         return formLinkJpaRepository.save(formLink)
     }
 
-    override fun findLinkByLinkKey(linkKey: String): FormLink? {
+    override fun findLinkByLinkKey(linkKey: String): FormLinkEntity? {
         return formLinkJpaRepository.findByKey(UUID.fromString(linkKey))
     }
 }

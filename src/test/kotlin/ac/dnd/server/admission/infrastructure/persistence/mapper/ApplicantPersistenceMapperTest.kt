@@ -2,8 +2,8 @@ package ac.dnd.server.admission.infrastructure.persistence.mapper
 
 import ac.dnd.server.admission.domain.model.EventData
 import ac.dnd.server.admission.domain.model.ViewablePeriod
-import ac.dnd.server.admission.infrastructure.persistence.entity.Applicant
-import ac.dnd.server.admission.infrastructure.persistence.entity.Event
+import ac.dnd.server.admission.infrastructure.persistence.entity.ApplicantEntity
+import ac.dnd.server.admission.infrastructure.persistence.entity.EventEntity
 import ac.dnd.server.annotation.UnitTest
 import ac.dnd.server.admission.domain.enums.ApplicantStatus
 import ac.dnd.server.admission.domain.enums.ApplicantType
