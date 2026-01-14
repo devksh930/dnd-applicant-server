@@ -3,8 +3,8 @@ package ac.dnd.server.review.infrastructure.adapter
 import ac.dnd.server.review.domain.enums.FormLinkType
 import ac.dnd.server.review.domain.value.GenerationInfo
 import ac.dnd.server.review.exception.FormLinkExpiredException
-import ac.dnd.server.review.infrastructure.persistence.entity.FormLink
-import ac.dnd.server.review.infrastructure.persistence.entity.Project
+import ac.dnd.server.review.infrastructure.persistence.entity.FormLinkEntity
+import ac.dnd.server.review.infrastructure.persistence.entity.ProjectEntity
 import ac.dnd.server.review.infrastructure.persistence.repository.FormLinkJpaRepository
 import ac.dnd.server.review.infrastructure.persistence.repository.ProjectJpaRepository
 import ac.dnd.server.review.infrastructure.persistence.repository.ProjectUrlJpaRepository
@@ -40,7 +40,7 @@ class ProjectRepositoryAdapterJUnitTest {
     fun `만료된 FormLink면 예외를 던진다`() {
         // given
         val key = UUID.randomUUID()
-        val link = FormLink(
+        val link = FormLinkEntity(
             linkType = FormLinkType.PROJECT,
             key = key,
             targetId = 1L,
@@ -59,14 +59,14 @@ class ProjectRepositoryAdapterJUnitTest {
     fun `유효한 FormLink와 Project가 존재하면 Project를 반환한다`() {
         // given
         val key = UUID.randomUUID()
-        val link = FormLink(
+        val link = FormLinkEntity(
             linkType = FormLinkType.PROJECT,
             key = key,
             targetId = 100L,
             expired = false,
             expirationDateTime = LocalDateTime.now().plusDays(1)
         )
-        val project = Project(
+        val project = ProjectEntity(
             generationInfo = GenerationInfo("14기", "1조"),
             name = "14기 1조",
             description = ""

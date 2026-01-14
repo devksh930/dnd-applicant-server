@@ -10,7 +10,7 @@ import java.time.LocalDateTime
 import java.util.*
 
 @Entity
-class FormLink(
+class FormLinkEntity(
     @Enumerated(EnumType.STRING)
     val linkType: FormLinkType,
     @Column(name = "link_key")

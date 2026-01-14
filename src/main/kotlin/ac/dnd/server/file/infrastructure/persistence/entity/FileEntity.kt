@@ -7,7 +7,7 @@ import jakarta.persistence.Table
 
 @Entity
 @Table(name = "files")
-class File(
+class FileEntity(
     @Column(nullable = false)
     val originalFileName: String,
 

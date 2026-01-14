@@ -4,7 +4,7 @@ import ac.dnd.server.review.application.dto.command.ProjectCreateCommand
 import ac.dnd.server.review.domain.repository.ProjectRepository
 import ac.dnd.server.review.domain.value.TechStacks
 import ac.dnd.server.review.exception.ProjectNotFoundException
-import ac.dnd.server.review.infrastructure.persistence.entity.ProjectUrl
+import ac.dnd.server.review.infrastructure.persistence.entity.ProjectUrlEntity
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -29,7 +29,7 @@ class ProjectCreateService(
         projectRepository.deleteUrlsByProjectId(project.id!!)
         command.urlLinks?.let { urlLinks ->
             val projectUrls = urlLinks.mapIndexed { index, urlLink ->
-                ProjectUrl(
+                ProjectUrlEntity(
                     project = project,
                     type = urlLink.type,
                     link = urlLink.url,

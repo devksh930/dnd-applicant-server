@@ -14,7 +14,7 @@ import jakarta.persistence.Enumerated
 import java.time.LocalDateTime
 
 @Entity
-class Project(
+class ProjectEntity(
     @Embedded
     val generationInfo: GenerationInfo,
     var name: String,

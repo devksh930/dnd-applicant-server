@@ -10,7 +10,7 @@ import java.time.LocalDateTime
 
 @Entity
 @Table(name = "account")
-class Account(
+class AccountEntity(
     @Embedded
     val userKey: UserKey = UserKey.generate(),
     val name: String,

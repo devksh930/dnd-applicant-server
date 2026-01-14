@@ -1,16 +1,16 @@
 package ac.dnd.server.admission.infrastructure.persistence.repository
 
 import ac.dnd.server.admission.domain.model.ApplicantStatusData
-import ac.dnd.server.admission.infrastructure.persistence.entity.Applicant
+import ac.dnd.server.admission.infrastructure.persistence.entity.ApplicantEntity
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 
-interface ApplicantJpaRepository : JpaRepository<Applicant, Long> {
+interface ApplicantJpaRepository : JpaRepository<ApplicantEntity, Long> {
 
     @Query(
         """
         SELECT a
-        FROM Applicant a
+        FROM ApplicantEntity a
         JOIN FETCH a.event e
         WHERE e.id = :eventId
                 AND a.nameBlindIndex = :name
@@ -21,14 +21,14 @@ interface ApplicantJpaRepository : JpaRepository<Applicant, Long> {
         eventId: Long,
         name: String,
         email: String
-    ): Applicant?
+    ): ApplicantEntity?
 
     @Query(
         """
         SELECT new ac.dnd.server.admission.domain.model.ApplicantStatusData(
             e.name, a.name, a.status
         )
-        FROM Applicant a
+        FROM ApplicantEntity a
         JOIN a.event e
         WHERE e.id = :eventId
                 AND a.nameBlindIndex = :nameBlindIndex

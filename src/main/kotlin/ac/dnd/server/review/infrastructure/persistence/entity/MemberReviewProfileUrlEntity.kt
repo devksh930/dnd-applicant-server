@@ -11,10 +11,10 @@ import jakarta.persistence.Enumerated
 import jakarta.persistence.ManyToOne
 
 @Entity
-class MemberReviewProfileUrl(
+class MemberReviewProfileUrlEntity(
 
     @ManyToOne(optional = false)
-    val memberReview: MemberReview,
+    val memberReview: MemberReviewEntity,
 
     @Embedded
     val generationInfo: GenerationInfo,

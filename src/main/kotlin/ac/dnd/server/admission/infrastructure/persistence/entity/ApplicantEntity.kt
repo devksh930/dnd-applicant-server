@@ -9,7 +9,7 @@ import jakarta.persistence.*
 
 @Entity
 @Table(name = "applicant")
-class Applicant(
+class ApplicantEntity(
     @Convert(converter = StringCryptoConverter::class)
     val name: String,
 
@@ -31,12 +31,12 @@ class Applicant(
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "event_id")
-    var event: Event? = null
+    var event: EventEntity? = null
         private set
 
     protected constructor() : this("", "", "", "", ApplicantType.FRONTEND, ApplicantStatus.NONE)
 
-    fun withEvent(event: Event) {
+    fun withEvent(event: EventEntity) {
         this.event = event
     }
 

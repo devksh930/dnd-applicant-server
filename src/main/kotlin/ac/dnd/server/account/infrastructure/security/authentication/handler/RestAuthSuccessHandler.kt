@@ -1,6 +1,6 @@
 package ac.dnd.server.account.infrastructure.security.authentication.handler
 
-import ac.dnd.server.account.infrastructure.persistence.entity.RefreshToken
+import ac.dnd.server.account.infrastructure.persistence.entity.RefreshTokenEntity
 import ac.dnd.server.account.infrastructure.persistence.entity.UserKey
 import ac.dnd.server.account.infrastructure.persistence.repository.RefreshTokenRepository
 import ac.dnd.server.account.infrastructure.security.authentication.userdetails.AccountDetails
@@ -72,7 +72,7 @@ class RestAuthSuccessHandler(
         val expiresAt = LocalDateTime.now().plusDays(jwtProperties.refreshTokenExpirationDays)
         refreshTokenRepository.findByUserKey(UserKey(userKey))
             ?.apply { updateToken(refreshToken, expiresAt) }
-            ?: refreshTokenRepository.save(RefreshToken(UserKey(userKey), refreshToken, expiresAt))
+            ?: refreshTokenRepository.save(RefreshTokenEntity(UserKey(userKey), refreshToken, expiresAt))
     }
 
     private fun writeSuccessResponse(response: HttpServletResponse, accessToken: String) {

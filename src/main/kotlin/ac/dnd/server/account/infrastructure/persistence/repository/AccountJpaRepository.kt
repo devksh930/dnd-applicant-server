@@ -1,6 +1,6 @@
 package ac.dnd.server.account.infrastructure.persistence.repository
 
-import ac.dnd.server.account.infrastructure.persistence.entity.Account
+import ac.dnd.server.account.infrastructure.persistence.entity.AccountEntity
 import ac.dnd.server.account.infrastructure.persistence.entity.UserKey
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Modifying
@@ -10,13 +10,13 @@ import org.springframework.stereotype.Repository
 import java.time.LocalDateTime
 
 @Repository
-interface AccountJpaRepository : JpaRepository<Account, Long> {
-    fun findByEmail(email: String): Account?
-    fun findByUserKey(userKey: UserKey): Account?
+interface AccountJpaRepository : JpaRepository<AccountEntity, Long> {
+    fun findByEmail(email: String): AccountEntity?
+    fun findByUserKey(userKey: UserKey): AccountEntity?
 
     @Query(
         """
-        UPDATE Account a
+        UPDATE AccountEntity a
         SET a.lastLoginAt = :lastLoginAt
         WHERE a.userKey = :userKey
         """

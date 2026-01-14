@@ -1,7 +1,7 @@
 package ac.dnd.server.account.infrastructure.security
 
 import ac.dnd.server.account.domain.enums.Role
-import ac.dnd.server.account.infrastructure.persistence.entity.Account
+import ac.dnd.server.account.infrastructure.persistence.entity.AccountEntity
 import ac.dnd.server.account.infrastructure.persistence.repository.AccountJpaRepository
 import ac.dnd.server.account.infrastructure.security.dto.UserLoginRequest
 import ac.dnd.server.annotation.IntegrationTest
@@ -41,7 +41,7 @@ class LoginIntegrationTest {
     fun setUp() {
         accountJpaRepository.deleteAll()
         val password = passwordEncoder.encode("password1234")
-        val account = Account(
+        val account = AccountEntity(
             name = "Test User",
             email = "test@example.com",
             password = password,

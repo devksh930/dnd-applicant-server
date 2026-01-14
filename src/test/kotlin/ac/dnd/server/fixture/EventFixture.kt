@@ -1,14 +1,14 @@
 package ac.dnd.server.fixture
 
 import ac.dnd.server.admission.domain.model.ViewablePeriod
-import ac.dnd.server.admission.infrastructure.persistence.entity.Event
+import ac.dnd.server.admission.infrastructure.persistence.entity.EventEntity
 import ac.dnd.server.admission.domain.enums.EventStatus
 import java.time.LocalDateTime
 
 object EventFixture {
 
-    fun create(): Event {
-        return Event(
+    fun create(): EventEntity {
+        return EventEntity(
             "픽스처이벤트",
             ViewablePeriod.of(
                 LocalDateTime.now().minusHours(1),
@@ -19,12 +19,12 @@ object EventFixture {
         )
     }
 
-    fun viewableEvent(now: LocalDateTime): Event {
+    fun viewableEvent(now: LocalDateTime): EventEntity {
         val viewablePeriod = ViewablePeriod.of(
             now.minusHours(1),
             now.plusHours(1)
         )
-        return Event(
+        return EventEntity(
             "조회 가능 이벤트",
             viewablePeriod,
             LocalDateTime.now(),
@@ -32,12 +32,12 @@ object EventFixture {
         )
     }
 
-    fun notViewableEventBefore(now: LocalDateTime): Event {
+    fun notViewableEventBefore(now: LocalDateTime): EventEntity {
         val notViewablePeriodBefore = ViewablePeriod.of(
             now.plusHours(1),
             now.plusHours(2)
         )
-        return Event(
+        return EventEntity(
             "조회 불가능 이벤트 (시작 전)",
             notViewablePeriodBefore,
             LocalDateTime.MIN,
@@ -45,12 +45,12 @@ object EventFixture {
         )
     }
 
-    fun notViewableEventAfter(now: LocalDateTime): Event {
+    fun notViewableEventAfter(now: LocalDateTime): EventEntity {
         val notViewablePeriodAfter = ViewablePeriod.of(
             now.minusHours(2),
             now.minusHours(1)
         )
-        return Event(
+        return EventEntity(
             "조회 불가능 이벤트 (종료 후)",
             notViewablePeriodAfter,
             LocalDateTime.MIN,
@@ -63,8 +63,8 @@ object EventFixture {
         period: ViewablePeriod = ViewablePeriod.of(LocalDateTime.now(), LocalDateTime.now().plusDays(1)),
         resultAnnouncementDateTime: LocalDateTime = LocalDateTime.now(),
         status: EventStatus = EventStatus.COMPLETED
-    ): Event {
-        return Event(
+    ): EventEntity {
+        return EventEntity(
             name,
             period,
             resultAnnouncementDateTime,

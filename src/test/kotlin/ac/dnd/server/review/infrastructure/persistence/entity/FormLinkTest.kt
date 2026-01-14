@@ -15,7 +15,7 @@ class FormLinkTest : DescribeSpec({
 
         it("expired 플래그가 true이면 만료로 판단한다") {
             // given
-            val link = FormLink(
+            val link = FormLinkEntity(
                 linkType = FormLinkType.PROJECT,
                 key = UUID.randomUUID(),
                 targetId = 1L,
@@ -29,7 +29,7 @@ class FormLinkTest : DescribeSpec({
 
         it("만료 시간이 과거면 만료로 판단한다") {
             // given
-            val link = FormLink(
+            val link = FormLinkEntity(
                 linkType = FormLinkType.PROJECT,
                 key = UUID.randomUUID(),
                 targetId = 1L,
@@ -43,7 +43,7 @@ class FormLinkTest : DescribeSpec({
 
         it("만료 시간이 미래면 만료가 아니다") {
             // given
-            val link = FormLink(
+            val link = FormLinkEntity(
                 linkType = FormLinkType.PROJECT,
                 key = UUID.randomUUID(),
                 targetId = 1L,

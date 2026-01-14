@@ -2,7 +2,7 @@ package ac.dnd.server.file.infrastructure.web
 
 import ac.dnd.server.file.application.dto.FileDownloadData
 import ac.dnd.server.file.application.service.FileUploadService
-import ac.dnd.server.file.infrastructure.persistence.entity.File
+import ac.dnd.server.file.infrastructure.persistence.entity.FileEntity
 import ac.dnd.server.shared.web.GlobalExceptionHandler
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayNameGeneration
@@ -62,7 +62,7 @@ class FileControllerTest {
             bytes
         )
 
-        val saved = File(
+        val saved = FileEntity(
             originalFileName = "hello.txt",
             storedFileName = "uuid-hello.txt",
             fileUrl = "https://cdn.example.com/uuid-hello.txt",
