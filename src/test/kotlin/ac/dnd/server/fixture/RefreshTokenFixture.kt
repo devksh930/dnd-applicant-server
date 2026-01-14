@@ -1,58 +1,62 @@
 package ac.dnd.server.fixture
 
-import ac.dnd.server.account.infrastructure.persistence.entity.RefreshToken
+import ac.dnd.server.account.infrastructure.persistence.entity.RefreshTokenEntity
 import ac.dnd.server.account.infrastructure.persistence.entity.UserKey
 import java.time.LocalDateTime
+import java.util.UUID
 
 object RefreshTokenFixture {
+    const val DEFAULT_TOKEN = "refresh-token"
+    val DEFAULT_EXPIRES_AT = LocalDateTime.now().plusDays(7)
 
-    fun create(
-        userKey: UserKey = UserKey.generate(),
-        token: String = "test-refresh-token",
-        expiresAt: LocalDateTime = LocalDateTime.now().plusDays(30),
-        expired: Boolean = false
-    ): RefreshToken {
-        return RefreshToken(
-            userKey = userKey,
+    fun createValid(
+        userKey: UUID = UUID.randomUUID(),
+        token: String = DEFAULT_TOKEN,
+        expiresAt: LocalDateTime = DEFAULT_EXPIRES_AT
+    ): RefreshTokenEntity {
+        return RefreshTokenEntity(
+            userKey = UserKey(userKey),
             token = token,
-            expiresAt = expiresAt,
-            expired = expired
+            expiresAt = expiresAt
         )
     }
 
     fun createExpiredByTime(
-        userKey: UserKey = UserKey.generate(),
-        token: String = "expired-refresh-token"
-    ): RefreshToken {
-        return RefreshToken(
-            userKey = userKey,
+        userKey: UUID = UUID.randomUUID(),
+        token: String = DEFAULT_TOKEN,
+        expiresAt: LocalDateTime = LocalDateTime.now().minusDays(1)
+    ): RefreshTokenEntity {
+        return RefreshTokenEntity(
+            userKey = UserKey(userKey),
             token = token,
-            expiresAt = LocalDateTime.now().minusDays(1),
-            expired = false
+            expiresAt = expiresAt
         )
     }
 
     fun createExpiredByFlag(
-        userKey: UserKey = UserKey.generate(),
-        token: String = "revoked-refresh-token"
-    ): RefreshToken {
-        return RefreshToken(
-            userKey = userKey,
+        userKey: UUID = UUID.randomUUID(),
+        token: String = DEFAULT_TOKEN,
+        expiresAt: LocalDateTime = DEFAULT_EXPIRES_AT
+    ): RefreshTokenEntity {
+        return RefreshTokenEntity(
+            userKey = UserKey(userKey),
             token = token,
-            expiresAt = LocalDateTime.now().plusDays(30),
+            expiresAt = expiresAt,
             expired = true
         )
     }
 
-    fun createValid(
-        userKey: UserKey = UserKey.generate(),
-        token: String = "valid-refresh-token"
-    ): RefreshToken {
-        return RefreshToken(
-            userKey = userKey,
+    fun create(
+        userKey: UUID = UUID.randomUUID(),
+        token: String = DEFAULT_TOKEN,
+        expiresAt: LocalDateTime = DEFAULT_EXPIRES_AT,
+        expired: Boolean = false
+    ): RefreshTokenEntity {
+        return RefreshTokenEntity(
+            userKey = UserKey(userKey),
             token = token,
-            expiresAt = LocalDateTime.now().plusDays(30),
-            expired = false
+            expiresAt = expiresAt,
+            expired = expired
         )
     }
 }

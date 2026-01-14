@@ -4,7 +4,7 @@ import ac.dnd.server.TestcontainersConfiguration
 import ac.dnd.server.review.domain.enums.FormLinkType
 import ac.dnd.server.review.exception.FormLinkExpiredException
 import ac.dnd.server.review.exception.FormLinkNotFoundException
-import ac.dnd.server.review.infrastructure.persistence.entity.FormLink
+import ac.dnd.server.review.infrastructure.persistence.entity.FormLinkEntity
 import ac.dnd.server.review.infrastructure.persistence.repository.FormLinkJpaRepository
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
@@ -39,7 +39,7 @@ class LinkQueryServiceIntegrationTest(
                 // given
                 val linkKey = UUID.randomUUID()
                 val expirationDateTime = LocalDateTime.now().plusDays(7)
-                val formLink = FormLink(
+                val formLink = FormLinkEntity(
                     linkType = FormLinkType.PROJECT,
                     key = linkKey,
                     targetId = 1L,
@@ -72,7 +72,7 @@ class LinkQueryServiceIntegrationTest(
             it("FormLinkExpiredException이 발생한다") {
                 // given
                 val linkKey = UUID.randomUUID()
-                val formLink = FormLink(
+                val formLink = FormLinkEntity(
                     linkType = FormLinkType.PROJECT,
                     key = linkKey,
                     targetId = 1L,
@@ -92,7 +92,7 @@ class LinkQueryServiceIntegrationTest(
             it("FormLinkExpiredException이 발생한다") {
                 // given
                 val linkKey = UUID.randomUUID()
-                val formLink = FormLink(
+                val formLink = FormLinkEntity(
                     linkType = FormLinkType.PROJECT,
                     key = linkKey,
                     targetId = 1L,
@@ -112,7 +112,7 @@ class LinkQueryServiceIntegrationTest(
             it("해당 타입으로 조회된다") {
                 // given
                 val linkKey = UUID.randomUUID()
-                val formLink = FormLink(
+                val formLink = FormLinkEntity(
                     linkType = FormLinkType.MEMBER_REVIEW,
                     key = linkKey,
                     targetId = 2L,

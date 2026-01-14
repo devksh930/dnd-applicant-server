@@ -6,7 +6,7 @@ import ac.dnd.server.review.infrastructure.persistence.entity.ProjectUrl
 
 interface ProjectRepository {
     fun save(project: Project): Project
-    fun saveAllUrls(projectUrls: List<ProjectUrl>): List<ProjectUrl>
+    fun saveAllUrls(projectUrls: List<ProjectUrlEntity>): List<ProjectUrlEntity>
     fun deleteUrlsByProjectId(projectId: Long)
     fun findProjectByLinkKey(linkKey: String): Project?
     fun saveFormLink(formLink: FormLink): FormLink

@@ -174,7 +174,7 @@ class ProjectCreateServiceTest : DescribeSpec({
                 whenever(projectRepository.findProjectByLinkKey(linkKey)).thenReturn(project)
                 doNothing().whenever(projectRepository).deleteUrlsByProjectId(2L)
 
-                val urlCaptor = argumentCaptor<List<ProjectUrl>>()
+                val urlCaptor = argumentCaptor<List<ProjectUrlEntity>>()
                 whenever(projectRepository.saveAllUrls(urlCaptor.capture())).thenReturn(emptyList())
 
                 // when

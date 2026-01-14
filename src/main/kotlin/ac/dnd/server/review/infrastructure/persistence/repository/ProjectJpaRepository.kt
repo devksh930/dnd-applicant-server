@@ -1,6 +1,6 @@
 package ac.dnd.server.review.infrastructure.persistence.repository
 
-import ac.dnd.server.review.infrastructure.persistence.entity.Project
+import ac.dnd.server.review.infrastructure.persistence.entity.ProjectEntity
 import org.springframework.data.jpa.repository.JpaRepository
 
-interface ProjectJpaRepository : JpaRepository<Project, Long>
+interface ProjectJpaRepository : JpaRepository<ProjectEntity, Long>

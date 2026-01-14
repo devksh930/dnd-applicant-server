@@ -8,7 +8,7 @@ import java.time.LocalDateTime
 
 @Entity
 @Table(name = "event")
-class Event(
+class EventEntity(
     val name: String,
 
     @Embedded

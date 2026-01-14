@@ -3,7 +3,7 @@ package ac.dnd.server.file.application.service
 import ac.dnd.server.file.application.dto.FileDownloadData
 import ac.dnd.server.file.application.storage.FileStorage
 import ac.dnd.server.file.exception.FileNotFoundException
-import ac.dnd.server.file.infrastructure.persistence.entity.File
+import ac.dnd.server.file.infrastructure.persistence.entity.FileEntity
 import ac.dnd.server.file.infrastructure.persistence.repository.FileJpaRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -17,7 +17,7 @@ class FileUploadService(
 ) {
 
     @Transactional
-    fun upload(file: MultipartFile): File {
+    fun upload(file: MultipartFile): FileEntity {
         val originalFileName = file.originalFilename ?: "unknown"
         val storedFileName = generateStoredFileName(originalFileName)
         val contentType = file.contentType ?: "application/octet-stream"
@@ -29,7 +29,7 @@ class FileUploadService(
             size = file.size
         )
 
-        val fileEntity = File(
+        val fileEntity = FileEntity(
             originalFileName = originalFileName,
             storedFileName = storedFileName,
             fileUrl = fileUrl,
@@ -41,7 +41,7 @@ class FileUploadService(
     }
 
     @Transactional
-    fun uploadMultiple(files: List<MultipartFile>): List<File> {
+    fun uploadMultiple(files: List<MultipartFile>): List<FileEntity> {
         return files.map { upload(it) }
     }
 

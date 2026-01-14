@@ -9,7 +9,7 @@ import java.time.LocalDateTime
 
 @Entity
 @Table(name = "refresh_token")
-class RefreshToken(
+class RefreshTokenEntity(
     @Embedded
     val userKey: UserKey,
 

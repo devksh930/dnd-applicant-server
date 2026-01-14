@@ -4,7 +4,7 @@ import ac.dnd.server.annotation.RestDocsTest
 import ac.dnd.server.documenation.DocumentUtils
 import ac.dnd.server.documenation.MockMvcFactory
 import ac.dnd.server.file.application.service.FileUploadService
-import ac.dnd.server.file.infrastructure.persistence.entity.File
+import ac.dnd.server.file.infrastructure.persistence.entity.FileEntity
 import org.junit.jupiter.api.Test
 import org.mockito.InjectMocks
 import org.mockito.Mock
@@ -49,7 +49,7 @@ class FileControllerDocsTest {
             bytes
         )
 
-        val saved = File(
+        val saved = FileEntity(
             originalFileName = "hello.txt",
             storedFileName = "uuid-hello.txt",
             fileUrl = "https://cdn.example.com/uuid-hello.txt",
@@ -95,7 +95,7 @@ class FileControllerDocsTest {
         val file1 = MockMultipartFile("files", "a.png", MediaType.IMAGE_PNG_VALUE, byteArrayOf(1, 2, 3))
         val file2 = MockMultipartFile("files", "b.jpg", MediaType.IMAGE_JPEG_VALUE, byteArrayOf(4, 5))
 
-        val saved1 = File(
+        val saved1 = FileEntity(
             originalFileName = "a.png",
             storedFileName = "uuid-a.png",
             fileUrl = "https://cdn.example.com/uuid-a.png",
@@ -104,7 +104,7 @@ class FileControllerDocsTest {
         )
         ReflectionTestUtils.setField(saved1, "id", 10L)
 
-        val saved2 = File(
+        val saved2 = FileEntity(
             originalFileName = "b.jpg",
             storedFileName = "uuid-b.jpg",
             fileUrl = "https://cdn.example.com/uuid-b.jpg",
