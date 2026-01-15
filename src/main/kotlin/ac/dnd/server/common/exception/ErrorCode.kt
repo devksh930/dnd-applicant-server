@@ -105,4 +105,11 @@ enum class ErrorCode(
         "FL002",
         "파일 업로드에 실패했습니다"
     ),
+
+    // Member Review (MR)
+    MEMBER_REVIEW_NOT_FOUND(
+        404,
+        "MR001",
+        "팀원 리뷰를 찾을 수 없습니다"
+    ),
 }

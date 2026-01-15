@@ -45,8 +45,8 @@ class ProjectInitControllerDocsTest {
         """.trimIndent()
 
         val results = listOf(
-            "1조" to "00000000-0000-0000-0000-000000000001",
-            "2조" to "00000000-0000-0000-0000-000000000002"
+            Triple("1조", "00000000-0000-0000-0000-000000000001", "00000000-0000-0000-0000-000000000003"),
+            Triple("2조", "00000000-0000-0000-0000-000000000002", "00000000-0000-0000-0000-000000000004")
         )
         given(projectInitService.initProjects(any(), any())).willReturn(results)
 
@@ -77,7 +77,8 @@ class ProjectInitControllerDocsTest {
                         fieldWithPath("teamCount").type(JsonFieldType.NUMBER).description("생성된 팀 개수"),
                         fieldWithPath("links").type(JsonFieldType.ARRAY).description("생성된 링크 목록"),
                         fieldWithPath("links[].teamName").type(JsonFieldType.STRING).description("팀 이름"),
-                        fieldWithPath("links[].linkKey").type(JsonFieldType.STRING).description("링크 키 (UUID)")
+                        fieldWithPath("links[].linkKey").type(JsonFieldType.STRING).description("프로젝트 제출용 링크 키 (UUID)"),
+                        fieldWithPath("links[].reviewLinkKey").type(JsonFieldType.STRING).description("팀원 후기 제출용 링크 키 (UUID)")
                     )
                 )
             )

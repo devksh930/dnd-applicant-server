@@ -8,5 +8,6 @@ data class ProjectInitResponse(
 
 data class ProjectInitLink(
     val teamName: String,
-    val linkKey: String
+    val linkKey: String,
+    val reviewLinkKey: String
 )

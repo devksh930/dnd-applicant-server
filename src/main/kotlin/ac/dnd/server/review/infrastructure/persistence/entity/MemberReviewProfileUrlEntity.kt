@@ -16,15 +16,11 @@ class MemberReviewProfileUrlEntity(
     @ManyToOne(optional = false)
     val memberReview: MemberReviewEntity,
 
-    @Embedded
-    val generationInfo: GenerationInfo,
-
     @Enumerated(EnumType.STRING)
     val type: UrlType,
 
-   	val link: String,
+    val link: String,
 
-   	@Column(name = "sort_order")
-   	val order: Int
-   ) : BaseEntity() {
-   }
+    @Column(name = "sort_order")
+    val order: Int
+) : BaseEntity()

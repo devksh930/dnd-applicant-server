@@ -7,9 +7,9 @@ import ac.dnd.server.review.infrastructure.web.dto.response.ProjectInitResponse
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import org.springframework.web.bind.annotation.RequestBody
 
 @RestController
 @RequestMapping("/project/init")
@@ -25,7 +25,13 @@ class ProjectInitController (
         val response = ProjectInitResponse(
             generation = request.generation,
             teamCount = request.teamCount,
-            links = results.map { (teamName, key) -> ProjectInitLink(teamName = teamName, linkKey = key) }
+            links = results.map { (teamName, key, reviewKey) -> 
+                ProjectInitLink(
+                    teamName = teamName, 
+                    linkKey = key, 
+                    reviewLinkKey = reviewKey
+                ) 
+            }
         )
         return ResponseEntity.ok(response)
     }

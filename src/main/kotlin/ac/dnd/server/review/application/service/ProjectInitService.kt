@@ -1,24 +1,24 @@
 package ac.dnd.server.review.application.service
 
-import ac.dnd.server.review.domain.repository.ProjectRepository
 import ac.dnd.server.review.domain.enums.FormLinkType
+import ac.dnd.server.review.domain.repository.ProjectRepository
 import ac.dnd.server.review.domain.value.GenerationInfo
 import ac.dnd.server.review.exception.InvalidTeamCountException
 import ac.dnd.server.review.infrastructure.persistence.entity.FormLinkEntity
 import ac.dnd.server.review.infrastructure.persistence.entity.ProjectEntity
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.util.UUID
+import java.util.*
 
 @Service
 class ProjectInitService(
     private val projectRepository: ProjectRepository
 ) {
     @Transactional
-    fun initProjects(generation: String, teamCount: Int): List<Pair<String, String>> {
+    fun initProjects(generation: String, teamCount: Int): List<Triple<String, String, String>> {
         if (teamCount <= 0) throw InvalidTeamCountException()
 
-        val results = mutableListOf<Pair<String, String>>()
+        val results = mutableListOf<Triple<String, String, String>>()
 
         repeat(teamCount) { idx ->
             val teamName = "${idx + 1}조"
@@ -29,15 +29,23 @@ class ProjectInitService(
             )
             val saved = projectRepository.save(project)
 
-            val key = UUID.randomUUID()
-            val formLink = FormLinkEntity(
+            val projectLinkKey = UUID.randomUUID()
+            val projectLink = FormLinkEntity(
                 linkType = FormLinkType.PROJECT,
-                key = key,
+                key = projectLinkKey,
                 targetId = saved.id!!
             )
-            projectRepository.saveFormLink(formLink)
+            projectRepository.saveFormLink(projectLink)
 
-            results.add(teamName to key.toString())
+            val reviewLinkKey = UUID.randomUUID()
+            val reviewLink = FormLinkEntity(
+                linkType = FormLinkType.MEMBER_REVIEW,
+                key = reviewLinkKey,
+                targetId = saved.id!!
+            )
+            projectRepository.saveFormLink(reviewLink)
+
+            results.add(Triple(teamName, projectLinkKey.toString(), reviewLinkKey.toString()))
         }
 
         return results

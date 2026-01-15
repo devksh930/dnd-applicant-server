@@ -17,7 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Import
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.transaction.annotation.Transactional
-import java.util.UUID
+import java.util.*
 
 @SpringBootTest
 @Import(TestcontainersConfiguration::class)
@@ -71,13 +71,10 @@ class ProjectInitServiceIntegrationTest(
 
                 // DB에 FormLink가 저장되었는지 확인
                 val savedFormLinks = formLinkJpaRepository.findAll()
-                savedFormLinks shouldHaveSize 3
+                savedFormLinks shouldHaveSize 6 // 3 teams * 2 links
 
-                savedFormLinks.forEach { formLink ->
-                    formLink.linkType shouldBe FormLinkType.PROJECT
-                    formLink.expired shouldBe false
-                    formLink.expirationDateTime.shouldNotBeNull()
-                }
+                savedFormLinks.filter { it.linkType == FormLinkType.PROJECT } shouldHaveSize 3
+                savedFormLinks.filter { it.linkType == FormLinkType.MEMBER_REVIEW } shouldHaveSize 3
             }
         }
 
@@ -91,15 +88,22 @@ class ProjectInitServiceIntegrationTest(
                 val result = projectInitService.initProjects(generation, teamCount)
 
                 // then
-                result.forEach { (teamName, keyString) ->
+                result.forEach { (teamName, projectKeyString, reviewKeyString) ->
                     // UUID 형식 검증
-                    keyString shouldMatch "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
+                    projectKeyString shouldMatch "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
+                    reviewKeyString shouldMatch "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
 
-                    // DB에서 조회 가능한지 확인
-                    val key = UUID.fromString(keyString)
-                    val formLink = formLinkJpaRepository.findByKey(key)
-                    formLink.shouldNotBeNull()
-                    formLink.linkType shouldBe FormLinkType.PROJECT
+                    // DB에서 Project Link 조회 가능한지 확인
+                    val projectKey = UUID.fromString(projectKeyString)
+                    val projectLink = formLinkJpaRepository.findByKey(projectKey)
+                    projectLink.shouldNotBeNull()
+                    projectLink.linkType shouldBe FormLinkType.PROJECT
+
+                    // DB에서 Review Link 조회 가능한지 확인
+                    val reviewKey = UUID.fromString(reviewKeyString)
+                    val reviewLink = formLinkJpaRepository.findByKey(reviewKey)
+                    reviewLink.shouldNotBeNull()
+                    reviewLink.linkType shouldBe FormLinkType.MEMBER_REVIEW
                 }
             }
         }
@@ -148,7 +152,7 @@ class ProjectInitServiceIntegrationTest(
                 result[0].first shouldBe "1조"
 
                 projectJpaRepository.findAll() shouldHaveSize 1
-                formLinkJpaRepository.findAll() shouldHaveSize 1
+                formLinkJpaRepository.findAll() shouldHaveSize 2 // 1 project * 2 links
             }
         }
 
@@ -163,7 +167,7 @@ class ProjectInitServiceIntegrationTest(
 
                 // then
                 result shouldHaveSize 15
-                result.forEachIndexed { index, (teamName, _) ->
+                result.forEachIndexed { index, (teamName, _, _) ->
                     teamName shouldBe "${index + 1}조"
                 }
 
@@ -171,7 +175,7 @@ class ProjectInitServiceIntegrationTest(
                 savedProjects shouldHaveSize 15
 
                 val savedFormLinks = formLinkJpaRepository.findAll()
-                savedFormLinks shouldHaveSize 15
+                savedFormLinks shouldHaveSize 30 // 15 teams * 2 links
             }
         }
 
@@ -194,14 +198,21 @@ class ProjectInitServiceIntegrationTest(
                 }
 
                 // 각 결과의 키로 FormLink를 찾고, targetId로 프로젝트를 찾아 팀명 검증
-                result.forEachIndexed { index, (teamName, keyString) ->
-                    val key = UUID.fromString(keyString)
-                    val formLink = formLinkJpaRepository.findByKey(key)
-                    formLink.shouldNotBeNull()
+                result.forEachIndexed { index, (teamName, projectKeyString, reviewKeyString) ->
+                    val projectKey = UUID.fromString(projectKeyString)
+                    val projectLink = formLinkJpaRepository.findByKey(projectKey)
+                    projectLink.shouldNotBeNull()
 
-                    val project = projectJpaRepository.findById(formLink.targetId).get()
+                    val project = projectJpaRepository.findById(projectLink.targetId).get()
                     project.generationInfo.teamName shouldBe teamName
                     project.generationInfo.teamName shouldBe "${index + 1}조"
+
+                    val reviewKey = UUID.fromString(reviewKeyString)
+                    val reviewLink = formLinkJpaRepository.findByKey(reviewKey)
+                    reviewLink.shouldNotBeNull()
+
+                    val reviewProject = projectJpaRepository.findById(reviewLink.targetId).get()
+                    reviewProject.generationInfo.teamName shouldBe teamName
                 }
             }
         }

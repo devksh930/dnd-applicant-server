@@ -3,7 +3,6 @@ package ac.dnd.server.review.application.service
 import ac.dnd.server.annotation.UnitTest
 import ac.dnd.server.review.domain.enums.FormLinkType
 import ac.dnd.server.review.domain.repository.ProjectRepository
-import ac.dnd.server.review.domain.value.GenerationInfo
 import ac.dnd.server.review.exception.InvalidTeamCountException
 import ac.dnd.server.review.infrastructure.persistence.entity.FormLinkEntity
 import ac.dnd.server.review.infrastructure.persistence.entity.ProjectEntity
@@ -64,12 +63,13 @@ class ProjectInitServiceTest : DescribeSpec({
                 result[2].first shouldBe "3조"
 
                 // UUID 형식 검증
-                result.forEach { (_, key) ->
-                    key shouldMatch "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
+                result.forEach { (_, projectKey, reviewKey) ->
+                    projectKey shouldMatch "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
+                    reviewKey shouldMatch "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
                 }
 
                 verify(projectRepository, times(3)).save(projectCaptor.capture())
-                verify(projectRepository, times(3)).saveFormLink(formLinkCaptor.capture())
+                verify(projectRepository, times(6)).saveFormLink(formLinkCaptor.capture())
 
                 val savedProjects = projectCaptor.allValues
                 savedProjects[0].generationInfo.generation shouldBe "14기"
@@ -79,9 +79,9 @@ class ProjectInitServiceTest : DescribeSpec({
                 savedProjects[2].generationInfo.teamName shouldBe "3조"
 
                 val savedFormLinks = formLinkCaptor.allValues
-                savedFormLinks.forEach { link ->
-                    link.linkType shouldBe FormLinkType.PROJECT
-                }
+                savedFormLinks shouldHaveSize 6
+                savedFormLinks.filter { it.linkType == FormLinkType.PROJECT } shouldHaveSize 3
+                savedFormLinks.filter { it.linkType == FormLinkType.MEMBER_REVIEW } shouldHaveSize 3
             }
         }
 
@@ -110,7 +110,7 @@ class ProjectInitServiceTest : DescribeSpec({
                 result[0].first shouldBe "1조"
 
                 verify(projectRepository, times(1)).save(any())
-                verify(projectRepository, times(1)).saveFormLink(any())
+                verify(projectRepository, times(2)).saveFormLink(any())
             }
         }
 
@@ -195,7 +195,7 @@ class ProjectInitServiceTest : DescribeSpec({
 
                 // then
                 result shouldHaveSize 10
-                result.forEachIndexed { index, (teamName, _) ->
+                result.forEachIndexed { index, (teamName, _, _) ->
                     teamName shouldBe "${index + 1}조"
                 }
             }
