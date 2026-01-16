@@ -22,7 +22,7 @@ DND Applicant Server API 문서입니다. +
 * link:auth.html[**인증(Auth)**]
 ** 로그인 및 토큰 발급
 * link:review.html[**프로젝트(Review)**]
-** 프로젝트 제출, 재제출, 링크 검증
+** 프로젝트 제출, 재제출, 링크 검증, 멤버 리뷰 목록 조회
 * link:link.html[**링크(Link)**]
 ** 링크 유효성 및 타입 조회
 * link:file.html[**파일(File)**]
