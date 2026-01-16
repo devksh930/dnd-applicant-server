@@ -110,3 +110,29 @@ include::{snippets}/put-project-expired/http-request.adoc[]
 
 include::{snippets}/put-project-expired/http-response.adoc[]
 include::{snippets}/put-project-expired/response-fields.adoc[]
+
+---
+
+== 멤버 리뷰
+
+멤버 리뷰와 관련된 API입니다.
+
+=== 멤버 리뷰 목록 조회
+
+링크 키로 해당 프로젝트의 멤버 리뷰 목록을 조회합니다.
+
+[discrete]
+==== 요청 예시
+
+include::{snippets}/get-member-review-list-success/http-request.adoc[]
+
+[discrete]
+==== 요청 파라미터
+
+include::{snippets}/get-member-review-list-success/path-parameters.adoc[]
+
+[discrete]
+==== 응답 예시
+
+include::{snippets}/get-member-review-list-success/http-response.adoc[]
+include::{snippets}/get-member-review-list-success/response-fields.adoc[]
