@@ -3,12 +3,12 @@ package ac.dnd.server.review.application.service
 import ac.dnd.server.annotation.UnitTest
 import ac.dnd.server.review.application.dto.command.ProjectCreateCommand
 import ac.dnd.server.review.domain.enums.UrlType
+import ac.dnd.server.review.domain.model.Project
+import ac.dnd.server.review.domain.model.ProjectUrl
 import ac.dnd.server.review.domain.repository.ProjectRepository
 import ac.dnd.server.review.domain.value.GenerationInfo
 import ac.dnd.server.review.domain.value.TechStacks
 import ac.dnd.server.review.exception.ProjectNotFoundException
-import ac.dnd.server.review.infrastructure.persistence.entity.ProjectEntity
-import ac.dnd.server.review.infrastructure.persistence.entity.ProjectUrlEntity
 import ac.dnd.server.review.infrastructure.web.dto.request.UrlLinks
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
@@ -39,15 +39,12 @@ class ProjectCreateServiceTest : DescribeSpec({
             it("프로젝트를 업데이트하고 true를 반환한다") {
                 // given
                 val linkKey = "test-link-key"
-                val project = ProjectEntity(
+                val project = Project(
+                    id = 1L,
                     generationInfo = GenerationInfo("14기", "1조"),
                     name = "14기 1조",
                     description = ""
-                ).apply {
-                    val idField = ProjectEntity::class.java.superclass.getDeclaredField("id")
-                    idField.isAccessible = true
-                    idField.set(this, 1L)
-                }
+                )
 
                 val command = ProjectCreateCommand(
                     linkKey = linkKey,
@@ -62,7 +59,7 @@ class ProjectCreateServiceTest : DescribeSpec({
 
                 whenever(projectRepository.findProjectByLinkKey(linkKey)).thenReturn(project)
                 doNothing().whenever(projectRepository).deleteUrlsByProjectId(1L)
-                whenever(projectRepository.saveAllUrls(any())).thenReturn(emptyList())
+                whenever(projectRepository.saveAllUrls(any(), any())).then { }
 
                 // when
                 val result = projectCreateService.createProject(command)
@@ -74,8 +71,9 @@ class ProjectCreateServiceTest : DescribeSpec({
                 project.techStacks shouldBe TechStacks.of(listOf("Kotlin", "Spring"))
                 project.fileId shouldBe 100L
 
+                verify(projectRepository).save(any())
                 verify(projectRepository).deleteUrlsByProjectId(1L)
-                verify(projectRepository).saveAllUrls(any())
+                verify(projectRepository).saveAllUrls(any(), any())
             }
         }
 
@@ -83,19 +81,13 @@ class ProjectCreateServiceTest : DescribeSpec({
             it("프로젝트를 업데이트하고 false를 반환한다") {
                 // given
                 val linkKey = "test-link-key"
-                val project = ProjectEntity(
+                val project = Project(
+                    id = 1L,
                     generationInfo = GenerationInfo("14기", "1조"),
                     name = "14기 1조",
-                    description = "기존 설명"
-                ).apply {
-                    val idField = ProjectEntity::class.java.superclass.getDeclaredField("id")
-                    idField.isAccessible = true
-                    idField.set(this, 1L)
-                    // 이미 제출된 상태로 설정
-                    val submittedAtField = ProjectEntity::class.java.getDeclaredField("submittedAt")
-                    submittedAtField.isAccessible = true
-                    submittedAtField.set(this, LocalDateTime.now().minusDays(1))
-                }
+                    description = "기존 설명",
+                    submittedAt = LocalDateTime.now().minusDays(1)
+                )
 
                 val command = ProjectCreateCommand(
                     linkKey = linkKey,
@@ -117,8 +109,9 @@ class ProjectCreateServiceTest : DescribeSpec({
                 project.name shouldBe "수정된 프로젝트명"
                 project.description shouldBe "수정된 설명"
 
+                verify(projectRepository).save(any())
                 verify(projectRepository).deleteUrlsByProjectId(1L)
-                verify(projectRepository, never()).saveAllUrls(any())
+                verify(projectRepository, never()).saveAllUrls(any(), any())
             }
         }
 
@@ -148,15 +141,12 @@ class ProjectCreateServiceTest : DescribeSpec({
             it("모든 URL을 저장한다") {
                 // given
                 val linkKey = "test-link-key"
-                val project = ProjectEntity(
+                val project = Project(
+                    id = 2L,
                     generationInfo = GenerationInfo("14기", "2조"),
                     name = "14기 2조",
                     description = ""
-                ).apply {
-                    val idField = ProjectEntity::class.java.superclass.getDeclaredField("id")
-                    idField.isAccessible = true
-                    idField.set(this, 2L)
-                }
+                )
 
                 val command = ProjectCreateCommand(
                     linkKey = linkKey,
@@ -174,8 +164,8 @@ class ProjectCreateServiceTest : DescribeSpec({
                 whenever(projectRepository.findProjectByLinkKey(linkKey)).thenReturn(project)
                 doNothing().whenever(projectRepository).deleteUrlsByProjectId(2L)
 
-                val urlCaptor = argumentCaptor<List<ProjectUrlEntity>>()
-                whenever(projectRepository.saveAllUrls(urlCaptor.capture())).thenReturn(emptyList())
+                val urlCaptor = argumentCaptor<List<ProjectUrl>>()
+                whenever(projectRepository.saveAllUrls(any(), urlCaptor.capture())).then { }
 
                 // when
                 projectCreateService.createProject(command)
@@ -196,16 +186,13 @@ class ProjectCreateServiceTest : DescribeSpec({
             it("빈 TechStacks로 업데이트된다") {
                 // given
                 val linkKey = "test-link-key"
-                val project = ProjectEntity(
+                val project = Project(
+                    id = 3L,
                     generationInfo = GenerationInfo("14기", "3조"),
                     name = "14기 3조",
                     description = "",
                     techStacks = TechStacks.of(listOf("기존 스택"))
-                ).apply {
-                    val idField = ProjectEntity::class.java.superclass.getDeclaredField("id")
-                    idField.isAccessible = true
-                    idField.set(this, 3L)
-                }
+                )
 
                 val command = ProjectCreateCommand(
                     linkKey = linkKey,

@@ -2,10 +2,10 @@ package ac.dnd.server.review.application.service
 
 import ac.dnd.server.annotation.UnitTest
 import ac.dnd.server.review.domain.enums.FormLinkType
+import ac.dnd.server.review.domain.model.FormLink
+import ac.dnd.server.review.domain.model.Project
 import ac.dnd.server.review.domain.repository.ProjectRepository
 import ac.dnd.server.review.exception.InvalidTeamCountException
-import ac.dnd.server.review.infrastructure.persistence.entity.FormLinkEntity
-import ac.dnd.server.review.infrastructure.persistence.entity.ProjectEntity
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.collections.shouldHaveSize
@@ -37,20 +37,17 @@ class ProjectInitServiceTest : DescribeSpec({
                 val generation = "14기"
                 val teamCount = 3
 
-                val projectCaptor = argumentCaptor<ProjectEntity>()
-                val formLinkCaptor = argumentCaptor<FormLinkEntity>()
+                val projectCaptor = argumentCaptor<Project>()
+                val formLinkCaptor = argumentCaptor<FormLink>()
 
                 var projectIdCounter = 1L
-                whenever(projectRepository.save(any<ProjectEntity>())).thenAnswer { invocation ->
-                    val project = invocation.getArgument<ProjectEntity>(0)
-                    val idField = ProjectEntity::class.java.superclass.getDeclaredField("id")
-                    idField.isAccessible = true
-                    idField.set(project, projectIdCounter++)
-                    project
+                whenever(projectRepository.save(any<Project>())).thenAnswer { invocation ->
+                    val project = invocation.getArgument<Project>(0)
+                    project.copy(id = projectIdCounter++)
                 }
 
-                whenever(projectRepository.saveFormLink(any<FormLinkEntity>())).thenAnswer { invocation ->
-                    invocation.getArgument<FormLinkEntity>(0)
+                whenever(projectRepository.saveFormLink(any<FormLink>())).thenAnswer { invocation ->
+                    invocation.getArgument<FormLink>(0)
                 }
 
                 // when
@@ -91,15 +88,12 @@ class ProjectInitServiceTest : DescribeSpec({
                 val generation = "15기"
                 val teamCount = 1
 
-                whenever(projectRepository.save(any<ProjectEntity>())).thenAnswer { invocation ->
-                    val project = invocation.getArgument<ProjectEntity>(0)
-                    val idField = ProjectEntity::class.java.superclass.getDeclaredField("id")
-                    idField.isAccessible = true
-                    idField.set(project, 1L)
-                    project
+                whenever(projectRepository.save(any<Project>())).thenAnswer { invocation ->
+                    val project = invocation.getArgument<Project>(0)
+                    project.copy(id = 1L)
                 }
-                whenever(projectRepository.saveFormLink(any<FormLinkEntity>())).thenAnswer { invocation ->
-                    invocation.getArgument<FormLinkEntity>(0)
+                whenever(projectRepository.saveFormLink(any<FormLink>())).thenAnswer { invocation ->
+                    invocation.getArgument<FormLink>(0)
                 }
 
                 // when
@@ -146,17 +140,14 @@ class ProjectInitServiceTest : DescribeSpec({
                 val generation = "DND 14기"
                 val teamCount = 2
 
-                val projectCaptor = argumentCaptor<ProjectEntity>()
+                val projectCaptor = argumentCaptor<Project>()
 
                 whenever(projectRepository.save(projectCaptor.capture())).thenAnswer { invocation ->
-                    val project = invocation.getArgument<ProjectEntity>(0)
-                    val idField = ProjectEntity::class.java.superclass.getDeclaredField("id")
-                    idField.isAccessible = true
-                    idField.set(project, 1L)
-                    project
+                    val project = invocation.getArgument<Project>(0)
+                    project.copy(id = 1L)
                 }
-                whenever(projectRepository.saveFormLink(any<FormLinkEntity>())).thenAnswer { invocation ->
-                    invocation.getArgument<FormLinkEntity>(0)
+                whenever(projectRepository.saveFormLink(any<FormLink>())).thenAnswer { invocation ->
+                    invocation.getArgument<FormLink>(0)
                 }
 
                 // when
@@ -179,15 +170,12 @@ class ProjectInitServiceTest : DescribeSpec({
                 val teamCount = 10
 
                 var projectIdCounter = 1L
-                whenever(projectRepository.save(any<ProjectEntity>())).thenAnswer { invocation ->
-                    val project = invocation.getArgument<ProjectEntity>(0)
-                    val idField = ProjectEntity::class.java.superclass.getDeclaredField("id")
-                    idField.isAccessible = true
-                    idField.set(project, projectIdCounter++)
-                    project
+                whenever(projectRepository.save(any<Project>())).thenAnswer { invocation ->
+                    val project = invocation.getArgument<Project>(0)
+                    project.copy(id = projectIdCounter++)
                 }
-                whenever(projectRepository.saveFormLink(any<FormLinkEntity>())).thenAnswer { invocation ->
-                    invocation.getArgument<FormLinkEntity>(0)
+                whenever(projectRepository.saveFormLink(any<FormLink>())).thenAnswer { invocation ->
+                    invocation.getArgument<FormLink>(0)
                 }
 
                 // when

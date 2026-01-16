@@ -2,9 +2,12 @@ package ac.dnd.server.review.infrastructure.adapter
 
 import ac.dnd.server.annotation.UnitTest
 import ac.dnd.server.review.domain.enums.FormLinkType
+import ac.dnd.server.review.domain.model.FormLink
+import ac.dnd.server.review.domain.model.Project
 import ac.dnd.server.review.exception.FormLinkExpiredException
 import ac.dnd.server.review.infrastructure.persistence.entity.FormLinkEntity
 import ac.dnd.server.review.infrastructure.persistence.entity.ProjectEntity
+import ac.dnd.server.review.infrastructure.persistence.mapper.ProjectPersistenceMapper
 import ac.dnd.server.review.infrastructure.persistence.repository.FormLinkJpaRepository
 import ac.dnd.server.review.infrastructure.persistence.repository.ProjectJpaRepository
 import ac.dnd.server.review.infrastructure.persistence.repository.ProjectUrlJpaRepository
@@ -25,10 +28,12 @@ class ProjectRepositoryAdapterTest : DescribeSpec({
     val projectUrlJpaRepository: ProjectUrlJpaRepository = mock()
     val formLinkJpaRepository: FormLinkJpaRepository = mock()
 
+    val projectPersistenceMapper = ProjectPersistenceMapper()
     val adapter = ProjectRepositoryAdapter(
         projectJpaRepository,
         projectUrlJpaRepository,
-        formLinkJpaRepository
+        formLinkJpaRepository,
+        projectPersistenceMapper
     )
 
     describe("findProjectByLinkKey") {
@@ -43,6 +48,9 @@ class ProjectRepositoryAdapterTest : DescribeSpec({
                 expired = true,
                 expirationDateTime = LocalDateTime.now().minusDays(1)
             )
+            val idField = FormLinkEntity::class.java.superclass.getDeclaredField("id")
+            idField.isAccessible = true
+            idField.set(link, 1L)
             whenever(formLinkJpaRepository.findByKey(key)).thenReturn(link)
 
             // expect
@@ -61,19 +69,28 @@ class ProjectRepositoryAdapterTest : DescribeSpec({
                 expired = false,
                 expirationDateTime = LocalDateTime.now().plusDays(1)
             )
-            val project = ProjectEntity(
+            val linkIdField = FormLinkEntity::class.java.superclass.getDeclaredField("id")
+            linkIdField.isAccessible = true
+            linkIdField.set(link, 1L)
+
+            val projectEntity = ProjectEntity(
                 generationInfo = GenerationInfo("14기", "1조"),
                 name = "14기 1조",
                 description = ""
             )
+            val projectIdField = ProjectEntity::class.java.superclass.getDeclaredField("id")
+            projectIdField.isAccessible = true
+            projectIdField.set(projectEntity, 100L)
+
             whenever(formLinkJpaRepository.findByKey(key)).thenReturn(link)
-            whenever(projectJpaRepository.findById(100L)).thenReturn(Optional.of(project))
+            whenever(projectJpaRepository.findById(100L)).thenReturn(Optional.of(projectEntity))
 
             // when
             val result = adapter.findProjectByLinkKey(key.toString())
 
             // then
-            result shouldBe project
+            result!!.id shouldBe 100L
+            result.name shouldBe "14기 1조"
         }
 
         it("FormLink가 없으면 null을 반환한다") {

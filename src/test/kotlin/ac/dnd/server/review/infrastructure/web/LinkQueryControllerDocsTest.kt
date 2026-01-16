@@ -7,14 +7,19 @@ import ac.dnd.server.documenation.DocumentUtils
 import ac.dnd.server.documenation.MockMvcFactory
 import ac.dnd.server.review.application.service.LinkQueryService
 import ac.dnd.server.review.domain.enums.FormLinkType
+import ac.dnd.server.review.domain.model.FormLink
 import ac.dnd.server.review.exception.FormLinkExpiredException
 import ac.dnd.server.review.exception.FormLinkNotFoundException
 import ac.dnd.server.review.infrastructure.web.dto.response.LinkQueryResponse
+import ac.dnd.server.review.infrastructure.web.mapper.LinkWebMapper
 import org.junit.jupiter.api.Test
 import org.mockito.InjectMocks
 import org.mockito.Mock
+import org.mockito.Spy
 import org.mockito.kotlin.any
+import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.given
+import org.mockito.kotlin.whenever
 import org.springframework.http.MediaType
 import org.springframework.restdocs.RestDocumentationContextProvider
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders
@@ -26,12 +31,16 @@ import org.springframework.restdocs.request.RequestDocumentation.pathParameters
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.time.LocalDateTime
+import java.util.UUID
 
 @RestDocsTest
 class LinkQueryControllerDocsTest {
 
     @Mock
     private lateinit var linkQueryService: LinkQueryService
+
+    @Spy
+    private var linkWebMapper: LinkWebMapper = LinkWebMapper()
 
     @InjectMocks
     private lateinit var controller: LinkQueryController
@@ -68,12 +77,13 @@ class LinkQueryControllerDocsTest {
         contextProvider: RestDocumentationContextProvider
     ) {
         // given
-        given(linkQueryService.getLinkInfo(any())).willReturn(
-            LinkQueryResponse(
-                type = FormLinkType.PROJECT,
-                expiredAt = LocalDateTime.now().plusDays(1)
-            )
+        val formLink = FormLink(
+            linkType = FormLinkType.PROJECT,
+            key = UUID.randomUUID(),
+            targetId = 1L,
+            expirationDateTime = LocalDateTime.now().plusDays(1)
         )
+        given(linkQueryService.getLinkInfo(any())).willReturn(formLink)
 
         // when & then
         MockMvcFactory.getRestDocsMockMvc(contextProvider, HOST_API, controller)
