@@ -35,7 +35,7 @@ class LinkQueryServiceIntegrationTest(
     describe("getLinkInfo 통합 테스트") {
 
         context("유효한 링크가 DB에 존재하는 경우") {
-            it("LinkQueryResponse를 정상적으로 반환한다") {
+            it("FormLink를 정상적으로 반환한다") {
                 // given
                 val linkKey = UUID.randomUUID()
                 val expirationDateTime = LocalDateTime.now().plusDays(7)
@@ -52,7 +52,7 @@ class LinkQueryServiceIntegrationTest(
                 val result = linkQueryService.getLinkInfo(linkKey.toString())
 
                 // then
-                result.type shouldBe FormLinkType.PROJECT
+                result.linkType shouldBe FormLinkType.PROJECT
             }
         }
 
@@ -125,7 +125,7 @@ class LinkQueryServiceIntegrationTest(
                 val result = linkQueryService.getLinkInfo(linkKey.toString())
 
                 // then
-                result.type shouldBe FormLinkType.MEMBER_REVIEW
+                result.linkType shouldBe FormLinkType.MEMBER_REVIEW
             }
         }
     }

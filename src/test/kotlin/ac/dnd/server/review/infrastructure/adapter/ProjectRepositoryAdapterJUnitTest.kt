@@ -1,10 +1,12 @@
 package ac.dnd.server.review.infrastructure.adapter
 
 import ac.dnd.server.review.domain.enums.FormLinkType
+import ac.dnd.server.review.domain.model.Project
 import ac.dnd.server.review.domain.value.GenerationInfo
 import ac.dnd.server.review.exception.FormLinkExpiredException
 import ac.dnd.server.review.infrastructure.persistence.entity.FormLinkEntity
 import ac.dnd.server.review.infrastructure.persistence.entity.ProjectEntity
+import ac.dnd.server.review.infrastructure.persistence.mapper.ProjectPersistenceMapper
 import ac.dnd.server.review.infrastructure.persistence.repository.FormLinkJpaRepository
 import ac.dnd.server.review.infrastructure.persistence.repository.ProjectJpaRepository
 import ac.dnd.server.review.infrastructure.persistence.repository.ProjectUrlJpaRepository
@@ -32,6 +34,9 @@ class ProjectRepositoryAdapterJUnitTest {
 
     @Mock
     lateinit var formLinkJpaRepository: FormLinkJpaRepository
+
+    @Mock
+    lateinit var projectPersistenceMapper: ProjectPersistenceMapper
 
     @InjectMocks
     lateinit var adapter: ProjectRepositoryAdapter
@@ -66,19 +71,26 @@ class ProjectRepositoryAdapterJUnitTest {
             expired = false,
             expirationDateTime = LocalDateTime.now().plusDays(1)
         )
-        val project = ProjectEntity(
+        val projectEntity = ProjectEntity(
+            generationInfo = GenerationInfo("14기", "1조"),
+            name = "14기 1조",
+            description = ""
+        )
+        val projectDomain = Project(
+            id = 100L,
             generationInfo = GenerationInfo("14기", "1조"),
             name = "14기 1조",
             description = ""
         )
         whenever(formLinkJpaRepository.findByKey(key)).thenReturn(link)
-        whenever(projectJpaRepository.findById(100L)).thenReturn(Optional.of(project))
+        whenever(projectJpaRepository.findById(100L)).thenReturn(Optional.of(projectEntity))
+        whenever(projectPersistenceMapper.toDomain(projectEntity)).thenReturn(projectDomain)
 
         // when
         val result = adapter.findProjectByLinkKey(key.toString())
 
         // then
-        assertSame(project, result)
+        assertSame(projectDomain, result)
     }
 
     @Test

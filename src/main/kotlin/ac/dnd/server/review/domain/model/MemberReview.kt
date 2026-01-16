@@ -1,32 +1,26 @@
 package ac.dnd.server.review.domain.model
 
+import ac.dnd.server.review.domain.enums.Position
 import ac.dnd.server.review.domain.enums.SubmissionStatus
 import ac.dnd.server.review.domain.value.GenerationInfo
-import ac.dnd.server.review.domain.value.TechStacks
 import java.time.LocalDateTime
 
-data class Project(
-    val id: Long = 0L,
+data class MemberReview(
+    val id: Long,
     val generationInfo: GenerationInfo,
     var name: String,
-    var description: String,
-    var techStacks: TechStacks = TechStacks(),
-    var fileId: Long? = null,
+    val position: Position,
+    var description: String? = null,
     var status: SubmissionStatus = SubmissionStatus.NONE,
     var submittedAt: LocalDateTime? = null
 ) {
     fun update(
         name: String,
-        description: String,
-        techStacks: TechStacks,
-        fileId: Long?
+        description: String
     ) {
         this.name = name
         this.description = description
-        this.techStacks = techStacks
-        if (this.fileId != fileId) {
-            this.fileId = fileId
-        }
+        this.status = SubmissionStatus.PENDING
         if (this.submittedAt == null) {
             this.submittedAt = LocalDateTime.now()
         }

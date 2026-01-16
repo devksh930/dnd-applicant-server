@@ -1,10 +1,10 @@
 package ac.dnd.server.review.application.service
 
 import ac.dnd.server.review.application.dto.command.ProjectCreateCommand
+import ac.dnd.server.review.domain.model.ProjectUrl
 import ac.dnd.server.review.domain.repository.ProjectRepository
 import ac.dnd.server.review.domain.value.TechStacks
 import ac.dnd.server.review.exception.ProjectNotFoundException
-import ac.dnd.server.review.infrastructure.persistence.entity.ProjectUrlEntity
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -25,18 +25,18 @@ class ProjectCreateService(
             techStacks = TechStacks.of(command.techStacks),
             fileId = command.fileId
         )
+        projectRepository.save(project)
 
-        projectRepository.deleteUrlsByProjectId(project.id!!)
+        projectRepository.deleteUrlsByProjectId(project.id)
         command.urlLinks?.let { urlLinks ->
             val projectUrls = urlLinks.mapIndexed { index, urlLink ->
-                ProjectUrlEntity(
-                    project = project,
+                ProjectUrl(
                     type = urlLink.type,
                     link = urlLink.url,
                     order = urlLink.order ?: index
                 )
             }
-            projectRepository.saveAllUrls(projectUrls)
+            projectRepository.saveAllUrls(project.id, projectUrls)
         }
 
         return isFirstSubmission

@@ -2,10 +2,10 @@ package ac.dnd.server.review.application.service
 
 import ac.dnd.server.annotation.UnitTest
 import ac.dnd.server.review.domain.enums.FormLinkType
+import ac.dnd.server.review.domain.model.FormLink
 import ac.dnd.server.review.domain.repository.ProjectRepository
 import ac.dnd.server.review.exception.FormLinkExpiredException
 import ac.dnd.server.review.exception.FormLinkNotFoundException
-import ac.dnd.server.review.infrastructure.persistence.entity.FormLinkEntity
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
@@ -23,11 +23,12 @@ class LinkQueryServiceTest : DescribeSpec({
     describe("getLinkInfo") {
 
         context("링크가 존재하고 유효한 경우") {
-            it("LinkQueryResponse를 반환한다") {
+            it("FormLink를 반환한다") {
                 // given
                 val linkKey = UUID.randomUUID()
                 val expirationDateTime = LocalDateTime.now().plusDays(7)
-                val formLink = FormLinkEntity(
+                val formLink = FormLink(
+                    id = 1L,
                     linkType = FormLinkType.PROJECT,
                     key = linkKey,
                     targetId = 1L,
@@ -41,8 +42,8 @@ class LinkQueryServiceTest : DescribeSpec({
                 val result = linkQueryService.getLinkInfo(linkKey.toString())
 
                 // then
-                result.type shouldBe FormLinkType.PROJECT
-                result.expiredAt shouldBe expirationDateTime
+                result.linkType shouldBe FormLinkType.PROJECT
+                result.expirationDateTime shouldBe expirationDateTime
             }
         }
 
@@ -64,7 +65,8 @@ class LinkQueryServiceTest : DescribeSpec({
             it("FormLinkExpiredException이 발생한다") {
                 // given
                 val linkKey = UUID.randomUUID()
-                val formLink = FormLinkEntity(
+                val formLink = FormLink(
+                    id = 1L,
                     linkType = FormLinkType.PROJECT,
                     key = linkKey,
                     targetId = 1L,
@@ -85,7 +87,8 @@ class LinkQueryServiceTest : DescribeSpec({
             it("FormLinkExpiredException이 발생한다") {
                 // given
                 val linkKey = UUID.randomUUID()
-                val formLink = FormLinkEntity(
+                val formLink = FormLink(
+                    id = 1L,
                     linkType = FormLinkType.PROJECT,
                     key = linkKey,
                     targetId = 1L,
@@ -103,11 +106,12 @@ class LinkQueryServiceTest : DescribeSpec({
         }
 
         context("MEMBER_REVIEW 타입의 링크인 경우") {
-            it("해당 타입의 LinkQueryResponse를 반환한다") {
+            it("해당 타입의 FormLink를 반환한다") {
                 // given
                 val linkKey = UUID.randomUUID()
                 val expirationDateTime = LocalDateTime.now().plusDays(14)
-                val formLink = FormLinkEntity(
+                val formLink = FormLink(
+                    id = 1L,
                     linkType = FormLinkType.MEMBER_REVIEW,
                     key = linkKey,
                     targetId = 2L,
@@ -121,8 +125,8 @@ class LinkQueryServiceTest : DescribeSpec({
                 val result = linkQueryService.getLinkInfo(linkKey.toString())
 
                 // then
-                result.type shouldBe FormLinkType.MEMBER_REVIEW
-                result.expiredAt shouldBe expirationDateTime
+                result.linkType shouldBe FormLinkType.MEMBER_REVIEW
+                result.expirationDateTime shouldBe expirationDateTime
             }
         }
     }
